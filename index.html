@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClearSight</title>
+<meta name="description" content="ClearSight turns any public-information image into versions that colour-blind, low-vision, low-bandwidth and print-only audiences can actually use, powered by Cloudinary.">
+<style>
+  :root {
+    --bg: #f6f7f9; --surface: #ffffff; --ink: #14171c; --muted: #5b6472;
+    --line: #e2e5ea; --accent: #3448c5; --accent-ink: #ffffff; --good: #127a4a;
+    --chip: #eef0f8; --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1216; --surface: #171b21; --ink: #eef1f5; --muted: #9aa3b1;
+      --line: #2a3038; --accent: #7b8cff; --accent-ink: #0b0d12; --good: #4cd38f;
+      --chip: #222838; --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  header { padding: 40px 0 24px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; }
+  .brand svg { width: 28px; height: 28px; }
+  h1 { font-size: clamp(28px, 4.5vw, 44px); line-height: 1.15; margin: 18px 0 10px; letter-spacing: -.02em; }
+  .lede { color: var(--muted); max-width: 720px; font-size: 18px; margin: 0; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 24px 0 8px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .stat b { display: block; font-size: 22px; }
+  .stat span { color: var(--muted); font-size: 14px; }
+  section.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 20px; margin: 20px 0; box-shadow: var(--shadow); }
+  h2 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 16px; font-size: 15px; }
+  .samples { display: flex; gap: 10px; flex-wrap: wrap; }
+  .samples button { padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden;
+    background: none; cursor: pointer; width: 92px; height: 68px; }
+  .samples button[aria-pressed="true"] { border-color: var(--accent); }
+  .samples img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; margin-top: 16px; }
+  label { font-size: 14px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  input[type=text] { font: inherit; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--bg); color: var(--ink); min-width: 200px; }
+  .btn { font: inherit; font-weight: 600; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--accent);
+    background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  details { margin-top: 16px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .hint { font-size: 13px; color: var(--muted); }
+  #status { margin-top: 12px; font-size: 14px; color: var(--muted); min-height: 1.4em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    display: flex; flex-direction: column; }
+  .card .img { aspect-ratio: 4 / 3; background: var(--chip); display: flex; align-items: center; justify-content: center; }
+  .card img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .card .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .card h3 { margin: 0; font-size: 16px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; background: var(--chip); color: var(--ink);
+    padding: 2px 8px; border-radius: 99px; margin-right: 6px; }
+  .who { color: var(--muted); font-size: 14px; margin: 0; }
+  .size { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .size .save { color: var(--good); font-weight: 600; }
+  .actions { display: flex; gap: 8px; margin-top: auto; padding-top: 8px; flex-wrap: wrap; }
+  .actions a, .actions button { font: inherit; font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 6px;
+    border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; text-decoration: none; }
+  code.url { display: block; font-size: 11px; color: var(--muted); word-break: break-all; background: var(--bg);
+    border-radius: 6px; padding: 6px 8px; }
+  .compare { position: relative; aspect-ratio: 4 / 3; max-width: 760px; margin: 0 auto; border-radius: 12px;
+    overflow: hidden; background: var(--chip); touch-action: none; }
+  .compare { cursor: ew-resize; user-select: none; -webkit-user-select: none; }
+  .compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
+    pointer-events: none; user-select: none; -webkit-user-drag: none; }
+  .compare .top { clip-path: inset(0 50% 0 0); }
+  .compare .bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.3); pointer-events: none; }
+  .compare-ctl { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 12px; align-items: center; }
+  select { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+  textarea { width: 100%; min-height: 150px; font: 12px/1.5 ui-monospace, Consolas, monospace; padding: 10px;
+    border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px; }
+  footer { color: var(--muted); font-size: 14px; padding: 24px 0 48px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M5 16s4-7 11-7 11 7 11 7-4 7-11 7S5 16 5 16z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="3.5" fill="currentColor"/></svg>
+      ClearSight
+    </div>
+    <h1>Public information people can actually see.</h1>
+    <p class="lede">Health notices, evacuation maps, school charts and NGO posters are often published as a single full-colour, full-size image. ClearSight uses Cloudinary to turn that one image into an accessibility pack in seconds: colour-blind-safe, low-vision, low-bandwidth and photocopy-ready versions, each with a shareable URL.</p>
+    <div class="stats" aria-label="Why this matters">
+      <div class="stat"><b>~1 in 12 men</b><span>and ~1 in 200 women have colour vision deficiency</span></div>
+      <div class="stat"><b>2.2 billion</b><span>people live with a near or distance vision impairment (WHO)</span></div>
+      <div class="stat"><b>2.6 billion</b><span>people were still offline in 2024; many more are on slow, metered data (ITU)</span></div>
+    </div>
+  </header>
+
+  <section class="panel" aria-labelledby="src-h">
+    <h2 id="src-h">1. Pick an image</h2>
+    <p class="sub">Try a sample, or upload your own poster, map or chart to your Cloudinary account.</p>
+    <div class="samples" id="samples" role="group" aria-label="Sample images"></div>
+
+    <details id="uploadBox">
+      <summary>Upload your own image (uses your Cloudinary account)</summary>
+      <div class="row">
+        <label>Cloud name<input type="text" id="cloudName" placeholder="e.g. my-ngo" autocomplete="off"></label>
+        <label>Unsigned upload preset<input type="text" id="preset" placeholder="e.g. clearsight_unsigned" autocomplete="off"></label>
+      </div>
+      <div class="row">
+        <label>Image file<input type="file" id="file" accept="image/*"></label>
+        <button class="btn" id="uploadBtn" type="button">Upload &amp; generate pack</button>
+      </div>
+      <p class="hint">Create an unsigned preset in Cloudinary Console → Settings → Upload → Upload presets → Add preset → Signing mode: Unsigned. No API secret ever touches the browser.</p>
+    </details>
+    <div id="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="cmp-h">
+    <h2 id="cmp-h">2. See it the way others do</h2>
+    <p class="sub">Drag the slider to compare the original (left) with another version (right).</p>
+    <div class="compare" id="compare">
+      <img id="cmpBottom" alt="">
+      <img id="cmpTop" class="top" alt="">
+      <div class="bar" id="cmpBar"></div>
+    </div>
+    <div class="compare-ctl">
+      <label for="cmpSelect" class="sr">Version to compare</label>
+      <select id="cmpSelect"></select>
+      <label class="sr" for="cmpRange">Slider position</label>
+      <input type="range" id="cmpRange" min="0" max="100" value="50" style="width:220px">
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="pack-h">
+    <h2 id="pack-h">3. Your accessibility pack</h2>
+    <p class="sub">Every version is a live Cloudinary URL, generated on demand at the edge, so nothing has to be re-designed or stored twice.</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="share-h">
+    <h2 id="share-h">4. Publish it</h2>
+    <p class="sub">Paste this into any website or CMS. Browsers on slow connections and small screens automatically get the light version.</p>
+    <div class="summary" id="summary"></div>
+    <textarea id="snippet" readonly aria-label="HTML snippet"></textarea>
+    <div class="row"><button class="btn ghost" type="button" id="copySnippet">Copy HTML snippet</button></div>
+  </section>
+
+  <footer>
+    Built for Hacktober Hackdays: Tech for Social Good, on the Cloudinary stack (Upload API, on-the-fly transformations, f_auto/q_auto, accessibility effects).
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Public demo cloud: these assets and transformations were checked against res.cloudinary.com.
+  var DEMO_CLOUD = "demo";
+  var SAMPLES = [
+    { id: "cld-sample-4.jpg", label: "Food stall" },
+    { id: "cld-sample-2.jpg", label: "Landscape" },
+    { id: "cld-sample-5.jpg", label: "Product" },
+    { id: "cld-sample-3.jpg", label: "Scene" },
+    { id: "cld-sample.jpg", label: "Portrait" },
+    { id: "sample.jpg", label: "Flowers" }
+  ];
+
+  var VARIANTS = [
+    { key: "original", title: "Original", tag: "Baseline", t: "",
+      who: "The image as published, for reference." },
+    { key: "sim_deut", title: "Deuteranopia view", tag: "Simulate", t: "e_simulate_colorblind:deuteranopia",
+      who: "Shows designers what people with green-blindness, the most common type, actually see." },
+    { key: "sim_prot", title: "Protanopia view", tag: "Simulate", t: "e_simulate_colorblind:protanopia",
+      who: "Red-blindness: red warnings and 'danger' zones can disappear entirely." },
+    { key: "sim_trit", title: "Tritanopia view", tag: "Simulate", t: "e_simulate_colorblind:tritanopia",
+      who: "Blue-yellow blindness: shows where blue/yellow contrast breaks down." },
+    { key: "sim_mono", title: "Monochromacy view", tag: "Simulate", t: "e_simulate_colorblind:rod_monochromacy",
+      who: "No colour vision at all: colour can't be the only thing carrying meaning." },
+    { key: "assist_stripes", title: "Colour-blind assist: stripes", tag: "Assist", t: "e_assist_colorblind:20",
+      who: "Adds stripe patterns to problem colours so colour-blind readers can tell regions apart." },
+    { key: "assist_xray", title: "Colour-blind assist: x-ray", tag: "Assist", t: "e_assist_colorblind:xray",
+      who: "Shifts colours so similar-looking ones become distinguishable." },
+    { key: "lowvision", title: "Low-vision boost", tag: "Readability", t: "e_auto_contrast/e_sharpen:80/w_1600,c_limit,f_auto,q_auto",
+      who: "Auto-contrast and sharpening for readers with low vision or on dim, cheap screens." },
+    { key: "lowbw", title: "Low-bandwidth (2G-friendly)", tag: "Access", t: "w_480,c_limit,f_auto,q_auto:eco",
+      who: "Small, modern-format file for rural, metered or crisis-hit networks." },
+    { key: "print", title: "Photocopy / print-ready", tag: "Offline", t: "e_grayscale/e_contrast:40",
+      who: "High-contrast greyscale that survives cheap black-and-white photocopying for notice boards." }
+  ];
+
+  var state = { cloud: DEMO_CLOUD, path: SAMPLES[0].id, sizes: {}, run: 0 };
+  var $ = function (id) { return document.getElementById(id); };
+
+  function url(v, extra) {
+    var parts = [];
+    if (v.t) parts.push(v.t);
+    if (extra) parts.push(extra);
+    return "https://res.cloudinary.com/" + encodeURIComponent(state.cloud) + "/image/upload/" +
+      (parts.length ? parts.join("/") + "/" : "") + state.path;
+  }
+  function fmt(bytes) {
+    if (bytes == null) return "…";
+    if (bytes < 1048576) return (bytes / 1024).toFixed(0) + " KB";
+    if (bytes < 1073741824) return (bytes / 1048576).toFixed(2) + " MB";
+    return (bytes / 1073741824).toFixed(1) + " GB";
+  }
+  function setStatus(msg) { $("status").textContent = msg; }
+  function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } }
+
+  function copy(text, btn) {
+    if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+    var done = function () {
+      btn.textContent = "Copied";
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { btn.textContent = btn.dataset.label; }, 1200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+    } else { fallbackCopy(text); done(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta);
+    ta.select(); try { document.execCommand("copy"); } catch (e) {} ta.remove();
+  }
+
+  function renderSamples() {
+    var box = $("samples");
+    SAMPLES.forEach(function (s) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(state.cloud === DEMO_CLOUD && state.path === s.id));
+      b.setAttribute("aria-label", "Use sample: " + s.label);
+      var img = document.createElement("img");
+      img.src = "https://res.cloudinary.com/" + DEMO_CLOUD + "/image/upload/w_184,h_136,c_fill,f_auto,q_auto/" + s.id;
+      img.alt = "";
+      b.appendChild(img);
+      b.addEventListener("click", function () {
+        box.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
+        state.cloud = DEMO_CLOUD; state.path = s.id;
+        setStatus("Using Cloudinary demo sample: " + s.label + ".");
+        renderAll();
+      });
+      box.appendChild(b);
+    });
+  }
+
+  function renderGrid(run) {
+    var grid = $("grid");
+    grid.innerHTML = "";
+    VARIANTS.forEach(function (v) {
+      var u = url(v);
+      var card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML =
+        '<div class="img"><img loading="lazy" alt=""></div>' +
+        '<div class="body"><div><span class="tag"></span></div><h3></h3><p class="who"></p>' +
+        '<div class="size">Measuring size…</div><code class="url"></code>' +
+        '<div class="actions"><a target="_blank" rel="noopener">Open</a><a>Download</a><button type="button">Copy URL</button></div></div>';
+      var img = card.querySelector("img");
+      img.src = u;
+      img.alt = v.title + " version of the selected image";
+      card.querySelector(".tag").textContent = v.tag;
+      card.querySelector("h3").textContent = v.title;
+      card.querySelector(".who").textContent = v.who;
+      card.querySelector("code").textContent = u;
+      var links = card.querySelectorAll("a");
+      links[0].href = u;
+      links[1].href = url(v, "fl_attachment");
+      card.querySelector("button").addEventListener("click", function (e) { copy(u, e.currentTarget); });
+      img.addEventListener("error", function () {
+        card.querySelector(".size").textContent = "Could not load this version (check the cloud name or asset).";
+      });
+      grid.appendChild(card);
+      measure(v, u, card.querySelector(".size"), run);
+    });
+  }
+
+  // Real transferred bytes: Cloudinary serves with Access-Control-Allow-Origin: *, so we can read the blob size.
+  function measure(v, u, el, run) {
+    fetch(u).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      var type = (r.headers.get("content-type") || "").replace("image/", "");
+      return r.blob().then(function (b) { return { size: b.size, type: type }; });
+    }).then(function (res) {
+      if (run !== state.run) return;
+      state.sizes[v.key] = res.size;
+      var base = state.sizes.original;
+      var txt = fmt(res.size) + (res.type ? " · " + res.type.toUpperCase() : "");
+      if (v.key !== "original" && base) {
+        var pct = Math.round((1 - res.size / base) * 100);
+        el.innerHTML = "";
+        el.appendChild(document.createTextNode(txt + " · "));
+        var s = document.createElement("span");
+        if (pct > 0) { s.className = "save"; s.textContent = pct + "% smaller than original"; }
+        else { s.textContent = Math.abs(pct) + "% larger than original"; }
+        el.appendChild(s);
+      } else {
+        el.textContent = txt;
+      }
+      renderSummary();
+    }).catch(function () {
+      if (run === state.run) el.textContent = "Size unavailable";
+    });
+  }
+
+  function renderSummary() {
+    var s = state.sizes, box = $("summary");
+    box.innerHTML = "";
+    var items = [
+      ["Original", fmt(s.original)],
+      ["Low-bandwidth", fmt(s.lowbw)],
+      ["Data saved per view", (s.original && s.lowbw) ? Math.round((1 - s.lowbw / s.original) * 100) + "%" : "…"],
+      ["Versions generated", String(VARIANTS.length)]
+    ];
+    if (s.original && s.lowbw) {
+      var per = s.original - s.lowbw;
+      items.push(["Saved per 10,000 views", fmt(per * 10000)]);
+    }
+    items.forEach(function (i) {
+      var d = document.createElement("div"); d.className = "stat";
+      var b = document.createElement("b"); b.textContent = i[1];
+      var sp = document.createElement("span"); sp.textContent = i[0];
+      d.appendChild(b); d.appendChild(sp); box.appendChild(d);
+    });
+  }
+
+  function renderSnippet() {
+    var v = function (k) { return VARIANTS.filter(function (x) { return x.key === k; })[0]; };
+    var light = url(v("lowbw"));
+    var full = url({ t: "w_1600,c_limit,f_auto,q_auto" });
+    var html =
+      '<!-- ClearSight accessibility pack -->\n' +
+      '<figure>\n' +
+      '  <img src="' + light + '"\n' +
+      '       srcset="' + light + ' 480w, ' + full + ' 1600w"\n' +
+      '       sizes="(max-width: 600px) 100vw, 800px"\n' +
+      '       alt="DESCRIBE THE IMAGE AND ANY TEXT IN IT HERE" loading="lazy">\n' +
+      '  <figcaption>\n' +
+      '    Accessible versions:\n' +
+      '    <a href="' + url(v("assist_stripes")) + '">colour-blind friendly</a> ·\n' +
+      '    <a href="' + url(v("lowvision")) + '">high contrast</a> ·\n' +
+      '    <a href="' + url(v("print"), "fl_attachment") + '">print / photocopy</a>\n' +
+      '  </figcaption>\n' +
+      '</figure>';
+    $("snippet").value = html;
+  }
+
+  function renderCompare() {
+    var sel = $("cmpSelect");
+    var prev = sel.value || "sim_deut";
+    sel.innerHTML = "";
+    VARIANTS.forEach(function (v) {
+      if (v.key === "original") return;
+      var o = document.createElement("option"); o.value = v.key; o.textContent = v.title;
+      sel.appendChild(o);
+    });
+    sel.value = prev;
+    updateCompare();
+  }
+  function updateCompare() {
+    var v = VARIANTS.filter(function (x) { return x.key === $("cmpSelect").value; })[0];
+    $("cmpTop").src = url({ t: "w_1200,c_limit,f_auto,q_auto" });
+    $("cmpTop").alt = "Original image";
+    $("cmpBottom").src = url({ t: v.t + "/w_1200,c_limit,f_auto,q_auto" });
+    $("cmpBottom").alt = v.title + " version";
+  }
+  function setSlider(pct) {
+    pct = Math.max(0, Math.min(100, pct));
+    $("cmpTop").style.clipPath = "inset(0 " + (100 - pct) + "% 0 0)";
+    $("cmpBar").style.left = pct + "%";
+    $("cmpRange").value = pct;
+  }
+
+  function renderAll() {
+    state.run += 1;
+    state.sizes = {};
+    renderSummary();
+    renderGrid(state.run);
+    renderCompare();
+    renderSnippet();
+  }
+
+  function upload() {
+    var cloud = $("cloudName").value.trim();
+    var preset = $("preset").value.trim();
+    var f = $("file").files[0];
+    if (!cloud || !preset) { setStatus("Enter your Cloudinary cloud name and an unsigned upload preset."); return; }
+    if (!f) { setStatus("Choose an image file to upload."); return; }
+    store("cs_cloud", cloud); store("cs_preset", preset);
+    var fd = new FormData();
+    fd.append("file", f);
+    fd.append("upload_preset", preset);
+    fd.append("tags", "clearsight");
+    $("uploadBtn").disabled = true;
+    setStatus("Uploading to Cloudinary…");
+    fetch("https://api.cloudinary.com/v1_1/" + encodeURIComponent(cloud) + "/image/upload", { method: "POST", body: fd })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.j.public_id) throw new Error((res.j.error && res.j.error.message) || "Upload failed");
+        state.cloud = cloud;
+        state.path = "v" + res.j.version + "/" + res.j.public_id.split("/").map(encodeURIComponent).join("/") +
+          (res.j.format ? "." + res.j.format : "");
+        $("samples").querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+        setStatus("Uploaded " + res.j.public_id + " (" + fmt(res.j.bytes) + "). Your accessibility pack is ready below.");
+        renderAll();
+        $("pack-h").scrollIntoView({ behavior: "smooth" });
+      })
+      .catch(function (e) { setStatus("Upload error: " + e.message); })
+      .then(function () { $("uploadBtn").disabled = false; });
+  }
+
+  // Wire up
+  $("cloudName").value = load("cs_cloud");
+  $("preset").value = load("cs_preset");
+  $("uploadBtn").addEventListener("click", upload);
+  $("cmpSelect").addEventListener("change", updateCompare);
+  $("cmpRange").addEventListener("input", function (e) { setSlider(+e.target.value); });
+  var cmp = $("compare"), dragging = false;
+  function fromPointer(e) { var r = cmp.getBoundingClientRect(); setSlider((e.clientX - r.left) / r.width * 100); }
+  cmp.addEventListener("pointerdown", function (e) { e.preventDefault(); dragging = true; cmp.setPointerCapture(e.pointerId); fromPointer(e); });
+  cmp.addEventListener("pointermove", function (e) { if (dragging) fromPointer(e); });
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (ev) {
+    cmp.addEventListener(ev, function () { dragging = false; });
+  });
+  $("copySnippet").addEventListener("click", function (e) { copy($("snippet").value, e.currentTarget); });
+
+  renderSamples();
+  renderAll();
+  setSlider(50);
+})();
+</script>
+</body>
+</html>
