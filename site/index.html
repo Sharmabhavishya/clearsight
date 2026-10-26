@@ -6,6 +6,7 @@
 <title>ClearSight</title>
 <meta name="description" content="ClearSight turns one public notice into colour-blind-safe, low-vision, low-data and print-ready versions in seconds. Powered by Cloudinary.">
 <meta name="theme-color" content="#000000">
+<meta name="author" content="Bhavishya Sharma">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ClearSight: See what everyone sees">
 <meta property="og:description" content="One public notice. Every reader. Colour-blind, low-vision, low-data and print-ready versions in seconds, powered by Cloudinary.">
@@ -157,7 +158,7 @@
   .hero h1 { font-size: 48px; line-height: 1.05; font-weight: 700; letter-spacing: -0.025em; }
   .hero .lead { font-size: 21px; color: var(--on-dark-2); margin: 20px auto 0; max-width: 640px; }
   .hero-ctas { display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 32px; }
-  .hero-visual { position: relative; margin: 64px auto 0; max-width: 900px; aspect-ratio: 3 / 2; border-radius: var(--radius-lg); overflow: hidden; background: #111; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  .hero-visual { position: relative; margin: 64px auto 0; max-width: 900px; aspect-ratio: 3 / 2; border-radius: var(--radius-lg); overflow: hidden; background: #111; box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 30px 80px rgba(0,0,0,.6), 0 0 120px rgba(41,151,255,.12); }
   .hero-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .hero-visual .top { clip-path: inset(0 50% 0 0); animation: sweep 7s var(--ease) infinite alternate; }
   .hero-visual .divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; box-shadow: 0 0 12px rgba(0,0,0,.4); animation: sweep-line 7s var(--ease) infinite alternate; }
@@ -173,7 +174,7 @@
   .stats { display: grid; grid-template-columns: 1fr; gap: 20px; }
   @media (min-width: 734px) { .stats { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1068px) { .stats { grid-template-columns: repeat(4, 1fr); } }
-  .stat { background: var(--bg); border-radius: var(--radius); padding: 32px 28px; box-shadow: var(--shadow); }
+  .stat { background: var(--bg); border-radius: var(--radius); padding: 32px 28px; box-shadow: var(--shadow), inset 0 0 0 1px rgba(0,0,0,.03); }
   .stat b { display: block; font-family: var(--font-display); font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; }
   .stat p { margin: 10px 0 0; color: var(--ink-2); font-size: 17px; }
   .stat small { display: block; margin-top: 14px; color: var(--ink-3); font-size: 12px; }
@@ -370,8 +371,31 @@
   .codes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 40px; }
   .codes code { font-family: var(--font-mono); font-size: 12px; background: var(--bg); padding: 6px 12px; border-radius: var(--pill); box-shadow: var(--shadow); color: var(--ink); }
 
-  footer { background: var(--bg-alt); color: var(--ink-2); font-size: 12px; padding: 28px 0 40px; border-top: 1px solid var(--line); }
-  footer .content-lg { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+  /* A note from the maker */
+  .note { max-width: 760px; margin: 0 auto; text-align: center; }
+  .note blockquote { margin: 0; font-family: var(--font-display); font-size: 28px; line-height: 1.32; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
+  .note blockquote p { margin: 0 0 18px; }
+  .note blockquote p:last-child { margin-bottom: 0; }
+  .note blockquote .soft { color: var(--ink-2); }
+  .signature { display: inline-flex; align-items: center; gap: 14px; margin-top: 36px; text-align: left; }
+  .signature .avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 17px; color: #fff; background: linear-gradient(135deg, #0066CC, #56B4E9); box-shadow: 0 4px 14px rgba(0,102,204,.25); letter-spacing: 0; }
+  .signature b { display: block; font-size: 17px; }
+  .signature div span { color: var(--ink-2); font-size: 14px; }
+  @media (max-width: 733px) { .note blockquote { font-size: 22px; } }
+
+  /* Footer */
+  footer { background: var(--bg-alt); color: var(--ink-2); font-size: 13px; padding: 56px 0 28px; border-top: 1px solid var(--line); }
+  .foot { display: grid; grid-template-columns: 1fr; gap: 32px; }
+  @media (min-width: 734px) { .foot { grid-template-columns: 1.6fr 1fr 1fr; } }
+  .foot .brand { margin-bottom: 12px; color: var(--ink); }
+  .foot .brand:hover { text-decoration: none; }
+  .foot p { margin: 0; max-width: 360px; line-height: 1.5; }
+  .foot h4 { margin: 0 0 12px; font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: 0; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .foot a { color: var(--ink-2); }
+  .foot a:hover { color: var(--ink); text-decoration: underline; }
+  .legal { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
+  .legal b { color: var(--ink-2); font-weight: 600; }
 
   /* Dialogs */
   dialog { border: 0; padding: 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); max-width: min(560px, calc(100vw - 32px)); width: 100%; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow: auto; overscroll-behavior: contain; color: var(--ink); }
@@ -492,7 +516,7 @@
   <!-- Hero -->
   <header class="hero" id="hero">
     <div class="content">
-      <p class="eyebrow">Tech for Social Good · Powered by Cloudinary</p>
+      <p class="eyebrow">Free and open source · Powered by Cloudinary</p>
       <h1>See what <span class="grad">everyone</span> sees.</h1>
       <p class="lead">Turn any public notice into versions that colour-blind, low-vision and offline readers can actually use. It takes seconds.</p>
       <div class="hero-ctas">
@@ -714,12 +738,58 @@
       </div>
     </div>
   </section>
+
+  <!-- A note from the maker -->
+  <section id="note" aria-labelledby="noteTitle">
+    <div class="content">
+      <div class="note reveal">
+        <p class="eyebrow" id="noteTitle">Why I built this</p>
+        <blockquote>
+          <p>Public notices exist to keep people safe. Too many are designed for just one kind of reader: perfect colour vision, a fast connection, a big screen.</p>
+          <p class="soft">ClearSight lets a clinic, a school or a local council check a notice and fix it in a minute, without a designer. It’s free, it’s open source, and every fix is a link you can share.</p>
+        </blockquote>
+        <div class="signature">
+          <span class="avatar" aria-hidden="true">BS</span>
+          <div><b>Bhavishya Sharma</b><span>Designer and developer of ClearSight</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
   <div class="content-lg">
-    <span>ClearSight. Made for Hacktober Hackdays: Tech for Social Good.</span>
-    <span>Images and transformations by <a href="https://cloudinary.com" rel="noopener">Cloudinary</a>.</span>
+    <div class="foot">
+      <div>
+        <a class="brand" href="#top" aria-label="ClearSight, back to top">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16z" fill="none" stroke="url(#lg)" stroke-width="2.6" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.5" fill="url(#lg)"/></svg>
+          ClearSight
+        </a>
+        <p>Public information that colour-blind, low-vision, offline and print-only readers can actually use.</p>
+      </div>
+      <nav aria-label="Tool">
+        <h4>Tool</h4>
+        <ul>
+          <li><a href="#studio">Studio</a></li>
+          <li><a href="#inspect">Inspector</a></li>
+          <li><a href="#report">Report</a></li>
+          <li><a href="#publish">Publish</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Project">
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/Sharmabhavishya/clearsight" rel="noopener">Source code on GitHub</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="https://cloudinary.com" rel="noopener">Powered by Cloudinary</a></li>
+          <li><a href="https://github.com/Sharmabhavishya/clearsight/blob/main/LICENSE" rel="noopener">MIT License</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="legal">
+      <span>Designed and built by <b>Bhavishya Sharma</b>.</span>
+      <span>© <span id="year">2026</span> ClearSight. Free to use and share.</span>
+    </div>
   </div>
 </footer>
 
@@ -1724,7 +1794,7 @@
         if (en.isIntersecting) links.forEach(a => a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + en.target.id)));
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    ids.concat("hero").forEach(id => { const s = $(id); if (s) io.observe(s); });
+    ids.concat("hero", "fix", "how", "note").forEach(id => { const s = $(id); if (s) io.observe(s); });
 
     const rv = new IntersectionObserver(entries => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); rv.unobserve(en.target); } });
@@ -1764,6 +1834,7 @@
   }
 
   // ---------- Boot ----------
+  $("year").textContent = String(new Date().getFullYear());
   renderShowcase();
   renderConn();
   bindSlider();

@@ -1,6 +1,6 @@
 # ClearSight: See what everyone sees
 
-> **Hacktober Hackdays · Tech for Social Good · Built on Cloudinary**
+> **A free, open-source accessibility tool · Built on Cloudinary · By Bhavishya Sharma**
 > One public notice in, a full accessibility pack out: colour-blind-safe, low-vision, low-data and print-ready versions, each a shareable Cloudinary URL.
 
 **Live demo:** https://resplendent-maamoul-58cc39.netlify.app
@@ -95,7 +95,7 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 
 | Decision | Why |
 |---|---|
-| **Static site, vanilla JS, no build** | Hosts anywhere for free, loads fast, and is easy for judges to audit. A low-bandwidth tool shouldn’t ship a heavy bundle. |
+| **Static site, vanilla JS, no build** | Hosts anywhere for free, loads fast, and is easy for anyone to audit. A low-bandwidth tool shouldn’t ship a heavy bundle. |
 | **Cloudinary’s public `demo` cloud for samples** | Anyone can try it instantly with no account. |
 | **Unsigned uploads straight from the browser** | No server and no secret to leak. Each organisation keeps its media in its own Cloudinary account. |
 | **One fetch per version** | The same downloaded file is displayed, measured, compared and zipped, so the sizes shown are exactly what was delivered. |
@@ -130,7 +130,7 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 1. **Problem selection.** I wanted a problem where *media itself* is the barrier, so Cloudinary would be essential rather than incidental. Inaccessible public-information images hit four groups at once: colour-blind, low-vision, low-bandwidth and print-only readers.
 2. **Capability check first.** Before writing any UI, I tested every candidate transformation against Cloudinary’s live endpoint with `curl`, including simulation types, assist modes, `q_auto:eco`, chained transformations and `fl_attachment`, and confirmed CORS was open.
 3. **Dead ends.** Using public images through Cloudinary’s *fetch* delivery failed: Wikimedia returned 400 and Unsplash 401 on the demo cloud. I switched to Cloudinary’s own demo assets.
-4. **Version 1** shipped under hackathon time pressure: a single-page tool with a sample picker, upload, a compare slider, the pack grid and an HTML snippet.
+4. **Version 1** was a quick first build: a single-page tool with a sample picker, upload, a compare slider, the pack grid and an HTML snippet.
 5. **Testing found real bugs.** Running v1 in a real browser revealed:
    - size comparisons missing for versions that loaded before the original
    - every image downloaded twice

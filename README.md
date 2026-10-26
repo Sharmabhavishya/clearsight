@@ -6,7 +6,7 @@
 
 One public notice in. A full accessibility pack out: colour-blind-safe, low-vision, low-data and print-ready versions in seconds, powered by [Cloudinary](https://cloudinary.com).
 
-[**Live demo →**](https://resplendent-maamoul-58cc39.netlify.app) &nbsp;·&nbsp; [Project write-up](docs/NOTION.md) &nbsp;·&nbsp; Built for Hacktober Hackdays: Tech for Social Good
+[**Live demo →**](https://resplendent-maamoul-58cc39.netlify.app) &nbsp;·&nbsp; [Project write-up](docs/NOTION.md) &nbsp;·&nbsp; Designed and built by [Bhavishya Sharma](https://github.com/Sharmabhavishya)
 
 ![ClearSight hero](docs/screenshots/hero.jpg)
 
@@ -127,6 +127,12 @@ clearsight/
 - Images, transformations and CDN: [Cloudinary](https://cloudinary.com) (samples from Cloudinary’s public `demo` cloud)
 - [JSZip](https://stuk.github.io/jszip/) and [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator), via cdnjs
 - Statistics: Colour Blind Awareness, WHO *World Report on Vision*, ITU *Facts and Figures 2024*
+
+## Author
+
+**Bhavishya Sharma** designed and built ClearSight as an open-source project, so anyone publishing public information can make it readable for everyone. Find me on GitHub: [@Sharmabhavishya](https://github.com/Sharmabhavishya).
+
+Ideas, issues and pull requests are welcome.
 
 ## License
 
