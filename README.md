@@ -90,6 +90,10 @@ Then open the printed URL. You can also open `site/index.html` directly. Everyth
 
 ## Use your own images
 
+On the live demo you can drop in your own image straight away. It uploads to the project’s Cloudinary account through a restricted unsigned preset (`DEFAULT_UPLOAD` in `site/index.html`).
+
+To send uploads to **your own** Cloudinary account instead:
+
 1. Create a free account at [cloudinary.com](https://cloudinary.com). Your **cloud name** is on the dashboard.
 2. Go to **Settings → Upload → Upload presets → Add upload preset** and set **Signing mode: Unsigned**.
 3. In ClearSight, click **Connect Cloudinary** and enter the cloud name and preset name.
