@@ -134,9 +134,9 @@
     </div>
     <div class="compare-ctl">
       <label for="cmpSelect" class="sr">Version to compare</label>
-      <select id="cmpSelect"></select>
+      <select id="cmpSelect" autocomplete="off"></select>
       <label class="sr" for="cmpRange">Slider position</label>
-      <input type="range" id="cmpRange" min="0" max="100" value="50" style="width:220px">
+      <input type="range" id="cmpRange" autocomplete="off" min="0" max="100" value="50" style="width:220px">
     </div>
   </section>
 
@@ -197,7 +197,7 @@
       who: "High-contrast greyscale that survives cheap black-and-white photocopying for notice boards." }
   ];
 
-  var state = { cloud: DEMO_CLOUD, path: SAMPLES[0].id, sizes: {}, run: 0 };
+  var state = { cloud: DEMO_CLOUD, path: SAMPLES[0].id, sizes: {}, blobs: {}, run: 0 };
   var $ = function (id) { return document.getElementById(id); };
 
   function url(v, extra) {
@@ -255,63 +255,96 @@
     });
   }
 
+  // Ask for modern formats the same way an <img> would, so f_auto serves WebP/AVIF and the
+  // bytes we measure are the bytes we display. Accept is a CORS-safelisted header.
+  var ACCEPT = "image/avif,image/webp,image/apng,image/*,*/*;q=0.8";
+  var objectUrls = [];
+
   function renderGrid(run) {
     var grid = $("grid");
     grid.innerHTML = "";
+    objectUrls.forEach(function (o) { URL.revokeObjectURL(o); });
+    objectUrls = [];
     VARIANTS.forEach(function (v) {
       var u = url(v);
       var card = document.createElement("article");
       card.className = "card";
+      card.dataset.key = v.key;
       card.innerHTML =
-        '<div class="img"><img loading="lazy" alt=""></div>' +
+        '<div class="img"><img alt=""></div>' +
         '<div class="body"><div><span class="tag"></span></div><h3></h3><p class="who"></p>' +
         '<div class="size">Measuring size…</div><code class="url"></code>' +
-        '<div class="actions"><a target="_blank" rel="noopener">Open</a><a>Download</a><button type="button">Copy URL</button></div></div>';
+        '<div class="actions"><a target="_blank" rel="noopener">Open</a><button type="button" class="dl">Download</button><button type="button" class="cp">Copy URL</button></div></div>';
       var img = card.querySelector("img");
-      img.src = u;
       img.alt = v.title + " version of the selected image";
       card.querySelector(".tag").textContent = v.tag;
       card.querySelector("h3").textContent = v.title;
       card.querySelector(".who").textContent = v.who;
       card.querySelector("code").textContent = u;
-      var links = card.querySelectorAll("a");
-      links[0].href = u;
-      links[1].href = url(v, "fl_attachment");
-      card.querySelector("button").addEventListener("click", function (e) { copy(u, e.currentTarget); });
-      img.addEventListener("error", function () {
-        card.querySelector(".size").textContent = "Could not load this version (check the cloud name or asset).";
-      });
+      card.querySelector("a").href = u;
+      card.querySelector(".cp").addEventListener("click", function (e) { copy(u, e.currentTarget); });
+      card.querySelector(".dl").addEventListener("click", function () { download(v, u); });
       grid.appendChild(card);
-      measure(v, u, card.querySelector(".size"), run);
+      measure(v, u, img, run);
     });
   }
 
-  // Real transferred bytes: Cloudinary serves with Access-Control-Allow-Origin: *, so we can read the blob size.
-  function measure(v, u, el, run) {
-    fetch(u).then(function (r) {
+  // One request per version: the fetched blob is both measured and displayed.
+  // Cloudinary serves with Access-Control-Allow-Origin: *, so the blob is readable.
+  function measure(v, u, img, run) {
+    fetch(u, { headers: { Accept: ACCEPT } }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
-      var type = (r.headers.get("content-type") || "").replace("image/", "");
-      return r.blob().then(function (b) { return { size: b.size, type: type }; });
-    }).then(function (res) {
+      return r.blob();
+    }).then(function (b) {
       if (run !== state.run) return;
-      state.sizes[v.key] = res.size;
-      var base = state.sizes.original;
-      var txt = fmt(res.size) + (res.type ? " · " + res.type.toUpperCase() : "");
-      if (v.key !== "original" && base) {
-        var pct = Math.round((1 - res.size / base) * 100);
-        el.innerHTML = "";
-        el.appendChild(document.createTextNode(txt + " · "));
-        var s = document.createElement("span");
-        if (pct > 0) { s.className = "save"; s.textContent = pct + "% smaller than original"; }
-        else { s.textContent = Math.abs(pct) + "% larger than original"; }
-        el.appendChild(s);
-      } else {
-        el.textContent = txt;
-      }
+      var obj = URL.createObjectURL(b);
+      objectUrls.push(obj);
+      img.src = obj;
+      state.blobs[v.key] = b;
+      state.sizes[v.key] = b.size;
+      renderSizes();
       renderSummary();
     }).catch(function () {
-      if (run === state.run) el.textContent = "Size unavailable";
+      if (run !== state.run) return;
+      img.src = u;
+      var el = img.closest(".card").querySelector(".size");
+      el.textContent = "Could not load this version (check the cloud name or asset).";
     });
+  }
+
+  // Re-render every label whenever a size arrives, so cards that finish before the
+  // original still get their "% smaller" comparison once the original is known.
+  function renderSizes() {
+    var base = state.sizes.original;
+    VARIANTS.forEach(function (v) {
+      var b = state.blobs[v.key];
+      if (!b) return;
+      var el = document.querySelector('.card[data-key="' + v.key + '"] .size');
+      if (!el) return;
+      var type = (b.type || "").replace("image/", "").toUpperCase();
+      el.textContent = fmt(b.size) + (type ? " · " + type : "");
+      if (v.key === "original" || !base) return;
+      var pct = Math.round((1 - b.size / base) * 100);
+      var s = document.createElement("span");
+      if (pct > 0) { s.className = "save"; s.textContent = pct + "% smaller than original"; }
+      else if (pct < 0) { s.textContent = Math.abs(pct) + "% larger than original"; }
+      else { s.textContent = "same size as original"; }
+      el.appendChild(document.createTextNode(" · "));
+      el.appendChild(s);
+    });
+  }
+
+  function download(v, u) {
+    var b = state.blobs[v.key];
+    if (!b) { window.open(url(v, "fl_attachment"), "_blank", "noopener"); return; }
+    var ext = (b.type || "image/jpeg").replace("image/", "").replace("jpeg", "jpg");
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(b);
+    a.download = "clearsight-" + v.key + "." + ext;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
 
   function renderSummary() {
@@ -366,6 +399,7 @@
       sel.appendChild(o);
     });
     sel.value = prev;
+    if (!sel.value) sel.value = "sim_deut";
     updateCompare();
   }
   function updateCompare() {
@@ -385,6 +419,7 @@
   function renderAll() {
     state.run += 1;
     state.sizes = {};
+    state.blobs = {};
     renderSummary();
     renderGrid(state.run);
     renderCompare();
