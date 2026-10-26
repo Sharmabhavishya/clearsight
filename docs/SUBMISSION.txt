@@ -1,0 +1,25 @@
+PROBLEM STATEMENT
+
+Public information is increasingly published as a single image: flood evacuation maps, vaccination posters, heatwave advisories, school notices. These images are usually full-colour, full-size and designed on a big monitor, so they fail many of the people they're meant to reach:
+- About 1 in 12 men are colour blind. On a map where red means "evacuate" and green means "safe", the two zones can look identical to them.
+- 2.2 billion people live with a vision impairment (WHO).
+- 2.6 billion people are still offline (ITU, 2024), and many more are on slow or metered data, where a heavy poster may never load.
+- Notices that are photocopied in black and white lose all colour-coded meaning.
+
+Local governments, clinics, schools and small NGOs rarely have designers or accessibility experts to fix this.
+
+
+SOLUTION BRIEF
+
+ClearSight turns one image into a complete accessibility pack in seconds, powered entirely by Cloudinary. Upload an image, or pick a sample, and ClearSight instantly creates 11 versions:
+- Colour-blind simulations, so publishers can see what colour-blind readers see.
+- Colour-blind fixes that add stripe patterns to colours that are easy to confuse.
+- A print-safe version that keeps its meaning after a black-and-white photocopy.
+- A low-vision version with higher contrast and sharper edges.
+- A low-data version that is up to 97% smaller.
+- A chat-ready square for WhatsApp and community groups.
+
+A pixel-based accessibility report scores the original image and shows exactly which colours collapse together for colour-blind readers. Each version is a shareable Cloudinary link, generated on demand and cached on Cloudinary's CDN. Organisations can download the whole pack as a zip, copy ready-made HTML that includes their alt text, or print a QR code on the poster that opens the accessible version on any phone. There's no server, no install and no design skill needed.
+
+Live demo: https://resplendent-maamoul-58cc39.netlify.app
+Source code: https://github.com/Sharmabhavishya/clearsight

@@ -1,0 +1,17 @@
+# Secrets: never commit these
+.env
+.env.*
+*.pem
+*.key
+
+# Tooling
+node_modules/
+.netlify/
+.vercel/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
