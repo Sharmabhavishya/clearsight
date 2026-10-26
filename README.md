@@ -130,6 +130,8 @@ clearsight/
 
 ## Author
 
+![Why I built this](docs/screenshots/note.jpg)
+
 **Bhavishya Sharma** designed and built ClearSight as an open-source project, so anyone publishing public information can make it readable for everyone. Find me on GitHub: [@Sharmabhavishya](https://github.com/Sharmabhavishya).
 
 Ideas, issues and pull requests are welcome.

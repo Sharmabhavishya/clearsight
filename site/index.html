@@ -966,16 +966,26 @@
     toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
   }
 
+  function legacyCopy(text) {
+    const active = document.activeElement;
+    const ta = el("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (err) {}
+    ta.remove();
+    if (active && active.focus) active.focus({ preventScroll: true });
+    return ok;
+  }
+
+  // The Clipboard API can stay pending (e.g. a permission prompt), so give it a moment, then fall back.
   async function copyText(text, label) {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (e) {
-      const ta = el("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand("copy"); } catch (err) {}
-      ta.remove();
+    let ok = false;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 1200));
+      try { await Promise.race([navigator.clipboard.writeText(text), timeout]); ok = true; } catch (e) {}
     }
-    toast(label || "Copied");
+    if (!ok) ok = legacyCopy(text);
+    toast(ok ? (label || "Copied") : "Couldn’t copy automatically. Select the text and copy it.");
   }
 
   function saveBlob(blob, name) {
