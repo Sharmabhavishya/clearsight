@@ -105,6 +105,8 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 | **Strict Content Security Policy** | Scripts only from the site and cdnjs. Images only from Cloudinary. No framing. |
 | **Accessible UI** | Semantic landmarks, a keyboard-operable slider, live regions, visible focus, reduced-motion support, mobile-first layout. An accessibility tool has to be accessible itself. |
 | **Apple-inspired design** | Generous whitespace, large type and restrained colour keep the focus on the images. |
+| **Colour-blind-safe interface** | ClearSight practises what it preaches. Ratings use a blue/orange/vermillion palette (based on Okabe–Ito) instead of green/red, and every rating also has a word (Good, Fair, Poor) and a pattern (solid or striped bars), so no information depends on colour alone. |
+| **Works on every phone** | Tested at 320, 360, 375, 390, 414 and 430px wide and in landscape. Finger-sized tap targets on touch screens, notch-safe spacing, no zoom-on-focus on iPhone, and a swipeable view picker. |
 
 ## 6. Architecture
 

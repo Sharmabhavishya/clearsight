@@ -43,7 +43,8 @@ The flood-warning sample is built entirely with Cloudinary text and colour overl
 - **QR code for printed posters:** links to the pack, the colour-blind version or the low-data version, downloadable as PNG
 - **Shareable links:** every pack has its own URL (for example `#s=poster`)
 - **Bring your own image:** drag and drop, paste or browse. Uploads go straight to your Cloudinary account through an unsigned preset, with a progress bar and a list of recent uploads
-- **Built to be accessible itself:** semantic HTML, a keyboard-operable slider, live regions, visible focus, reduced-motion support and a responsive layout for phones
+- **Built to be accessible itself:** a colour-blind-safe palette where every rating also has a word and a pattern, semantic HTML, a keyboard-operable slider, live regions, visible focus and reduced-motion support
+- **Works on every phone:** tested from 320px to 430px wide and in landscape, with finger-sized tap targets and notch-safe spacing
 
 | Inspector | Report | Pack |
 |---|---|---|

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ClearSight</title>
 <meta name="description" content="ClearSight turns one public notice into colour-blind-safe, low-vision, low-data and print-ready versions in seconds. Powered by Cloudinary.">
 <meta name="theme-color" content="#000000">
@@ -40,6 +40,13 @@
     --orange-dark: #FF9F0A;
     --red: #E30000;
     --red-dark: #FF453A;
+    /* Status colours a colour-blind reader can tell apart (blue / orange / vermillion),
+       always paired with a word and a pattern so meaning never rests on colour alone. */
+    --good: #0072B2;
+    --good-dark: #56B4E9;
+    --fair: #E69F00;
+    --poor: #D55E00;
+    --poor-dark: #F2793A;
 
     --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --font-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -80,7 +87,7 @@
   .content-lg { width: 100%; max-width: var(--content-lg); margin: 0 auto; padding: 0 22px; }
   section { padding: var(--section-gap) 0; }
   .alt { background: var(--bg-alt); }
-  .dark { background: var(--bg-dark); color: var(--on-dark); }
+  .dark { position: relative; background: var(--bg-dark); color: var(--on-dark); }
 
   .eyebrow { font-size: 17px; font-weight: 600; color: var(--orange); margin: 0 0 12px; letter-spacing: 0; }
   .dark .eyebrow { color: var(--orange-dark); }
@@ -122,7 +129,7 @@
     background: rgba(255,255,255,.72); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid rgba(0,0,0,.08);
   }
-  .nav .content-lg { height: 100%; display: flex; align-items: center; gap: 24px; }
+  .nav .content-lg { height: 100%; display: flex; align-items: center; gap: 24px; padding-left: max(22px, env(safe-area-inset-left)); padding-right: max(22px, env(safe-area-inset-right)); }
   .brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 600; font-size: 19px; color: var(--ink); letter-spacing: -0.02em; }
   .brand:hover { text-decoration: none; }
   .brand svg { width: 22px; height: 22px; }
@@ -134,7 +141,19 @@
   @media (min-width: 900px) { .nav ul { display: flex; } .nav .btn { margin-left: 0; } }
 
   /* Hero */
-  .hero { background: var(--bg-dark); color: var(--on-dark); text-align: center; padding: 88px 0 100px; overflow: hidden; }
+  .hero {
+    position: relative; color: var(--on-dark); text-align: center; padding: 88px 0 100px; overflow: hidden;
+    background:
+      radial-gradient(60% 45% at 50% 0%, rgba(41,151,255,.16), transparent 70%),
+      var(--bg-dark);
+  }
+  .hero::before, .dark::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(to bottom, #000, transparent 75%); mask-image: linear-gradient(to bottom, #000, transparent 75%);
+  }
+  .hero > *, .dark > * { position: relative; }
   .hero h1 { font-size: 48px; line-height: 1.05; font-weight: 700; letter-spacing: -0.025em; }
   .hero .lead { font-size: 21px; color: var(--on-dark-2); margin: 20px auto 0; max-width: 640px; }
   .hero-ctas { display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 32px; }
@@ -158,10 +177,12 @@
   .stat b { display: block; font-family: var(--font-display); font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; }
   .stat p { margin: 10px 0 0; color: var(--ink-2); font-size: 17px; }
   .stat small { display: block; margin-top: 14px; color: var(--ink-3); font-size: 12px; }
-  .stat:nth-child(1) b { color: var(--red); }
-  .stat:nth-child(2) b { color: var(--blue); }
-  .stat:nth-child(3) b { color: var(--green); }
-  .stat:nth-child(4) b { color: var(--ink); }
+  .stat { position: relative; overflow: hidden; }
+  .stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; }
+  .stat:nth-child(1)::before { background: var(--poor); }
+  .stat:nth-child(2)::before { background: var(--good); }
+  .stat:nth-child(3)::before { background: var(--fair); }
+  .stat:nth-child(4)::before { background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px); }
 
   /* Fix proof */
   .triptych { display: grid; grid-template-columns: 1fr; gap: 24px; }
@@ -171,8 +192,10 @@
   .triptych figcaption { margin-top: 14px; font-size: 14px; color: var(--ink-2); }
   .triptych figcaption b { display: block; color: var(--ink); font-size: 17px; margin-bottom: 2px; }
   .badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: var(--pill); margin-bottom: 8px; letter-spacing: 0; }
-  .badge.bad { background: #FFE5E5; color: #B00000; }
-  .badge.good { background: #E3F5E6; color: #1E6B2B; }
+  .badge.bad { background: #FBEBE2; color: #9A3B00; }
+  .badge.good { background: #E4EFF8; color: #00548A; }
+  .badge.bad::before { content: "✕ "; }
+  .badge.good::before { content: "✓ "; }
   .badge.neutral { background: var(--bg-alt); color: var(--ink-2); }
 
   /* Studio */
@@ -186,7 +209,7 @@
   .sample .thumb { aspect-ratio: 4 / 3; border-radius: var(--radius-sm); overflow: hidden; background: var(--bg-alt); box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); transition: box-shadow .2s var(--ease), transform .2s var(--ease); }
   .sample img { width: 100%; height: 100%; object-fit: cover; }
   .sample span { display: block; font-size: 13px; color: var(--ink-2); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sample:hover .thumb { transform: translateY(-2px); }
+  @media (hover: hover) { .sample:hover .thumb { transform: translateY(-2px); } }
   .sample[aria-pressed="true"] .thumb { box-shadow: 0 0 0 3px var(--blue); }
   .sample[aria-pressed="true"] span { color: var(--ink); font-weight: 600; }
   .sample .own { font-style: normal; position: absolute; top: 6px; left: 6px; font-size: 10px; font-weight: 700; background: rgba(0,0,0,.65); color: #fff; padding: 2px 7px; border-radius: var(--pill); text-transform: uppercase; letter-spacing: .04em; margin: 0; }
@@ -204,7 +227,7 @@
   .drop.busy .progress { display: block; }
   .connected { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--ink-2); }
   .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); margin-right: 6px; vertical-align: middle; }
-  .dot.on { background: var(--green-dark); }
+  .dot.on { background: var(--good-dark); }
   .now { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--bg-alt); font-size: 14px; color: var(--ink-2); }
   .now b { color: var(--ink); }
 
@@ -262,7 +285,7 @@
   @media (min-width: 734px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1068px) { .grid { grid-template-columns: repeat(3, 1fr); } }
   .card { background: var(--bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: box-shadow .3s var(--ease), transform .3s var(--ease); }
-  .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+  @media (hover: hover) { .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); } }
   .card[hidden] { display: none; }
   .card .media { position: relative; aspect-ratio: 3 / 2; background: var(--bg-alt); border: 0; padding: 0; cursor: zoom-in; display: block; width: 100%; }
   .card .media img { width: 100%; height: 100%; object-fit: contain; }
@@ -271,12 +294,12 @@
   .card .who { color: var(--ink-2); font-size: 14px; margin: 0; }
   .card .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
   .pill { display: inline-block; padding: 2px 9px; border-radius: var(--pill); background: var(--bg-alt); color: var(--ink-2); font-size: 12px; font-weight: 600; }
-  .pill.save { background: #E3F5E6; color: #1E6B2B; }
-  .pill.more { background: #FFF1E0; color: #8A4A00; }
+  .pill.save { background: #E4EFF8; color: #00548A; }
+  .pill.more { background: #FDF1DD; color: #7A4A00; }
   .tag { font-size: 12px; font-weight: 600; letter-spacing: 0; }
-  .tag.simulate { color: var(--orange); }
-  .tag.fix { color: var(--green); }
-  .tag.reach { color: var(--blue); }
+  .tag.simulate { color: #A35D00; }
+  .tag.fix { color: var(--good); }
+  .tag.reach { color: #8A4B79; }
   .tag.base { color: var(--ink-3); }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; padding-top: 14px; }
   .actions .btn { min-height: 32px; padding: 0 14px; font-size: 13px; }
@@ -294,7 +317,7 @@
   .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
   .ring circle { fill: none; stroke-width: 12; }
   .ring .track { stroke: #333336; }
-  .ring .val { stroke: var(--green-dark); stroke-linecap: round; transition: stroke-dashoffset 1s var(--ease), stroke .3s; }
+  .ring .val { stroke: var(--good-dark); stroke-linecap: round; transition: stroke-dashoffset 1s var(--ease), stroke .3s; }
   .ring b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 56px; font-weight: 700; letter-spacing: -0.03em; }
   .score .grade { font-size: 21px; font-weight: 600; }
   .score p { margin: 0; color: var(--on-dark-2); font-size: 14px; }
@@ -307,6 +330,9 @@
   .metric .bar { height: 6px; border-radius: var(--pill); background: #333336; margin: 12px 0; overflow: hidden; }
   .metric .bar i { display: block; height: 100%; width: 0; border-radius: var(--pill); transition: width 1s var(--ease); }
   .metric p { margin: 0; color: var(--on-dark-2); font-size: 14px; }
+  .metric .rating { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: var(--pill); background: rgba(255,255,255,.08); vertical-align: middle; }
+  .metric .bar i.fair { background-image: repeating-linear-gradient(135deg, rgba(0,0,0,.28) 0 3px, transparent 3px 9px) !important; }
+  .metric .bar i.poor { background-image: repeating-linear-gradient(135deg, rgba(0,0,0,.4) 0 4px, transparent 4px 7px) !important; }
   .pairs { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
   .pair { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--on-dark-2); }
   .sw { display: inline-flex; border-radius: 8px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
@@ -327,7 +353,8 @@
   .hint { font-size: 13px; color: var(--ink-2); margin: 6px 0 0; }
   textarea, input[type=text] { width: 100%; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; background: var(--bg); transition: border-color .2s, box-shadow .2s; }
   textarea:focus, input[type=text]:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(0,102,204,.15); }
-  textarea.code { font-family: var(--font-mono); font-size: 12px; line-height: 1.6; min-height: 220px; background: var(--bg-alt); border-color: transparent; resize: vertical; }
+  .publish > *, .studio > *, .report > *, .metrics > * { min-width: 0; }
+  pre.code { max-width: 100%; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; margin: 14px 0 0; padding: 14px 16px; min-height: 180px; max-height: 340px; overflow: auto; white-space: pre; background: var(--bg-alt); border-radius: var(--radius-sm); -webkit-overflow-scrolling: touch; }
   .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
   .qr { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
   .qr canvas { width: 220px; height: 220px; image-rendering: pixelated; border-radius: var(--radius-sm); box-shadow: var(--shadow); background: #fff; }
@@ -347,7 +374,7 @@
   footer .content-lg { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
 
   /* Dialogs */
-  dialog { border: 0; padding: 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); max-width: min(560px, calc(100vw - 32px)); width: 100%; color: var(--ink); }
+  dialog { border: 0; padding: 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); max-width: min(560px, calc(100vw - 32px)); width: 100%; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow: auto; overscroll-behavior: contain; color: var(--ink); }
   dialog::backdrop { background: rgba(0,0,0,.45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .dlg { padding: 32px; }
   .dlg h3 { font-size: 24px; margin-bottom: 6px; }
@@ -369,7 +396,7 @@
   .navbtn.prev { left: 14px; } .navbtn.next { right: 14px; }
 
   /* Toast */
-  .toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); background: rgba(29,29,31,.92); color: #fff; padding: 12px 20px; border-radius: var(--pill); font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s var(--ease); z-index: 200; max-width: calc(100vw - 32px); text-align: center; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .toast { position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); background: rgba(29,29,31,.92); color: #fff; padding: 12px 20px; border-radius: var(--pill); font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s var(--ease); z-index: 200; max-width: calc(100vw - 32px); text-align: center; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
   /* Reveal on scroll */
@@ -387,7 +414,57 @@
     :root { --section-gap: 72px; }
     .panel, .dlg { padding: 22px; }
     .lead { font-size: 19px; }
+    .section-head { margin-bottom: 36px; }
+    .hero { padding: 64px 0 72px; }
+    .hero-visual { margin-top: 44px; border-radius: 20px; }
+    .cmp { border-radius: 20px; }
+    #lightbox img { max-height: 60vh; }
+    .navbtn { width: 38px; height: 38px; }
+    .summary b { font-size: 24px; }
+    .metric .num { font-size: 24px; }
+    .toolbar { gap: 10px; }
+    #views.seg.wrap { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; border-radius: var(--pill); scroll-snap-type: x proximity; }
+    #views.seg.wrap button { scroll-snap-align: center; }
   }
+  /* Small phones (iPhone SE, compact Androids) */
+  @media (max-width: 380px) {
+    body { font-size: 16px; }
+    .content, .content-lg { padding: 0 16px; }
+    .nav .content-lg { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+    .hero h1 { font-size: 40px; }
+    h2.headline { font-size: 32px; }
+    .lead, .hero .lead { font-size: 17px; }
+    .panel, .dlg, .stat, .step, .metric, .recs { padding: 18px; }
+    .stat b { font-size: 32px; }
+    .summary { gap: 10px; }
+    .summary div { padding: 16px; }
+    .summary b { font-size: 20px; }
+    .samples { grid-template-columns: repeat(2, 1fr); }
+    .ring { width: 150px; height: 150px; }
+    .ring b { font-size: 46px; }
+    .chip { font-size: 11px; padding: 4px 9px; top: 10px; }
+    .chip.l { left: 10px; } .chip.r { right: 10px; }
+    .seg button { padding: 8px 12px; }
+    input[type=range] { width: 120px; }
+  }
+  /* Phones held sideways */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .hero { padding: 40px 0 56px; }
+    .hero h1 { font-size: 44px; }
+    .hero-visual { max-width: 560px; margin-top: 32px; }
+    .cmp { max-width: 620px; }
+    #lightbox img { max-height: 55vh; }
+  }
+  /* Finger-sized tap targets on touch screens */
+  @media (pointer: coarse) {
+    .seg button { min-height: 44px; }
+    .actions .btn, .btn.small { min-height: 44px; }
+    .x { width: 44px; height: 44px; }
+    .link { display: inline-block; padding: 10px 4px; margin: -10px 0; }
+    .cmp .knob { width: 48px; height: 48px; }
+    input[type=range] { height: 32px; }
+  }
+  footer { padding-bottom: calc(40px + env(safe-area-inset-bottom)); }
 </style>
 </head>
 <body>
@@ -396,7 +473,7 @@
 <nav class="nav" aria-label="Main">
   <div class="content-lg">
     <a class="brand" href="#top" aria-label="ClearSight home">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#2997FF"/><stop offset="1" stop-color="#30D158"/></linearGradient></defs><path d="M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16z" fill="none" stroke="url(#lg)" stroke-width="2.6" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.5" fill="url(#lg)"/></svg>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#2997FF"/><stop offset="1" stop-color="#7DD3FC"/></linearGradient></defs><path d="M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16z" fill="none" stroke="url(#lg)" stroke-width="2.6" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.5" fill="url(#lg)"/></svg>
       ClearSight
     </a>
     <ul>
@@ -407,7 +484,7 @@
       <li><a href="#report">Report</a></li>
       <li><a href="#publish">Publish</a></li>
     </ul>
-    <a class="btn small" href="#studio">Try it</a>
+    <a class="btn small" href="#studio">Start</a>
   </div>
 </nav>
 
@@ -417,10 +494,10 @@
     <div class="content">
       <p class="eyebrow">Tech for Social Good · Powered by Cloudinary</p>
       <h1>See what <span class="grad">everyone</span> sees.</h1>
-      <p class="lead">One public notice. Every reader. Colour-blind, low-vision, low-data and print-ready versions, in seconds.</p>
+      <p class="lead">Turn any public notice into versions that colour-blind, low-vision and offline readers can actually use. It takes seconds.</p>
       <div class="hero-ctas">
-        <a class="btn" href="#studio">Try it free</a>
-        <a class="link" href="#why" style="color:var(--blue-dark)">See the problem</a>
+        <a class="btn" href="#studio">Check a poster</a>
+        <a class="link" href="#why" style="color:var(--blue-dark)">Why it matters</a>
       </div>
     </div>
     <div class="content-lg">
@@ -483,18 +560,18 @@
       <div class="section-head center reveal">
         <p class="eyebrow">Step 1</p>
         <h2 class="headline">Start with any image.</h2>
-        <p class="lead">Pick a sample, or bring your own poster, map or chart.</p>
+        <p class="lead">Pick one of ours, or bring your own poster, map or chart.</p>
       </div>
       <div class="studio">
         <div class="panel reveal">
-          <h3>Samples</h3>
-          <p class="sub">Hosted on Cloudinary’s public demo cloud. No account needed.</p>
+          <h3>Try one of ours</h3>
+          <p class="sub">No account needed. Tap one and scroll down.</p>
           <div class="samples" id="samples" role="group" aria-label="Choose an image"></div>
           <div class="now" aria-live="polite"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg><span>Working on: <b id="nowName">Flood warning</b></span></div>
         </div>
         <div class="panel reveal">
-          <h3>Your image</h3>
-          <p class="sub">Goes straight to your own Cloudinary account. No API secret in the browser.</p>
+          <h3>Use your own</h3>
+          <p class="sub" id="ownSub">Your image goes straight to Cloudinary. Nothing passes through our servers.</p>
           <button type="button" class="drop" id="drop" aria-describedby="dropHint">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
             <b id="dropTitle">Drop an image here</b>
@@ -517,7 +594,7 @@
       <div class="section-head center reveal">
         <p class="eyebrow">Step 2</p>
         <h2 class="headline">Walk in their shoes.</h2>
-        <p class="lead">Drag to compare. Switch views instantly.</p>
+        <p class="lead">Drag the handle to compare. Tap a view to switch.</p>
       </div>
       <div class="toolbar">
         <div class="seg wrap" id="views" role="group" aria-label="Version to compare"></div>
@@ -591,20 +668,19 @@
           <textarea id="alt" rows="2" placeholder="e.g. Flood warning. Zone A: evacuate now. Zone B: get ready. Zone C: safe."></textarea>
           <p class="hint">Screen readers read this aloud. Include any words that appear in the image.</p>
           <div class="row" style="justify-content:space-between">
-            <div class="seg" id="formats" role="group" aria-label="Snippet format">
+            <div class="seg wrap" id="formats" role="group" aria-label="Snippet format">
               <button type="button" data-format="html" aria-pressed="true">HTML</button>
               <button type="button" data-format="md" aria-pressed="false">Markdown</button>
               <button type="button" data-format="links" aria-pressed="false">Links</button>
             </div>
             <button type="button" class="btn small" id="copySnippet">Copy</button>
           </div>
-          <label class="sr" for="snippet">Snippet</label>
-          <textarea id="snippet" class="code" readonly wrap="off" spellcheck="false" style="margin-top:14px"></textarea>
+          <pre id="snippet" class="code" tabindex="0" aria-label="Snippet to paste into your website"></pre>
         </div>
         <div class="panel qr reveal">
           <h3>QR for the printed poster</h3>
           <p class="sub" style="margin:0">Anyone can scan it to open the accessible version on their phone.</p>
-          <div class="seg" id="qrTargets" role="group" aria-label="QR destination">
+          <div class="seg wrap" id="qrTargets" role="group" aria-label="QR destination">
             <button type="button" data-qr="pack" aria-pressed="true">This pack</button>
             <button type="button" data-qr="stripes" aria-pressed="false">Colour-blind</button>
             <button type="button" data-qr="lowdata" aria-pressed="false">Low data</button>
@@ -642,7 +718,7 @@
 
 <footer>
   <div class="content-lg">
-    <span>ClearSight · Built for Hacktober Hackdays: Tech for Social Good.</span>
+    <span>ClearSight. Made for Hacktober Hackdays: Tech for Social Good.</span>
     <span>Images and transformations by <a href="https://cloudinary.com" rel="noopener">Cloudinary</a>.</span>
   </div>
 </footer>
@@ -766,6 +842,10 @@
   // Downloads ask for classic formats only, so f_auto returns JPG/PNG that every phone, PC and printer opens.
   const ACCEPT_COMPAT = "image/png,image/jpeg;q=0.9";
   const MAX_UPLOAD = 10 * 1024 * 1024; // Cloudinary free plan image limit
+  // Optional built-in uploader so visitors can upload without their own account.
+  // An unsigned preset name is designed to be public (it's what Cloudinary's Upload Widget uses);
+  // limit it in the Cloudinary console (images only, max size, folder). Leave empty to require "Connect".
+  const DEFAULT_UPLOAD = { cloud: "", preset: "" };
   const CLOUD_RE = /^[A-Za-z0-9_-]{1,64}$/;
   const PRESET_RE = /^[A-Za-z0-9_-]{1,128}$/;
   const PATH_RE = /^[A-Za-z0-9_\-./%!~*'()]{1,512}$/;
@@ -780,6 +860,7 @@
   };
 
   const $ = id => document.getElementById(id);
+  let uploading = false;
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
   // ---------- Utilities ----------
@@ -1106,7 +1187,7 @@
         const b = el("button", null, v.title);
         b.type = "button";
         b.dataset.key = v.key;
-        b.addEventListener("click", () => { state.cmpKey = v.key; setPressed(box, "key", v.key); updateCompare(); });
+        b.addEventListener("click", () => { state.cmpKey = v.key; setPressed(box, "key", v.key); updateCompare(); b.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" }); });
         box.appendChild(b);
       });
     }
@@ -1357,7 +1438,9 @@
     }
   }
 
-  function colourFor(s) { return s >= 85 ? "var(--green-dark)" : s >= 60 ? "var(--orange-dark)" : "var(--red-dark)"; }
+  const level = s => (s >= 85 ? "good" : s >= 60 ? "fair" : "poor");
+  const LEVEL_LABEL = { good: "Good", fair: "Fair", poor: "Poor" };
+  function colourFor(s) { return { good: "var(--good-dark)", fair: "var(--fair)", poor: "var(--poor-dark)" }[level(s)]; }
   function swatch(rgbA, rgbB) {
     const s = el("span", "sw");
     [rgbA, rgbB].forEach(c => { const i = el("i"); i.style.background = "rgb(" + c.join(",") + ")"; s.appendChild(i); });
@@ -1366,10 +1449,12 @@
   function metric(title, score, text, extra) {
     const m = el("div", "metric");
     const top = el("div", "top");
-    top.append(el("h3", null, title));
+    const h3 = el("h3", null, title);
+    h3.appendChild(el("span", "rating", LEVEL_LABEL[level(score)]));
+    top.append(h3);
     const n = el("span", "num", String(score)); n.style.color = colourFor(score);
     top.append(n);
-    const bar = el("div", "bar"); const i = el("i"); i.style.background = colourFor(score); bar.appendChild(i);
+    const bar = el("div", "bar"); const i = el("i", level(score)); i.style.backgroundColor = colourFor(score); bar.appendChild(i);
     requestAnimationFrame(() => requestAnimationFrame(() => { i.style.width = score + "%"; }));
     m.append(top, bar, el("p", null, text));
     if (extra) m.appendChild(extra);
@@ -1482,7 +1567,7 @@
     } else {
       out = VARIANTS.map(v => v.title + ": " + u[v.key]).join("\n\n");
     }
-    $("snippet").value = out;
+    $("snippet").textContent = out;
   }
 
   function renderQR() {
@@ -1516,17 +1601,23 @@
   }
 
   // ---------- Upload ----------
-  function creds() { const c = store.get("cs_creds", null); return c && CLOUD_RE.test(c.cloud) && PRESET_RE.test(c.preset) ? c : null; }
+  const validCreds = c => !!(c && CLOUD_RE.test(c.cloud) && PRESET_RE.test(c.preset));
+  function ownCreds() { const c = store.get("cs_creds", null); return validCreds(c) ? c : null; }
+  function creds() { return ownCreds() || (validCreds(DEFAULT_UPLOAD) ? DEFAULT_UPLOAD : null); }
   function renderConn() {
-    const c = creds(), s = $("connState");
+    const own = ownCreds(), c = creds(), s = $("connState");
     s.textContent = "";
     const dot = el("span", "dot" + (c ? " on" : ""));
-    s.append(dot, document.createTextNode(c ? "Connected to " + c.cloud : "Not connected"));
-    $("openSettings").textContent = c ? "Change" : "Connect Cloudinary";
+    s.append(dot, document.createTextNode(own ? "Uploading to your account: " + own.cloud : c ? "Ready to upload" : "Needs a free Cloudinary account"));
+    $("openSettings").textContent = own ? "Change" : c ? "Use my own account" : "Connect Cloudinary";
+    if (!uploading) {
+      $("dropTitle").textContent = c ? "Drop an image here" : "Connect Cloudinary to upload";
+      $("dropHint").textContent = c ? "or tap to browse. You can paste, too." : "It’s free and takes a minute. Tap here to set it up.";
+    }
   }
 
   function openSettings() {
-    const c = creds();
+    const c = ownCreds();
     $("cloudName").value = c ? c.cloud : "";
     $("preset").value = c ? c.preset : "";
     $("settingsErr").textContent = "";
@@ -1561,7 +1652,6 @@
     upload(f);
   }
 
-  let uploading = false;
   function upload(f) {
     if (uploading) return;
     const c = creds();
@@ -1583,7 +1673,7 @@
       uploading = false;
       drop.classList.remove("busy");
       drop.removeAttribute("aria-busy");
-      $("dropTitle").textContent = "Drop an image here";
+      renderConn();
     };
     xhr.onload = () => {
       done();
@@ -1648,7 +1738,7 @@
       const b = e.target.closest("button"); if (!b) return;
       state.format = b.dataset.format; setPressed($("formats"), "format", state.format); renderSnippet();
     });
-    $("copySnippet").addEventListener("click", () => copyText($("snippet").value, "Snippet copied"));
+    $("copySnippet").addEventListener("click", () => copyText($("snippet").textContent, "Copied. Paste it into your website."));
     $("qrTargets").addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b || b.disabled) return;
       state.qr = b.dataset.qr; renderQR();
