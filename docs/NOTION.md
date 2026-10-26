@@ -41,7 +41,7 @@ The demo includes a **flood-warning poster built entirely from Cloudinary overla
 
 ### User flow
 
-1. **Start with any image**: a sample, or your own (drag and drop, paste or browse) uploaded straight to your Cloudinary account.
+1. **Start with any image**: a sample, or your own (drag and drop, paste or browse). Uploads work straight away with no account, or can go to your own Cloudinary account.
 2. **Walk in their shoes**: an inspector compares the original with any version, using a drag slider or side by side. The slider is keyboard-operable, and the stripe strength is adjustable.
 3. **Get the pack**: every version as a card showing its real delivered size and % saved, with Open, Download and Copy link buttons. A fullscreen viewer lets you step through versions. **Download pack (.zip)** exports everything as JPG/PNG with a README.
 4. **Read the report**: an accessibility score out of 100 across four checks (colour-blind safety, photocopy safety, tonal contrast, data weight), the exact colour pairs that collapse together, and concrete next steps.
@@ -152,7 +152,7 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
    - filters, the lightbox, single and zip downloads (11 JPG/PNG files plus a README), the QR PNG
    - settings validation, upload error handling and non-image rejection
    - deep-link reload, no console errors, and no horizontal overflow at phone width
-   - a successful upload needs a real account, so it was checked against the documented API response format
+   - real uploads on the live site: an image dropped in by a visitor goes to Cloudinary through the unsigned preset and produces the full pack and report
 
 ## 8. What’s next
 
