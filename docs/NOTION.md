@@ -21,7 +21,15 @@ The organisations that publish these images (local governments, clinics, schools
 
 ## 2. The solution: ClearSight
 
-ClearSight takes one image and produces a **13-version accessibility pack** with Cloudinary, then tells you how accessible the original is and how to publish the fixes.
+ClearSight answers the question colour-blind people get stuck on every day, **“which part is red?”**, and takes one image and produces a **13-version accessibility pack** with Cloudinary, then tells you how accessible the original is and how to publish the fixes.
+
+### Which part is red? (Colour Spotlight)
+
+Research kept pointing at the same problem: colour used as the only label. One colour-blind writer puts it bluntly: matching a chart’s legend to the chart is “impossible”, so many skip pie charts altogether ([We Are Colorblind](https://wearecolorblind.com/examples/google-analytics/)). Recolouring filters (“daltonisation”) are often criticised for making images look unnatural.
+
+So the Spotlight doesn’t recolour anything. Tap a colour chip, or tap any spot on the image (a legend swatch works), and only that colour stays in colour while everything else turns grey. Cloudinary does the finding: `e_make_transparent` cuts the chosen colour out, `e_grayscale` greys the rest, and the browser lays that over the original. ClearSight then counts the transparent pixels and says, for example, “Red covers 8% of the image, in 3 places.”
+
+The demo uses an **example air-quality map** with a Good / Moderate / Poor / Severe legend. Switch on “See it as deuteranopia” and the severe, poor and good tiles blur together; tap “Red” and Delhi and Noida light up. A match slider catches lighter and darker shades in photos, and the result downloads as a PNG.
 
 ### The fix, proven on a real-style notice
 
@@ -68,6 +76,7 @@ ClearSight contains **no image-processing code**. Every version is a Cloudinary 
 - **Readability effects:** `e_auto_contrast`, `e_sharpen`, `e_grayscale`, `e_contrast`, `c_pad`.
 - **Text in Indian scripts:** the plain-words label picks a Google font Cloudinary supports for the script it detects: Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu) and Hind Vadodara (Gujarati).
 - **Image to video:** `e_zoompan` turns the poster, with its label, into a six-second MP4 for status updates. Cloudinary keeps overlays in the video but drops colour effects, so the video offers only what really survives.
+- **`e_make_transparent` for the Colour Spotlight:** keys out the chosen colour with an adjustable tolerance; `e_grayscale` greys the rest.
 - **`fl_getinfo`:** the fullscreen viewer asks Cloudinary for each version’s real width, height, format and bytes, and explains every parameter in its URL.
 - **Open CORS on delivery:** Cloudinary serves `Access-Control-Allow-Origin: *`, so the browser can measure real byte sizes, build the zip and analyse pixels for the report.
 
@@ -87,6 +96,7 @@ Story         ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto
 Label         c_pad,w_1.0,h_1.2,b_white/l_text:Hind_80_bold:<line>/fl_layer_apply,g_south
 Video         <label>/e_zoompan:du_6/w_720 → .mp4
 Details       <any version>/fl_getinfo
+Spotlight     w_1200,c_limit/e_make_transparent:<tolerance>,co_rgb:<hex>/e_grayscale/f_png (over the original)
 ```
 
 Every transformation was tested against the live `res.cloudinary.com` endpoint before it went into the app, and the visual results were checked by eye.
@@ -172,6 +182,7 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
    - “Suggest a safer second colour” in the pair checker (Okabe–Ito palette, best worst-case ΔE across all three kinds of colour blindness, WCAG AA contrast first)
    - a Copy button on the colour reader and a “Viewing as … Reset” chip for the vision lens
    - a service-worker fix: a cached `<img>` copy could block a later download of the same file
+10. **Which part is red?** Research on everyday colour-blind problems pointed to colour-only labels and legends. I tested Cloudinary’s `e_make_transparent` + `e_grayscale` on the flood poster and a photo, then built the Colour Spotlight around it, with an example air-quality map, a deuteranopia view, and a self-check for the colour-grouping and patch-counting code.
 
 ## 8. What’s next
 
@@ -185,4 +196,4 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 
 - **Live demo:** https://resplendent-maamoul-58cc39.netlify.app
 - **Source code:** https://github.com/Sharmabhavishya/clearsight
-- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind fonts) · e_zoompan · b_auto · fl_getinfo
+- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind fonts) · e_zoompan · b_auto · fl_getinfo · e_make_transparent

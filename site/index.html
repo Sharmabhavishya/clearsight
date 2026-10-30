@@ -410,6 +410,34 @@
   .reader-out { position: relative; }
   .reader-out .btn { margin-left: auto; }
 
+  /* Colour spotlight */
+  .spot { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 28px; padding: 12px; border-radius: var(--r-xl); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+  .spot-stage { position: relative; aspect-ratio: 3 / 2; border-radius: 20px; overflow: hidden; background: var(--card-2); cursor: crosshair; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .spot-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .spot-stage img:not([src]) { visibility: hidden; }
+  .spot-layer { clip-path: circle(0% at var(--x, 50%) var(--y, 50%)); transition: opacity .18s var(--ease); }
+  .spot-layer.in { clip-path: circle(150% at var(--x, 50%) var(--y, 50%)); transition: clip-path .9s var(--ease), opacity .18s var(--ease); }
+  .spot-layer.leave { transition: clip-path .5s var(--ease), opacity .18s var(--ease); }
+  .spot-stage.peek .spot-layer { opacity: 0; }
+  .spot-stage.busy::after { content: ""; position: absolute; z-index: 5; left: 0; top: 0; height: 3px; width: 40%; border-radius: 3px; background: var(--sky); animation: spotbusy 1s linear infinite; }
+  @keyframes spotbusy { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+  .spot-ping { position: absolute; z-index: 6; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(0,0,0,.35); pointer-events: none; animation: spotping .6s var(--ease) forwards; }
+  @keyframes spotping { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.3); opacity: 0; } }
+  .spot-side { display: flex; flex-direction: column; gap: 22px; padding: 20px 16px 20px 4px; min-width: 0; }
+  .spot-side h3 { font-size: 13px; font-weight: 500; color: var(--dim); letter-spacing: 0; margin-bottom: 10px; }
+  .spot-chips { display: flex; flex-wrap: wrap; gap: 8px; min-height: 40px; }
+  .spot-chips button { display: inline-flex; align-items: center; gap: 9px; padding: 7px 14px 7px 7px; border: 0; border-radius: 999px; background: var(--card-2); box-shadow: inset 0 0 0 1px var(--line-2); color: var(--text); font-size: 14px; cursor: pointer; transition: transform .16s var(--ease), box-shadow .2s var(--ease), background-color .2s; animation: chipin .4s var(--ease) both; animation-delay: calc(var(--i) * 45ms); }
+  .spot-chips button:hover { background: var(--card-3); }
+  .spot-chips button:active { transform: scale(.97); }
+  .spot-chips button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--text); background: var(--card-3); }
+  .spot-chips i { width: 24px; height: 24px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); }
+  @keyframes chipin { from { opacity: 0; transform: translateY(6px); } }
+  .spot-tol { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
+  .spot-tol output { font-family: var(--mono); font-size: 13px; color: var(--text); min-width: 2ch; text-align: right; }
+  .spot-out { min-height: 48px; font-size: 17px; line-height: 1.4; color: var(--text); letter-spacing: -0.01em; }
+  .spot .langs { margin-top: 0; }
+  .spot .langs button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+
   /* How */
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .step { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 28px; display: flex; flex-direction: column; gap: 12px; min-height: 260px; transition: transform .25s var(--ease), box-shadow .25s; }
@@ -482,6 +510,8 @@
   .js .reveal.in { opacity: 1; transform: none; filter: none; }
 
   @media (prefers-reduced-motion: reduce) {
+    .spot-layer.in, .spot-layer.leave { transition: opacity .2s; }
+    .spot-chips button, .spot-ping { animation: none; }
     html { scroll-behavior: auto; }
     .js .reveal, .js .rise, .js .demo { opacity: 1; transform: none; filter: none; animation: none; transition: opacity .2s; }
     .marquee-track, .orb { animation: none; }
@@ -510,6 +540,7 @@
     </a>
     <div class="nav-links">
       <a href="#top">Demo</a>
+      <a href="#spotlight">Spotlight</a>
       <a href="#camera">Camera</a>
       <a href="#plate">Test</a>
       <a href="#tools">Tools</a>
@@ -542,7 +573,7 @@
       <p class="sub rise" style="--d:340ms">See your poster the way colour-blind, low-vision and offline readers do. Then fix it in one click.</p>
       <div class="ctas rise" style="--d:420ms">
         <a class="btn sky" href="#studio">Check your poster</a>
-        <a class="btn ghost" href="#how">How it works</a>
+        <a class="btn ghost" href="#spotlight">Which part is red?</a>
       </div>
 
       <div class="demo" id="demo">
@@ -571,13 +602,56 @@
     </div>
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text:Hind</span><span>e_replace_color</span><span>e_zoompan</span><span>b_auto</span><span>fl_getinfo</span><span>e_simulate_colorblind:protanopia</span>
-        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text:Hind</span><span>e_replace_color</span><span>e_zoompan</span><span>b_auto</span><span>fl_getinfo</span><span>e_simulate_colorblind:protanopia</span>
+        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text:Hind</span><span>e_replace_color</span><span>e_zoompan</span><span>b_auto</span><span>fl_getinfo</span><span>e_make_transparent</span><span>e_simulate_colorblind:protanopia</span>
+        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text:Hind</span><span>e_replace_color</span><span>e_zoompan</span><span>b_auto</span><span>fl_getinfo</span><span>e_make_transparent</span><span>e_simulate_colorblind:protanopia</span>
       </div>
     </div>
   </section>
 
-  <section class="block" id="camera" aria-labelledby="camTitle" style="padding-top:80px">
+  <section class="block" id="spotlight" aria-labelledby="spotTitle" style="padding-top:80px">
+    <div class="orb orb-b" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="head">
+        <h2 id="spotTitle" class="reveal">Which part is red?</h2>
+        <p class="reveal" style="--d:80ms">Tap a colour and everything else turns grey. Match a legend to its map, find your line on a chart, spot the danger zone. Cloudinary finds every pixel of that colour.</p>
+      </div>
+      <div class="spot glow reveal" style="--d:140ms">
+        <div class="spot-stage" id="spotStage">
+          <img id="spotBase" alt="">
+          <img id="spotA" class="spot-layer" alt="" aria-hidden="true">
+          <img id="spotB" class="spot-layer" alt="" aria-hidden="true">
+        </div>
+        <div class="spot-side">
+          <div>
+            <h3>Image</h3>
+            <div class="langs" id="spotSamples" role="group" aria-label="Choose an image">
+              <button type="button" data-id="aqi" aria-pressed="false">Air quality map</button>
+              <button type="button" data-id="poster" aria-pressed="false">Flood warning</button>
+              <button type="button" data-id="dahlias" aria-pressed="false">Dahlias</button>
+              <button type="button" data-id="breakfast" aria-pressed="false">Breakfast</button>
+              <button type="button">Your own image</button>
+            </div>
+            <button type="button" class="btn small ghost" id="spotSim" aria-pressed="false" style="margin-top:12px">See it as deuteranopia</button>
+          </div>
+          <div>
+            <h3>Colours in this image</h3>
+            <div class="spot-chips" id="spotChips" role="group" aria-label="Colours found in this image"></div>
+            <p class="hint" style="margin-top:10px">Or tap the image, even a legend swatch, to pick that exact colour.</p>
+          </div>
+          <label class="spot-tol">Match <input type="range" id="spotTol" min="4" max="40" value="12" autocomplete="off" aria-describedby="spotTolHint"> <output id="spotTolOut">12</output></label>
+          <p class="hint" id="spotTolHint" style="margin-top:-14px">Slide right to catch lighter and darker shades too.</p>
+          <p class="spot-out" id="spotOut" aria-live="polite"></p>
+          <div class="row">
+            <button type="button" class="btn small" id="spotPeek">Hold to see all colours</button>
+            <button type="button" class="btn small ghost" id="spotDl">Download</button>
+            <button type="button" class="btn small ghost" id="spotReset">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="camera" aria-labelledby="camTitle" style="padding-top:40px">
     <div class="orb orb-c" aria-hidden="true"></div>
     <div class="wrap">
       <div class="head">
@@ -960,6 +1034,8 @@
   const SAMPLES = [
     { id: "poster", label: "Flood warning", path: "sample.png", base: POSTER,
       alt: "Flood warning. Find your zone on the map. Zone A, red: evacuate now. Zone B, amber: get ready. Zone C, green: safe." },
+    { id: "aqi", label: "Air quality", path: "sample.png", base: "c_fill,w_1200,h_800/e_colorize:100,co_rgb:ffffff/l_text:Arial_72_bold:AIR%20QUALITY%20TODAY,co_rgb:1d1d1f/fl_layer_apply,g_north_west,x_80,y_56/l_text:Arial_34:Example%20data.%20Find%20the%20cities%20where%20the%20air%20is%20severe.,co_rgb:6e6e73/fl_layer_apply,g_north_west,x_84,y_148/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:c92a2a/fl_layer_apply,g_north_west,x_80,y_226/l_text:Arial_36_bold:Delhi,co_rgb:ffffff/fl_layer_apply,g_north_west,x_102,y_248/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:e6c619/fl_layer_apply,g_north_west,x_360,y_226/l_text:Arial_36_bold:Mumbai,co_rgb:1d1d1f/fl_layer_apply,g_north_west,x_382,y_248/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:c92a2a/fl_layer_apply,g_north_west,x_640,y_226/l_text:Arial_36_bold:Noida,co_rgb:ffffff/fl_layer_apply,g_north_west,x_662,y_248/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:2e9e44/fl_layer_apply,g_north_west,x_920,y_226/l_text:Arial_36_bold:Bengaluru,co_rgb:ffffff/fl_layer_apply,g_north_west,x_942,y_248/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:f08c00/fl_layer_apply,g_north_west,x_80,y_406/l_text:Arial_36_bold:Jaipur,co_rgb:ffffff/fl_layer_apply,g_north_west,x_102,y_428/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:2e9e44/fl_layer_apply,g_north_west,x_360,y_406/l_text:Arial_36_bold:Chennai,co_rgb:ffffff/fl_layer_apply,g_north_west,x_382,y_428/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:f08c00/fl_layer_apply,g_north_west,x_640,y_406/l_text:Arial_36_bold:Lucknow,co_rgb:ffffff/fl_layer_apply,g_north_west,x_662,y_428/l_sample/c_fill,w_250,h_150/e_colorize:100,co_rgb:e6c619/fl_layer_apply,g_north_west,x_920,y_406/l_text:Arial_36_bold:Kolkata,co_rgb:1d1d1f/fl_layer_apply,g_north_west,x_942,y_428/l_sample/c_fill,w_44,h_44/e_colorize:100,co_rgb:2e9e44/fl_layer_apply,g_north_west,x_80,y_620/l_text:Arial_36:Good,co_rgb:1d1d1f/fl_layer_apply,g_north_west,x_140,y_621/l_sample/c_fill,w_44,h_44/e_colorize:100,co_rgb:e6c619/fl_layer_apply,g_north_west,x_360,y_620/l_text:Arial_36:Moderate,co_rgb:1d1d1f/fl_layer_apply,g_north_west,x_420,y_621/l_sample/c_fill,w_44,h_44/e_colorize:100,co_rgb:f08c00/fl_layer_apply,g_north_west,x_640,y_620/l_text:Arial_36:Poor,co_rgb:1d1d1f/fl_layer_apply,g_north_west,x_700,y_621/l_sample/c_fill,w_44,h_44/e_colorize:100,co_rgb:c92a2a/fl_layer_apply,g_north_west,x_920,y_620/l_text:Arial_36:Severe,co_rgb:1d1d1f/fl_layer_apply,g_north_west,x_980,y_621",
+      alt: "Example air-quality map. Delhi: severe. Mumbai: moderate. Noida: severe. Bengaluru: good. Jaipur: poor. Chennai: good. Lucknow: poor. Kolkata: moderate. Legend: green good, yellow moderate, orange poor, red severe." },
     { id: "dahlias", label: "Red dahlias", path: "sample.jpg", alt: "Pink-red dahlias with a bee, surrounded by green leaves." },
     { id: "court", label: "Basketball", path: "cld-sample-3.jpg", alt: "Basketball players jumping for the ball on a brightly painted court." },
     { id: "breakfast", label: "Breakfast", path: "cld-sample-4.jpg", alt: "A breakfast table with bowls of fruit, porridge and toast." },
@@ -1305,6 +1381,7 @@
     renderQR();
     if (state.refreshLabel) state.refreshLabel();
     if (state.refreshReader) state.refreshReader();
+    if (state.refreshSpot) state.refreshSpot();
     analyse(state.run);
   }
 
@@ -2518,6 +2595,195 @@
     $("lensReset").addEventListener("click", () => $("lensMenu").querySelector('[data-lens="none"]').click());
   }
 
+  // ---------- Colour spotlight: Cloudinary keeps one colour, everything else turns grey ----------
+  const NEUTRALS = new Set(["Black", "Charcoal", "Dark grey", "Grey", "Light grey", "White"]);
+  // The image's main colours by everyday name, with their average RGB and centre point.
+  function mainColours(data, w, min = 0.012, max = 7) {
+    const buckets = new Map(); let n = 0;
+    for (let i = 0, p = 0; i < data.length; i += 4, p++) {
+      if (data[i + 3] < 128) continue;
+      n++;
+      const rgb = [data[i], data[i + 1], data[i + 2]], name = nameColour(rgb);
+      if (NEUTRALS.has(name)) continue;
+      const b = buckets.get(name) || { name, r: 0, g: 0, b: 0, x: 0, y: 0, n: 0 };
+      b.r += rgb[0]; b.g += rgb[1]; b.b += rgb[2]; b.x += p % w; b.y += Math.floor(p / w); b.n++;
+      buckets.set(name, b);
+    }
+    // Washed-out averages (chroma under 15) are mostly compression noise near white, and keying them would grab the background.
+    return [...buckets.values()].filter(b => b.n / n >= min)
+      .map(b => ({ name: b.name, n: b.n, rgb: [b.r / b.n, b.g / b.n, b.b / b.n].map(Math.round), at: [b.x / b.n, b.y / b.n] }))
+      .filter(c => { const [, A, B] = lab(...c.rgb); return Math.hypot(A, B) >= 15; })
+      .sort((a, b) => b.n - a.n).slice(0, max);
+  }
+  // Separate patches in a mask (4-connected), ignoring specks smaller than minPx.
+  function countPatches(mask, w, h, minPx) {
+    const seen = new Uint8Array(mask.length), stack = []; let count = 0;
+    for (let s = 0; s < mask.length; s++) {
+      if (!mask[s] || seen[s]) continue;
+      let size = 0; stack.push(s); seen[s] = 1;
+      while (stack.length) {
+        const p = stack.pop(), x = p % w, y = (p - x) / w; size++;
+        if (x > 0 && mask[p - 1] && !seen[p - 1]) { seen[p - 1] = 1; stack.push(p - 1); }
+        if (x < w - 1 && mask[p + 1] && !seen[p + 1]) { seen[p + 1] = 1; stack.push(p + 1); }
+        if (y > 0 && mask[p - w] && !seen[p - w]) { seen[p - w] = 1; stack.push(p - w); }
+        if (y < h - 1 && mask[p + w] && !seen[p + w]) { seen[p + w] = 1; stack.push(p + w); }
+      }
+      if (size >= minPx) count++;
+    }
+    return count;
+  }
+
+  function bindSpotlight() {
+    const stage = $("spotStage"), base = $("spotBase"), layers = [$("spotA"), $("spotB")], chips = $("spotChips"), tol = $("spotTol"), out = $("spotOut"), samples = $("spotSamples");
+    const small = document.createElement("canvas"), sx = small.getContext("2d", { willReadFrequently: true });
+    const full = document.createElement("canvas"), fx = full.getContext("2d", { willReadFrequently: true });
+    let front = 0, pick = null, ticket = 0, origin = [50, 50], timer = 0;
+    const decode = (img, src) => new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = src; });
+    // e_make_transparent cuts the chosen colour out; e_grayscale greys the rest. Laid over the original, only that colour shows.
+    const keyUrl = c => cld(state.src, "w_1200,c_limit/e_make_transparent:" + tol.value + ",co_rgb:" + rgbToHex(c.rgb).slice(1) + "/e_grayscale/f_png");
+    // The image sits in the stage with object-fit: contain; convert between small-canvas pixels and stage percentages.
+    const fit = () => { const W = stage.clientWidth, H = stage.clientHeight, s = Math.min(W / small.width, H / small.height); return { W, H, s, ox: (W - small.width * s) / 2, oy: (H - small.height * s) / 2 }; };
+    const onStage = (px, py) => { const f = fit(); return [(f.ox + px * f.s) / f.W * 100, (f.oy + py * f.s) / f.H * 100]; };
+    const press = () => setPressed(chips, "hex", pick ? rgbToHex(pick.rgb) : "");
+    // Transparent pixels in the Cloudinary layer are exactly the ones that matched the colour.
+    const measure = img => {
+      const w = small.width, h = small.height, m = document.createElement("canvas"); m.width = w; m.height = h;
+      const mx = m.getContext("2d", { willReadFrequently: true }); mx.drawImage(img, 0, 0, w, h);
+      const d = mx.getImageData(0, 0, w, h).data, mask = new Uint8Array(w * h); let on = 0;
+      for (let i = 0; i < mask.length; i++) if (d[i * 4 + 3] < 128) { mask[i] = 1; on++; }
+      return { share: on / mask.length, patches: countPatches(mask, w, h, Math.max(6, mask.length * 0.002)) };
+    };
+
+    async function show(c, at) {
+      pick = c; if (at) origin = at; press();
+      const my = ++ticket, name = c.name.toLowerCase();
+      out.textContent = "Cloudinary is finding " + name + "…";
+      stage.classList.add("busy");
+      try {
+        const { obj } = await getBlob(keyUrl(c));
+        const next = layers[1 - front];
+        await decode(next, obj);
+        if (my !== ticket) return;
+        next.dataset.name = c.name;
+        next.style.setProperty("--x", origin[0] + "%"); next.style.setProperty("--y", origin[1] + "%");
+        layers[front].style.zIndex = 2; next.style.zIndex = 3;
+        // Hide the previous layer, or the new layer's holes would show its grey instead of the original colours.
+        // Colour floods back for a moment and the grey spreads again from the tap point.
+        layers[front].classList.remove("in", "leave");
+        next.classList.remove("in", "leave");
+        void next.offsetWidth;
+        next.classList.add("in");
+        front = 1 - front;
+        const { share, patches } = measure(next);
+        const pct = share < 0.01 ? "under 1%" : Math.round(share * 100) + "%";
+        out.textContent = share < 0.002 ? "No " + name + " found. Try a looser match."
+          : c.name + " covers " + pct + " of the image" + (patches > 0 && patches <= 12 ? ", in " + patches + (patches === 1 ? " place." : " places.") : ".");
+      } catch (e) {
+        if (my === ticket) out.textContent = "Couldn’t reach Cloudinary. Check the connection and try again.";
+      } finally {
+        if (my === ticket) stage.classList.remove("busy");
+      }
+    }
+
+    function reset() {
+      ticket++; pick = null; press(); clearTimeout(timer);
+      stage.classList.remove("busy");
+      const cur = layers[front], under = layers[1 - front];
+      under.classList.remove("in", "leave");
+      cur.classList.add("leave"); cur.classList.remove("in");
+      out.textContent = "Pick a colour, or tap anywhere on the image.";
+    }
+
+    function load() {
+      if (!state.src) return;
+      const my = ++ticket; pick = null; clearTimeout(timer);
+      stage.classList.remove("busy", "peek");
+      small.width = 0; // taps are ignored until the new image has been read
+      layers.forEach(l => { l.classList.remove("in", "leave"); l.removeAttribute("src"); });
+      chips.textContent = "";
+      setPressed(samples, "id", state.src.sampleId); // an upload has no sampleId, which presses "Your own image"
+      out.textContent = "Reading the colours in this image…";
+      // Colours are read from a lossless PNG of the original (lossy formats smear colour at sharp edges),
+      // even while the stage shows the deuteranopia view.
+      const orig = new Image();
+      getBlob(cld(state.src, "w_1200,c_limit/f_png")).then(({ obj }) => decode(orig, obj)).then(() => {
+        if (my !== ticket || !orig.naturalWidth) return;
+        showBase();
+        base.alt = state.src.alt || state.src.label;
+        const w = 240, h = Math.max(1, Math.round(w * orig.naturalHeight / orig.naturalWidth));
+        full.width = orig.naturalWidth; full.height = orig.naturalHeight;
+        fx.drawImage(orig, 0, 0);
+        small.width = w; small.height = h;
+        sx.drawImage(orig, 0, 0, w, h);
+        const colours = mainColours(sx.getImageData(0, 0, w, h).data, w);
+        colours.forEach((c, i) => {
+          const b = el("button");
+          b.type = "button"; b.dataset.hex = rgbToHex(c.rgb); b.setAttribute("aria-pressed", "false");
+          b.style.setProperty("--c", b.dataset.hex); b.style.setProperty("--i", i);
+          b.appendChild(el("i")); b.appendChild(document.createTextNode(c.name));
+          b.addEventListener("click", () => show(c, onStage(...c.at)));
+          chips.appendChild(b);
+        });
+        out.textContent = colours.length ? "Pick a colour, or tap anywhere on the image." : "No strong colours here. Tap the image to pick one.";
+      }).catch(() => { if (my === ticket) out.textContent = "Couldn’t load this image from Cloudinary."; });
+    }
+    state.refreshSpot = load;
+
+    // The stage can show the deuteranopia view, so people with full colour vision feel the problem the spotlight solves.
+    let deutView = false, baseTicket = 0;
+    function showBase() {
+      const my = ++baseTicket;
+      getBlob(cld(state.src, "w_1200,c_limit/" + (deutView ? "e_simulate_colorblind:deuteranopia/" : "") + VIEW))
+        .then(({ obj }) => { if (my === baseTicket) base.src = obj; })
+        .catch(() => { if (my === baseTicket) toast("Couldn’t load that view from Cloudinary."); });
+    }
+    const deutBtn = $("spotSim");
+    deutBtn.addEventListener("click", () => {
+      deutView = !deutView;
+      deutBtn.setAttribute("aria-pressed", String(deutView));
+      deutBtn.textContent = deutView ? "Back to normal vision" : "See it as deuteranopia";
+      if (small.width) showBase();
+    });
+
+    stage.addEventListener("click", e => {
+      if (!small.width || !base.naturalWidth) return;
+      const r = stage.getBoundingClientRect(), f = fit();
+      const px = (e.clientX - r.left - f.ox) / f.s, py = (e.clientY - r.top - f.oy) / f.s;
+      if (px < 0 || py < 0 || px >= small.width || py >= small.height) return;
+      // Read the tap from the full-size image (downscaling blends text into its tile). In a 15×15 patch, weight each colour
+      // by count × chroma, so a tap on a letter's anti-aliased edge picks the vivid tile, not the pale blend of tile and text.
+      const k = full.width / small.width, x0 = Math.max(0, Math.round(px * k) - 7), y0 = Math.max(0, Math.round(py * k) - 7);
+      const d = fx.getImageData(x0, y0, Math.min(15, full.width - x0), Math.min(15, full.height - y0)).data;
+      const vivid = c => { const [, A, B] = lab(...c.rgb); return c.n * Math.hypot(A, B); };
+      const hit = mainColours(d, 1, 0, 30).sort((a, b) => vivid(b) - vivid(a))[0];
+      const ping = el("span", "spot-ping"); ping.style.left = (e.clientX - r.left) + "px"; ping.style.top = (e.clientY - r.top) + "px";
+      stage.appendChild(ping); setTimeout(() => ping.remove(), 700); // a timer, because reduced motion has no animationend
+      if (!hit) { out.textContent = "That spot is white, grey or black. Tap a coloured area."; return; }
+      show({ name: hit.name, rgb: hit.rgb }, [(e.clientX - r.left) / r.width * 100, (e.clientY - r.top) / r.height * 100]);
+    });
+    tol.addEventListener("input", () => { $("spotTolOut").textContent = tol.value; clearTimeout(timer); if (pick) timer = setTimeout(() => { if (pick) show(pick); }, 350); });
+    $("spotReset").addEventListener("click", reset);
+    const peek = on => stage.classList.toggle("peek", on);
+    const hold = $("spotPeek");
+    hold.addEventListener("pointerdown", e => { if (e.button !== 0) return; hold.setPointerCapture(e.pointerId); peek(true); });
+    ["pointerup", "pointercancel", "lostpointercapture", "blur"].forEach(ev => hold.addEventListener(ev, () => peek(false)));
+    hold.addEventListener("keydown", e => { if ((e.key === " " || e.key === "Enter") && !e.repeat) { e.preventDefault(); peek(true); } });
+    hold.addEventListener("keyup", e => { if (e.key === " " || e.key === "Enter") peek(false); });
+    samples.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      if (b.dataset.id) { const s = SAMPLES.find(x => x.id === b.dataset.id); if (s) select(sampleSource(s)); }
+      else $("file").click();
+    });
+    $("spotDl").addEventListener("click", () => {
+      const top = layers[front];
+      if (!pick || !top.naturalWidth || !top.classList.contains("in")) { toast("Pick a colour first."); return; }
+      const name = top.dataset.name; // the colour this layer really shows, even if a newer pick is still loading
+      const c = document.createElement("canvas"); c.width = base.naturalWidth; c.height = base.naturalHeight;
+      const x = c.getContext("2d"); x.drawImage(base, 0, 0); x.drawImage(top, 0, 0, c.width, c.height);
+      c.toBlob(b => { if (b) saveBlob(b, "clearsight-spotlight-" + name.toLowerCase().replace(/\s+/g, "-") + ".png"); else toast("Couldn’t save the image."); }, "image/png");
+    });
+  }
+
   // ---------- Page chrome ----------
   function bindNav() {
     // Kept on state: an observer nothing references can be garbage-collected and stop firing.
@@ -2541,6 +2807,7 @@
     bindPairSuggest();
     bindReaderCopy();
     bindLensChip();
+    bindSpotlight();
     bindMotion();
   }
 

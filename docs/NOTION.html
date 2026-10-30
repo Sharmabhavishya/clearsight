@@ -43,7 +43,11 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 </ul>
 <p>The organisations that publish these images (local governments, clinics, schools, small NGOs) rarely have a designer, an accessibility specialist or a developer. They need something that fixes all of this <strong>in seconds, without redesigning anything</strong>.</p>
 <h2>2. The solution: ClearSight</h2>
-<p>ClearSight takes one image and produces a <strong>13-version accessibility pack</strong> with Cloudinary, then tells you how accessible the original is and how to publish the fixes.</p>
+<p>ClearSight answers the question colour-blind people get stuck on every day, <strong>“which part is red?”</strong>, and takes one image and produces a <strong>13-version accessibility pack</strong> with Cloudinary, then tells you how accessible the original is and how to publish the fixes.</p>
+<h3>Which part is red? (Colour Spotlight)</h3>
+<p>Research kept pointing at the same problem: colour used as the only label. One colour-blind writer puts it bluntly: matching a chart’s legend to the chart is “impossible”, so many skip pie charts altogether (<a href="https://wearecolorblind.com/examples/google-analytics/">We Are Colorblind</a>). Recolouring filters (“daltonisation”) are often criticised for making images look unnatural.</p>
+<p>So the Spotlight doesn’t recolour anything. Tap a colour chip, or tap any spot on the image (a legend swatch works), and only that colour stays in colour while everything else turns grey. Cloudinary does the finding: <code>e_make_transparent</code> cuts the chosen colour out, <code>e_grayscale</code> greys the rest, and the browser lays that over the original. ClearSight then counts the transparent pixels and says, for example, “Red covers 8% of the image, in 3 places.”</p>
+<p>The demo uses an <strong>example air-quality map</strong> with a Good / Moderate / Poor / Severe legend. Switch on “See it as deuteranopia” and the severe, poor and good tiles blur together; tap “Red” and Delhi and Noida light up. A match slider catches lighter and darker shades in photos, and the result downloads as a PNG.</p>
 <h3>The fix, proven on a real-style notice</h3>
 <p>The demo includes a <strong>flood-warning poster built entirely from Cloudinary overlays</strong>: three colour-coded zones (red “Evacuate now”, amber “Get ready”, green “Safe”). Under Cloudinary’s deuteranopia simulation, the red and green zones <strong>turn almost the same olive colour</strong>. With Cloudinary’s <code>e_assist_colorblind</code>, red gets horizontal stripes and green gets vertical ones, so the zones are distinguishable again. They stay distinguishable even after conversion to black and white.</p>
 <h3>The pack</h3>
@@ -126,6 +130,7 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 <li><strong>Readability effects:</strong> <code>e_auto_contrast</code>, <code>e_sharpen</code>, <code>e_grayscale</code>, <code>e_contrast</code>, <code>c_pad</code>.</li>
 <li><strong>Text in Indian scripts:</strong> the plain-words label picks a Google font Cloudinary supports for the script it detects: Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu) and Hind Vadodara (Gujarati).</li>
 <li><strong>Image to video:</strong> <code>e_zoompan</code> turns the poster, with its label, into a six-second MP4 for status updates. Cloudinary keeps overlays in the video but drops colour effects, so the video offers only what really survives.</li>
+<li><strong><code>e_make_transparent</code> for the Colour Spotlight:</strong> keys out the chosen colour with an adjustable tolerance; <code>e_grayscale</code> greys the rest.</li>
 <li><strong><code>fl_getinfo</code>:</strong> the fullscreen viewer asks Cloudinary for each version’s real width, height, format and bytes, and explains every parameter in its URL.</li>
 <li><strong>Open CORS on delivery:</strong> Cloudinary serves <code>Access-Control-Allow-Origin: *</code>, so the browser can measure real byte sizes, build the zip and analyse pixels for the report.</li>
 </ul>
@@ -143,6 +148,7 @@ Story         ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto
 Label         c_pad,w_1.0,h_1.2,b_white/l_text:Hind_80_bold:&lt;line&gt;/fl_layer_apply,g_south
 Video         &lt;label&gt;/e_zoompan:du_6/w_720 → .mp4
 Details       &lt;any version&gt;/fl_getinfo
+Spotlight     w_1200,c_limit/e_make_transparent:&lt;tolerance&gt;,co_rgb:&lt;hex&gt;/e_grayscale/f_png (over the original)
 </code></pre>
 <p>Every transformation was tested against the live <code>res.cloudinary.com</code> endpoint before it went into the app, and the visual results were checked by eye.</p>
 <h2>4. How the accessibility report works</h2>
@@ -272,6 +278,7 @@ Details       &lt;any version&gt;/fl_getinfo
 <li>a service-worker fix: a cached <code>&lt;img&gt;</code> copy could block a later download of the same file</li>
 </ul>
 </li>
+<li><strong>Which part is red?</strong> Research on everyday colour-blind problems pointed to colour-only labels and legends. I tested Cloudinary’s <code>e_make_transparent</code> + <code>e_grayscale</code> on the flood poster and a photo, then built the Colour Spotlight around it, with an example air-quality map, a deuteranopia view, and a self-check for the colour-grouping and patch-counting code.</li>
 </ol>
 <h2>8. What’s next</h2>
 <ul>
@@ -285,7 +292,7 @@ Details       &lt;any version&gt;/fl_getinfo
 <ul>
 <li><strong>Live demo:</strong> <a href="https://resplendent-maamoul-58cc39.netlify.app">https://resplendent-maamoul-58cc39.netlify.app</a></li>
 <li><strong>Source code:</strong> <a href="https://github.com/Sharmabhavishya/clearsight">https://github.com/Sharmabhavishya/clearsight</a></li>
-<li><strong>Built with:</strong> Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind fonts) · e_zoompan · b_auto · fl_getinfo</li>
+<li><strong>Built with:</strong> Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind fonts) · e_zoompan · b_auto · fl_getinfo · e_make_transparent</li>
 </ul>
 
 </main>

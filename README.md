@@ -27,6 +27,12 @@ Flood maps, vaccination posters, heatwave advisories and school notices are usua
 
 The local governments, clinics, schools and NGOs that publish these images rarely have a designer or an accessibility expert.
 
+## Which part is red?
+
+![Colour Spotlight on an example air-quality map](docs/screenshots/spotlight.jpg)
+
+Colour-blind people say matching a legend to a chart or map is close to impossible. Tap a colour, or a legend swatch, and **Colour Spotlight** keeps only that colour; everything else turns grey. Cloudinary does the finding (`e_make_transparent` + `e_grayscale`), and ClearSight says how much of the image the colour covers and in how many places. Nothing is recoloured.
+
 ## The fix, proven
 
 ![Original, deuteranopia view, and the stripes fix](docs/screenshots/fix.jpg)
@@ -37,6 +43,7 @@ The flood-warning sample is built entirely with Cloudinary text and colour overl
 
 | What colour-blind people report | What ClearSight does |
 |---|---|
+| “It’s impossible to match the colors of the legend to the colors of the chart”, and many colour-blind people skip pie charts entirely ([We Are Colorblind](https://wearecolorblind.com/examples/google-analytics/)) | **Which part is red?** Tap a colour, or a legend swatch, and Cloudinary greys out everything else |
 | 66–90% have trouble with everyday tasks such as reading charts ([BMC Ophthalmology, 2017](https://bmcophthalmol.biomedcentral.com/track/pdf/10.1186/s12886-017-0579-z)) | Simulates any poster, chart or map and fixes it |
 | Many ask others to check colours on wires, medicine labels and clothes ([EnChroma survey](https://businesswire.com/news/home/20210726005726/en), a vendor study) | **What colour is this?** names the colour under your cursor or camera |
 | Red/green “traffic light” palettes break charts and maps ([Datawrapper](https://www.datawrapper.de/blog/colorblindness-part2), [data.europa.eu](https://data.europa.eu/apps/data-visualisation-guide/accessible-colours)) | **Safe palette** swaps them for vermillion and blue; **pair checker** flags risky pairs |
@@ -45,6 +52,7 @@ The flood-warning sample is built entirely with Cloudinary text and colour overl
 
 ## Features
 
+- **Which part is red? (Colour Spotlight):** tap a colour chip or any spot on the image, even a legend swatch, and only that colour stays in colour. Cloudinary keys it out with `e_make_transparent` and greys the rest with `e_grayscale`. It says how much of the image the colour covers and in how many places, has a “See it as deuteranopia” view, hold-to-compare and download. It never recolours the image
 - **Live hero demo:** drag to compare the flood poster in seven ways of seeing, with a page-wide **vision lens** in the nav
 - **Live camera:** point your camera at any poster, see it through colour-blind eyes, snap to build the pack
 - **Can you read this number?** a dot plate drawn fresh each time, whose number vanishes under deuteranopia (for fun, not a medical test)
@@ -88,6 +96,7 @@ ClearSight contains **no image-processing code**. Every version is a Cloudinary 
 | Story (9:16) | `ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto` |
 | Plain-words label | `l_text:Hind_80_bold:…` (font picked per script) + `fl_layer_apply,g_south` |
 | Story video | `…/e_zoompan:du_6/w_720` delivered as `.mp4` |
+| Colour Spotlight | `e_make_transparent:<tolerance>,co_rgb:<colour>/e_grayscale`, laid over the original |
 | File details | `…/fl_getinfo` |
 | Flood-warning sample | `e_colorize` solid fills + `l_text` overlays + `fl_layer_apply` |
 
