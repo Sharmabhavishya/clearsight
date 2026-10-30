@@ -51,6 +51,7 @@
     --w: 1180px;
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 400 17px/1.55 var(--font); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; }
   img { max-width: 100%; display: block; }
@@ -160,6 +161,23 @@
   .head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
   .head h2 { font-size: clamp(36px, 4.4vw, 60px); letter-spacing: -0.045em; }
   .head p { margin-top: 16px; color: var(--muted); font-size: 18px; }
+
+  /* Camera */
+  .cam { max-width: 1040px; margin: 0 auto; padding: 10px; border-radius: var(--r-xl); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+  .cam-stage { position: relative; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; background: var(--card-2); touch-action: pan-y; user-select: none; -webkit-user-select: none; --pos: 50%; }
+  .cam-stage.live { cursor: ew-resize; background: #000; }
+  .cam-stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .4s var(--ease); pointer-events: none; }
+  .cam-stage.live video { opacity: 1; }
+  .cam-stage .camA { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .cam-line { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: #fff; opacity: 0; pointer-events: none; }
+  .cam-stage.live .cam-line { opacity: 1; }
+  .cam-stage .dlabel { opacity: 0; transition: opacity .3s; }
+  .cam-stage.live .dlabel { opacity: 1; }
+  .cam-idle { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; color: var(--muted); }
+  .cam-idle svg { width: 44px; height: 44px; color: var(--sky); }
+  .cam-idle p { max-width: 380px; font-size: 15px; }
+  .cam-stage.live .cam-idle { display: none; }
+  .cam-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 6px 4px; }
 
   /* Studio */
   .app { border-radius: var(--r-xl); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); padding: 10px; display: grid; gap: 10px; font-size: 15px; }
@@ -294,6 +312,13 @@
   .qr { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
   .qr canvas { width: 200px; height: 200px; image-rendering: pixelated; background: #fff; border-radius: 14px; }
 
+  /* Plain-words label */
+  .label-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 28px; align-items: center; margin-bottom: 10px; padding: 24px; border-radius: var(--r-lg); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); font-size: 15px; }
+  .label-panel h3 { font-size: 20px; letter-spacing: -0.02em; }
+  .label-panel > * { min-width: 0; }
+  .lp-preview { position: relative; aspect-ratio: 5 / 4; border-radius: 14px; overflow: hidden; background: #fff; }
+  .lp-preview img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
   /* How */
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .step { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 28px; display: flex; flex-direction: column; gap: 12px; min-height: 260px; transition: transform .25s var(--ease), box-shadow .25s; }
@@ -389,6 +414,7 @@
     </a>
     <div class="nav-links">
       <a href="#top">Demo</a>
+      <a href="#camera">Camera</a>
       <a href="#studio">Studio</a>
       <a href="#report">Report</a>
       <a href="#how">How it works</a>
@@ -453,7 +479,43 @@
     </div>
   </section>
 
-  <section class="block" id="studio" aria-labelledby="studioTitle">
+  <section class="block" id="camera" aria-labelledby="camTitle" style="padding-top:80px">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="camTitle" class="reveal">See any poster, live</h2>
+        <p class="reveal" style="--d:80ms">Point your camera at a real notice and see it through their eyes. Snap it, and Cloudinary builds the whole pack.</p>
+      </div>
+      <div class="cam reveal" style="--d:140ms">
+        <div class="cam-stage" id="camStage">
+          <video id="camB" playsinline muted></video>
+          <video id="camA" class="camA" playsinline muted></video>
+          <div class="cam-line" aria-hidden="true"></div>
+          <span class="dlabel l">You see</span>
+          <span class="dlabel r" id="camLabel">Deuteranopia sees</span>
+          <div class="cam-idle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 012-2h2l2-2h6l2 2h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <p>The video stays on your device. Nothing leaves it until you press Snap.</p>
+            <button type="button" class="btn sky" id="camStart">Start camera</button>
+          </div>
+        </div>
+        <div class="cam-bar">
+          <div class="seg" id="camModes" role="group" aria-label="Simulate on the live camera">
+            <button type="button" data-cam="deut" aria-pressed="true">Deuteranopia</button>
+            <button type="button" data-cam="prot" aria-pressed="false">Protanopia</button>
+            <button type="button" data-cam="trit" aria-pressed="false">Tritanopia</button>
+            <button type="button" data-cam="mono" aria-pressed="false">No colour</button>
+            <button type="button" data-cam="blur" aria-pressed="false">Blurry vision</button>
+          </div>
+          <div class="row">
+            <button type="button" class="btn small ghost" id="camStop" hidden>Stop</button>
+            <button type="button" class="btn small" id="camSnap" disabled>Snap and build the pack</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="studio" aria-labelledby="studioTitle" style="padding-top:40px">
     <div class="wrap">
       <div class="head">
         <h2 id="studioTitle" class="reveal">Try it on your own poster</h2>
@@ -510,6 +572,7 @@
                 <button type="button" data-filter="fix" aria-pressed="false">Fix</button>
                 <button type="button" data-filter="reach" aria-pressed="false">Reach</button>
               </div>
+              <button type="button" class="btn small ghost" id="shareCard">Share card</button>
               <button type="button" class="btn small" id="zipBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>Download pack</button>
             </div>
           </div>
@@ -536,7 +599,21 @@
         <h2 id="publishTitle" class="reveal">Publish it everywhere</h2>
         <p class="reveal" style="--d:80ms">Paste-ready code with your alt text, and a QR code for the paper copy.</p>
       </div>
-      <div class="publish reveal" style="--d:140ms">
+      <div class="label-panel reveal" style="--d:120ms">
+        <div>
+          <h3>Say it in plain words</h3>
+          <p class="hint">Colour alone can’t carry meaning. Add a line and Cloudinary prints it on the poster.</p>
+          <label class="field" for="labelText" style="margin-top:18px">Your line</label>
+          <input type="text" id="labelText" maxlength="90" value="Red means evacuate. Green means safe." autocomplete="off" spellcheck="true">
+          <div class="row" style="margin-top:14px">
+            <button type="button" class="btn small" id="labelDl">Download</button>
+            <button type="button" class="btn small ghost" id="labelCopy">Copy link</button>
+            <a class="btn small ghost" id="labelOpen" target="_blank" rel="noopener">Open</a>
+          </div>
+        </div>
+        <div class="lp-preview" id="labelPane"><div class="shimmer"></div><img id="labelImg" alt="The poster with your plain-words label printed underneath"></div>
+      </div>
+      <div class="publish reveal" style="--d:160ms">
         <div class="ppanel">
           <label class="field" for="alt">Describe the image</label>
           <textarea id="alt" rows="2" placeholder="e.g. Flood warning. Zone A: evacuate now. Zone B: get ready. Zone C: safe."></textarea>
@@ -656,6 +733,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script>if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" defer></script>
 <script>
@@ -718,6 +796,9 @@
     { key: "print", group: "fix", tag: "Fix", title: "Print-safe",
       who: "Stripes plus high-contrast greyscale. Meaning survives a cheap black-and-white photocopy.",
       t: () => "e_assist_colorblind:40/e_grayscale/e_contrast:30" },
+    { key: "safe", group: "fix", tag: "Fix", title: "Safe palette",
+      who: "Swaps red for vermillion and green for blue, a pair colour-blind readers can tell apart.",
+      t: () => "e_replace_color:0072b2:40:2e9e44/e_replace_color:d55e00:40:d62828/" + VIEW },
     { key: "lowvision", group: "reach", tag: "Reach", title: "Low-vision boost",
       who: "Auto-contrast and sharper edges for low vision and dim, low-cost screens.",
       t: () => "w_1600,c_limit/e_sharpen:80/e_auto_contrast/" + VIEW },
@@ -846,7 +927,8 @@
     { name: "Tritanopia", label: "Tritanopia sees", t: () => "e_simulate_colorblind:tritanopia/w_1400/" + VIEW, fact: "Blue-blind. Rarer, and blues and yellows shift." },
     { name: "No colour", label: "Monochromacy sees", t: () => "e_grayscale/w_1400/" + VIEW, fact: "No colour at all. Only light and dark are left." },
     { name: "Blurry vision", label: "Blurry vision sees", t: () => "e_blur:400/w_1400/" + VIEW, fact: "Low vision. Small text and fine detail are the first to go." },
-    { name: "ClearSight fix", label: "Deuteranopia, fixed", t: () => "e_assist_colorblind:40/e_simulate_colorblind:deuteranopia/w_1400", fact: "Same deuteranopia, after the fix. Stripes keep every zone apart." }
+    { name: "Safe palette", label: "Deuteranopia, safe palette", t: () => "e_replace_color:0072b2:40:2e9e44/e_replace_color:d55e00:40:d62828/e_simulate_colorblind:deuteranopia/w_1400/" + VIEW, fact: "Cloudinary swaps red for vermillion and green for blue. Every zone stands apart again." },
+    { name: "Stripes fix", label: "Deuteranopia, with stripes", t: () => "e_assist_colorblind:40/e_simulate_colorblind:deuteranopia/w_1400", fact: "Same deuteranopia, after the fix. Stripes keep every zone apart." }
   ];
   const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   function renderShowcase() {
@@ -1021,6 +1103,7 @@
     renderCompare();
     renderSnippet();
     renderQR();
+    if (state.refreshLabel) state.refreshLabel();
     analyse(state.run);
   }
 
@@ -1180,6 +1263,7 @@
     stripes: "Problem colours get patterns: horizontal for reds, vertical for greens. Adjust the strength.",
     xray: "Hues are pushed apart so they’re easier to tell from each other.",
     print: "What survives a black-and-white photocopy, with stripes keeping colour meaning.",
+    safe: "Reds become vermillion and greens become blue, so the meaning survives for every eye.",
     lowvision: "Stronger contrast and crisper edges.",
     lowdata: "Smaller and lighter. Shown at its real 480px size.",
     square: "Padded to a square so chat apps don’t crop it."
@@ -1720,6 +1804,121 @@
     });
   }
 
+  // ---------- Feature: say it in plain words (Cloudinary text layer) ----------
+  // Cloudinary text layers need commas, slashes and colons double-encoded.
+  const encText = s => encodeURIComponent(s).replace(/%2C/gi, "%252C").replace(/%2F/gi, "%252F").replace(/%3A/gi, "%253A");
+  const labelUrl = text => cld(state.src, "c_pad,w_1.0,h_1.2,g_north,b_white/l_text:Arial_80_bold:" + encText(text) + ",co_rgb:111317/c_fit,fl_relative,w_0.9,h_0.12/fl_layer_apply,g_south,y_0.04,fl_relative/" + VIEW);
+  function bindLabel() {
+    const inp = $("labelText"), img = $("labelImg"), pane = $("labelPane");
+    let timer;
+    const upd = () => {
+      const v = inp.value.trim().slice(0, 90);
+      if (!v) { state.labelUrl = ""; pane.classList.remove("loaded"); img.removeAttribute("src"); return; }
+      const u = labelUrl(v);
+      state.labelUrl = u;
+      $("labelOpen").href = u;
+      pane.classList.remove("loaded");
+      getBlob(u).then(({ obj }) => {
+        if (state.labelUrl !== u) return;
+        img.onload = () => pane.classList.add("loaded");
+        img.src = obj;
+      }).catch(() => { if (state.labelUrl === u) toast("Couldn’t render that label. Try shorter text."); });
+    };
+    state.refreshLabel = upd;
+    inp.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(upd, 500); });
+    $("labelCopy").addEventListener("click", () => { if (state.labelUrl) copyText(state.labelUrl, "Labelled poster link copied"); });
+    $("labelDl").addEventListener("click", async () => {
+      if (!state.labelUrl) return;
+      try { const { blob } = await getBlob(state.labelUrl, true); saveBlob(blob, "clearsight-labelled." + extOf(blob)); }
+      catch (e) { toast("Download failed. Try Open instead."); }
+    });
+  }
+
+  // ---------- Feature: share card (drawn from the real pack images) ----------
+  async function shareCard() {
+    const o = state.objs.original, d = state.objs.deut;
+    if (!o || !d) { toast("Still loading. Try again in a second."); return; }
+    const load = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+    try {
+      const [A, B] = await Promise.all([load(o), load(d)]);
+      const W = 1600, H = 900, c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      const x = c.getContext("2d");
+      x.fillStyle = "#08090B"; x.fillRect(0, 0, W, H);
+      const pad = 64, gap = 24, bw = (W - pad * 2 - gap) / 2, bh = bw * 2 / 3, top = 190;
+      const draw = (img, dx) => {
+        x.fillStyle = "#FFFFFF"; x.fillRect(dx, top, bw, bh);
+        const s = Math.min(bw / img.naturalWidth, bh / img.naturalHeight), w = img.naturalWidth * s, h = img.naturalHeight * s;
+        x.drawImage(img, dx + (bw - w) / 2, top + (bh - h) / 2, w, h);
+      };
+      draw(A, pad); draw(B, pad + bw + gap);
+      x.fillStyle = "#EDEEF0"; x.font = "600 60px Geist, system-ui, sans-serif";
+      x.fillText("What you see vs. what 1 in 12 men see", pad, 120);
+      x.fillStyle = "#A9AFB9"; x.font = "500 26px Geist, system-ui, sans-serif";
+      x.fillText("You see", pad, top + bh + 50);
+      x.fillText("Deuteranopia sees", pad + bw + gap, top + bh + 50);
+      x.fillStyle = "#56B4E9"; x.fillText("Checked with ClearSight, built on Cloudinary", pad, H - 48);
+      const blob = await new Promise(r => c.toBlob(r, "image/png"));
+      const file = new File([blob], "clearsight-share.png", { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try { await navigator.share({ files: [file], title: "ClearSight", text: "What 1 in 12 men see" }); return; }
+        catch (e) { if (e.name === "AbortError") return; }
+      }
+      saveBlob(blob, "clearsight-share.png");
+      toast("Share card downloaded");
+    } catch (e) { toast("Couldn’t build the share card. Please try again."); }
+  }
+
+  // ---------- Feature: live camera through their eyes ----------
+  const CAM = { deut: "url(#cs-deut)", prot: "url(#cs-prot)", trit: "url(#cs-trit)", mono: "grayscale(1)", blur: "blur(6px)" };
+  function bindCamera() {
+    const start = $("camStart"), stop = $("camStop"), stage = $("camStage"), vA = $("camA"), vB = $("camB"), modes = $("camModes"), snap = $("camSnap");
+    let stream = null, dragging = false;
+    const setPos = p => stage.style.setProperty("--pos", Math.max(0, Math.min(100, p)) + "%");
+    const end = () => {
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      stream = null; vA.srcObject = null; vB.srcObject = null;
+      stage.classList.remove("live"); start.hidden = false; stop.hidden = true; snap.disabled = true;
+    };
+    start.addEventListener("click", async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast("This browser can’t open a camera."); return; }
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 } }, audio: false });
+      } catch (e) {
+        toast(e.name === "NotAllowedError" ? "Camera blocked. Allow it from the address bar and try again." : "No camera found on this device.");
+        return;
+      }
+      vA.srcObject = stream; vB.srcObject = stream;
+      await Promise.all([vA.play(), vB.play()]).catch(() => {});
+      stage.classList.add("live"); start.hidden = true; stop.hidden = false; snap.disabled = false;
+    });
+    stop.addEventListener("click", end);
+    document.addEventListener("visibilitychange", () => { if (document.hidden && stream) end(); });
+    modes.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      setPressed(modes, "cam", b.dataset.cam);
+      vB.style.filter = CAM[b.dataset.cam];
+      $("camLabel").textContent = b.textContent + " sees";
+    });
+    const at = e => { const r = stage.getBoundingClientRect(); setPos((e.clientX - r.left) / r.width * 100); };
+    stage.addEventListener("pointerdown", e => { if (!stream || e.button !== 0) return; dragging = true; stage.setPointerCapture(e.pointerId); at(e); e.preventDefault(); });
+    stage.addEventListener("pointermove", e => { if (dragging) at(e); });
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach(ev => stage.addEventListener(ev, () => { dragging = false; }));
+    snap.addEventListener("click", () => {
+      if (!stream || !vA.videoWidth) return;
+      const c = document.createElement("canvas");
+      c.width = vA.videoWidth; c.height = vA.videoHeight;
+      c.getContext("2d").drawImage(vA, 0, 0);
+      c.toBlob(b => {
+        if (!b) { toast("Couldn’t capture that frame."); return; }
+        toast("Sending your snapshot to Cloudinary…");
+        handleFile(new File([b], "camera-capture.jpg", { type: "image/jpeg" }));
+      }, "image/jpeg", 0.9);
+    });
+    setPos(50);
+    vB.style.filter = CAM.deut;
+  }
+
   // ---------- Page chrome ----------
   function bindNav() {
     // Kept on state: an observer nothing references can be garbage-collected and stop firing.
@@ -1729,6 +1928,9 @@
     document.querySelectorAll(".reveal").forEach(n => rv.observe(n));
     bindLens();
     bindCounts();
+    bindCamera();
+    bindLabel();
+    $("shareCard").addEventListener("click", shareCard);
   }
 
   function bindPublish() {
