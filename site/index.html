@@ -4,393 +4,369 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ClearSight</title>
-<meta name="description" content="ClearSight shows any public notice the way colour-blind, low-vision and offline readers see it, then fixes it with Cloudinary.">
+<meta name="description" content="ClearSight shows how your poster looks to colour-blind, low-vision and offline readers, then fixes it in one click with Cloudinary.">
 <meta name="author" content="Bhavishya Sharma">
-<meta name="theme-color" content="#0E1116">
+<meta name="theme-color" content="#08090B">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ClearSight: see what they see">
-<meta property="og:description" content="One public notice. Every reader. Colour-blind, low-vision, low-data and print-ready versions in seconds, powered by Cloudinary.">
+<meta property="og:title" content="ClearSight: design for every eye">
+<meta property="og:description" content="See your poster the way colour-blind, low-vision and offline readers do, then fix it in one click. Built on Cloudinary.">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sharmabhavishya/clearsight@22b7a4adc4e16d7aa1efb8540a475f6edecd23e9/docs/screenshots/fix.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add("js");</script>
 <style>
   :root {
-    /* Fields: Okabe–Ito colours, which stay distinguishable for colour-blind readers. */
-    --night: #0E1116;
-    --night-2: #1A1E25;
-    --night-3: #272C35;
-    --paper: #F3F4F2;
-    --white: #FFFFFF;
-    --blue: #0072B2;
-    --blue-deep: #062A44;
+    --bg: #08090B;
+    --bg-2: #0C0E11;
+    --card: #111317;
+    --card-2: #171A1F;
+    --card-3: #1F232A;
+    --line: rgba(255,255,255,.08);
+    --line-2: rgba(255,255,255,.14);
+    --text: #EDEEF0;
+    --muted: #A9AFB9;
+    --dim: #8B919B;
+    /* Okabe–Ito: colours that stay distinct for colour-blind readers. */
     --sky: #56B4E9;
+    --sky-ink: #07131B;
+    --blue: #0072B2;
     --orange: #E69F00;
     --verm: #D55E00;
     --teal: #009E73;
-    --yellow: #F0E442;
-
-    --ink: #0E1116;
-    --muted: #464C55;
-    --on-night: #F3F4F2;
-    --on-night-2: #AEB5BF;
-    --line: #E1DFD7;
-
-    --accent: var(--blue);
     --good: #0072B2;
     --good-dark: #56B4E9;
     --fair: #E69F00;
     --poor: #D55E00;
     --poor-dark: #F2793A;
 
-    --font-display: "League Spartan", "Arial Black", system-ui, sans-serif;
-    --font-text: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; /* taste-skill-ignore: real code blocks only */
-
-    /* Five sizes. */
-    --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
-    --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-    --step-lead: clamp(1.25rem, 0.95rem + 1.25vw, 2.5rem);
-    --step-head: clamp(2.25rem, 1.3rem + 3.2vw, 4.5rem);
-    --step-display: clamp(4.5rem, 9vw, 8.75rem);
-
-    --margin: clamp(16px, 2.2vw, 32px);
-    --ease: cubic-bezier(.22, 1, .36, 1);
+    --font: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
+    --r-xl: 28px; --r-lg: 20px; --r: 14px; --r-sm: 10px;
+    --ease: cubic-bezier(.23, 1, .32, 1);
+    --ease-io: cubic-bezier(.77, 0, .175, 1);
+    --w: 1180px;
   }
-
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 var(--step-body)/1.5 var(--font-text); -webkit-font-smoothing: antialiased; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 17px/1.55 var(--font); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; }
   img { max-width: 100%; display: block; }
-  a { color: inherit; }
+  a { color: inherit; text-decoration: none; }
   button, input, select, textarea { font: inherit; color: inherit; }
-  h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 700; letter-spacing: -0.04em; line-height: 0.92; }
-  p { margin: 0; }
-  :focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
+  h1, h2, h3, p { margin: 0; }
+  h1, h2, h3 { font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; }
+  ::selection { background: var(--sky); color: var(--sky-ink); }
+  :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
   .sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .skip { position: absolute; left: var(--margin); top: -80px; z-index: 100; background: var(--night); color: var(--on-night); padding: 12px 16px; }
+  .skip { position: absolute; left: 16px; top: -80px; z-index: 100; background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; }
   .skip:focus { top: 12px; }
-  .wrap { padding: 0 var(--margin); }
-  .grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--margin); }
+  .wrap { width: 100%; max-width: var(--w); margin: 0 auto; padding: 0 24px; }
+  section { position: relative; }
 
-  /* Buttons: square, one fill. */
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px; border: 0; border-radius: 0; background: var(--accent); color: var(--white); font-weight: 600; text-decoration: none; cursor: pointer; transition: transform .18s var(--ease), background-color .18s; white-space: nowrap; }
-  .btn:hover { background: #005C90; }
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 22px; border-radius: 999px; border: 0; background: var(--text); color: var(--bg); font-weight: 600; font-size: 15px; cursor: pointer; white-space: nowrap; transition: transform .16s var(--ease), background-color .2s, box-shadow .2s; }
   .btn:active { transform: scale(.97); }
+  .btn.ghost { background: rgba(255,255,255,.06); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-2); }
+  .btn.sky { background: var(--sky); color: var(--sky-ink); }
+  .btn.small { height: 38px; padding: 0 16px; font-size: 14px; }
   .btn:disabled { opacity: .45; cursor: not-allowed; }
-  .btn.ghost { background: var(--paper); color: var(--ink); }
-  .btn.ghost:hover { background: #E9E7E0; }
-  .btn.small { min-height: 40px; padding: 0 16px; font-size: var(--step-small); }
-  .btn.light { background: var(--sky); color: var(--ink); }
-  .btn.light:hover { background: #7CC6EF; }
-  .link { background: none; border: 0; padding: 0; color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover { background: #fff; }
+    .btn.ghost:hover { background: rgba(255,255,255,.1); }
+    .btn.sky:hover { background: #7CC6EF; }
+  }
+  .link { background: none; border: 0; padding: 0; color: var(--sky); font-weight: 500; cursor: pointer; }
+  .link:hover { text-decoration: underline; text-underline-offset: 3px; }
   svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* ---------- Chapter 1: waterline hero ---------- */
-  .hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; background: var(--blue); }
-  .hero::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 50%; background: var(--paper); }
-  .hero-lens { display: flex; align-items: center; gap: 2px; margin-left: auto; margin-right: 24px; font-size: 14px; }
-  .hero-lens > span { font-weight: 600; margin-right: 8px; color: var(--muted); }
-  .hero-lens button { border: 0; background: transparent; color: var(--muted); padding: 8px 10px; font-weight: 600; cursor: pointer; transition: background-color .15s, color .15s; }
-  .hero-lens button:hover { color: var(--ink); background: #E4E6E3; }
-  .hero-lens button[aria-pressed="true"] { background: var(--night); color: var(--on-night); }
-  .hero-top { position: absolute; z-index: 3; top: 28px; left: var(--margin); right: var(--margin); display: flex; justify-content: space-between; align-items: center; }
-  .mark { display: inline-flex; align-items: center; gap: 10px; font: 700 26px/1 var(--font-display); letter-spacing: -0.04em; color: var(--ink); text-decoration: none; }
-  .mark svg { width: 30px; height: 30px; }
-  .hl-layer { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-  .hl-layer.above { clip-path: inset(0 0 50% 0); color: var(--blue); }
-  .hl-layer.below { clip-path: inset(50% 0 0 0); color: var(--ink); }
-  .hl { position: absolute; left: 50%; width: 92vw; transform: translateX(-50%); top: calc(50% - 1.29em); margin: 0; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: clamp(72px, 9vw, 140px); line-height: .86; letter-spacing: -0.04em; text-transform: uppercase; }
-  .hl .line { display: block; overflow: hidden; padding-bottom: .04em; }
-  .hl .line > span { display: inline-block; }
-  .js .hl .line > span { transform: translateY(105%); animation: rise .9s var(--ease) forwards; }
-  .js .hl .line:nth-child(2) > span { animation-delay: .11s; }
-  @keyframes rise { to { transform: none; } }
-  .hero-foot { position: absolute; z-index: 3; left: 50%; bottom: 40px; transform: translateX(-50%); width: min(680px, 90vw); text-align: center; color: var(--paper); font-size: 20px; line-height: 1.45; }
-  .js .hero-foot, .js .hero-top .btn { opacity: 0; animation: fadeUp .7s var(--ease) .75s forwards; }
-  @keyframes fadeUp { from { opacity: 0; transform: translate(var(--tx, 0), 12px); } to { opacity: 1; transform: translate(var(--tx, 0), 0); } }
-  .hero-foot { --tx: -50%; }
+  /* Nav */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(8,9,11,.72); -webkit-backdrop-filter: saturate(160%) blur(16px); backdrop-filter: saturate(160%) blur(16px); border-bottom: 1px solid var(--line); }
+  .nav .wrap { height: 64px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18px; letter-spacing: -0.03em; }
+  .mark svg { width: 26px; height: 26px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a { padding: 8px 14px; border-radius: 999px; color: var(--muted); font-size: 14px; font-weight: 500; transition: color .2s, background-color .2s; }
+  .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.06); }
+  .nav-right { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
+  .lens-wrap { position: relative; }
+  .lens-btn { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 999px; border: 0; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px var(--line-2); color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; transition: transform .16s var(--ease), background-color .2s; }
+  .lens-btn:active { transform: scale(.97); }
+  .lens-btn .dotm { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); transition: background-color .2s; }
+  .lens-btn[data-on="true"] .dotm { background: var(--orange); }
+  .lens-menu { position: absolute; right: 0; top: calc(100% + 8px); width: 248px; padding: 6px; border-radius: 16px; background: var(--card-2); box-shadow: 0 0 0 1px var(--line-2), 0 24px 60px rgba(0,0,0,.55); transform-origin: top right; opacity: 0; transform: scale(.96) translateY(-4px); pointer-events: none; transition: opacity .16s var(--ease), transform .16s var(--ease); }
+  .lens-menu.open { opacity: 1; transform: none; pointer-events: auto; }
+  .lens-menu p { padding: 8px 10px 6px; font-size: 12px; color: var(--dim); }
+  .lens-menu button { display: flex; width: 100%; justify-content: space-between; align-items: center; padding: 10px; border: 0; border-radius: 10px; background: none; color: var(--text); font-size: 14px; cursor: pointer; text-align: left; }
+  .lens-menu button:hover { background: rgba(255,255,255,.06); }
+  .lens-menu button small { color: var(--dim); font-size: 12px; }
+  .lens-menu button[aria-pressed="true"] { background: rgba(86,180,233,.14); color: var(--sky); }
 
-  /* ---------- Chapter 2: readers ---------- */
-  .readers { min-height: 88svh; background: var(--paper); padding: 120px var(--margin) 96px; display: flex; flex-direction: column; justify-content: space-between; gap: 64px; }
-  .readers h2 { font-size: var(--step-head); max-width: 14ch; }
-  .control { width: min(400px, 100%); margin-top: 28px; }
-  .control label { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 10px; }
-  .control output { font-variant-numeric: tabular-nums; }
-  input[type=range] { width: 100%; accent-color: var(--blue); height: 28px; cursor: pointer; }
-  .readers-result { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--margin); align-items: end; }
-  .readers-result .figure { grid-column: 1 / 9; font: 700 var(--step-display)/.8 var(--font-display); letter-spacing: -0.05em; font-variant-numeric: tabular-nums; color: var(--verm); }
-  .figure small { font-size: .22em; letter-spacing: -0.02em; color: var(--ink); margin-left: .25em; }
-  .readers-result .note { grid-column: 9 / 13; max-width: 32ch; font-size: 17px; }
+  /* Hero */
+  .hero { padding: 96px 0 40px; text-align: center; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; left: 50%; top: -260px; width: 1100px; height: 700px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(86,180,233,.18), transparent 70%); pointer-events: none; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px var(--line-2); font-size: 13px; color: var(--muted); }
+  .pill b { display: inline-flex; padding: 2px 8px; border-radius: 999px; background: var(--sky); color: var(--sky-ink); font-weight: 600; font-size: 12px; }
+  .hero h1 { margin: 28px auto 0; font-size: clamp(52px, 7.4vw, 108px); line-height: .98; letter-spacing: -0.05em; font-weight: 600; }
+  .hero h1 .line { display: block; }
+  .hero h1 .w { display: inline-block; }
+  .hero h1 .soft { color: var(--muted); }
+  .hero .sub { margin: 24px auto 0; max-width: 600px; font-size: 19px; color: var(--muted); }
+  .ctas { display: flex; gap: 12px; justify-content: center; margin-top: 36px; }
+  .js .rise { opacity: 0; transform: translateY(18px); filter: blur(8px); animation: rise .9s var(--ease) forwards; animation-delay: var(--d, 0ms); }
+  @keyframes rise { to { opacity: 1; transform: none; filter: blur(0); } }
 
-  /* ---------- Chapter 3: one notice, six ways of seeing ---------- */
-  .seeing { position: relative; min-height: 100svh; background: var(--night); color: var(--on-night); overflow: hidden; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--margin); padding: 0 var(--margin); }
-  .disc { position: absolute; width: 80vh; height: 80vh; border-radius: 50%; left: 58%; top: 50%; transform: translate(-50%, -50%); background: var(--verm); transition: background-color .45s var(--ease); }
-  .poster { position: absolute; left: 58%; top: 44%; transform: translate(-50%, -50%); width: min(66vh, 46vw); aspect-ratio: 3 / 2; }
-  .poster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .3s var(--ease); }
-  .poster img.out { opacity: 0; }
-  .fact { position: absolute; left: calc(58% + 40vh + 24px); top: 56%; width: min(240px, 14vw); font-size: 17px; color: var(--on-night); }
-  .show-list { grid-column: 1 / 6; align-self: end; padding-bottom: 72px; position: relative; z-index: 2; }
-  .show-list h2 { font: 700 var(--step-lead)/1.15 var(--font-display); letter-spacing: -0.03em; color: var(--on-night-2); margin-bottom: 4px; }
-  .show-list button { display: block; background: none; border: 0; padding: 2px 0; text-align: left; font: 700 var(--step-lead)/1.15 var(--font-display); letter-spacing: -0.03em; color: var(--on-night-2); cursor: pointer; transition: color .2s, transform .25s var(--ease); }
-  .show-list button:hover { color: var(--on-night); transform: translateX(6px); }
-  .show-list button[aria-pressed="true"] { color: var(--on-night); }
-  .show-list button[aria-pressed="true"]::before { content: ""; display: inline-block; width: .5em; height: .5em; margin-right: .35em; background: var(--sky); vertical-align: .08em; }
+  .demo { position: relative; max-width: 1040px; margin: 64px auto 0; padding: 10px; border-radius: var(--r-xl); background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); box-shadow: inset 0 0 0 1px var(--line-2), 0 40px 120px rgba(0,0,0,.6); }
+  .js .demo { opacity: 0; transform: translateY(28px) scale(.97); animation: demoIn 1.1s var(--ease) .55s forwards; }
+  @keyframes demoIn { to { opacity: 1; transform: none; } }
+  .dcmp { position: relative; aspect-ratio: 3 / 2; border-radius: 20px; overflow: hidden; background: var(--card); cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; --pos: 50%; }
+  .dcmp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+  .dcmp .dtop { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .dcmp .dB { transition: opacity .35s var(--ease); }
+  .dcmp .dB.swap { opacity: 0; }
+  .dhandle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 0; display: flex; align-items: center; justify-content: center; outline: none; }
+  .dhandle::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1px; width: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.12); }
+  .dknob { position: relative; flex: none; width: 52px; height: 52px; border-radius: 50%; background: #fff; color: #08090B; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,.35); transition: transform .2s var(--ease); }
+  .dcmp:active .dknob { transform: scale(1.08); }
+  .dhandle:focus-visible .dknob { outline: 2px solid var(--sky); outline-offset: 4px; }
+  .dlabel { position: absolute; top: 16px; padding: 6px 12px; border-radius: 999px; background: rgba(8,9,11,.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; font-size: 13px; font-weight: 500; pointer-events: none; }
+  .dlabel.l { left: 16px; } .dlabel.r { right: 16px; }
 
-  /* ---------- Chapter 4: the studio (a real interface) ---------- */
-  .studio-ch { background: var(--paper); padding: 160px var(--margin) 140px; }
-  .ch-intro { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--margin); align-items: end; margin-bottom: 56px; }
-  .ch-intro h2 { grid-column: 1 / 8; font-size: var(--step-head); }
-  .ch-intro p { grid-column: 8 / 13; max-width: 46ch; }
-  .app, .publish, #reportBody { font-size: 16px; line-height: 1.45; }
-  .app { background: var(--paper); display: grid; gap: 4px; }
-  .app-row { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 4px; }
-  .app-side { background: var(--white); padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-  .app-main { background: var(--white); padding: 24px; min-width: 0; }
-  .app h3 { font: 600 16px/1.3 var(--font-text); letter-spacing: 0; margin-bottom: 4px; }
-  .app .sub { color: var(--muted); margin: 0 0 14px; font-size: 15px; }
+  .modes { position: relative; display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 2px; margin-top: 22px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px var(--line); }
+  .modes .ind { position: absolute; top: 5px; height: calc(100% - 10px); left: 0; width: 0; border-radius: 999px; background: var(--text); transition: transform .35s var(--ease), width .35s var(--ease); }
+  .modes button { position: relative; z-index: 1; border: 0; background: none; padding: 9px 16px; border-radius: 999px; color: var(--muted); font-size: 14px; font-weight: 500; cursor: pointer; transition: color .25s; white-space: nowrap; }
+  .modes button:hover { color: var(--text); }
+  .modes button[aria-pressed="true"] { color: var(--bg); }
+  .demo-fact { margin-top: 16px; min-height: 1.6em; color: var(--muted); font-size: 15px; transition: opacity .25s; }
+
+  /* Stats */
+  .stats { padding: 96px 0 40px; }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
+  .stat-row > div { padding: 8px 24px; }
+  .stat-row > div + div { box-shadow: inset 1px 0 0 var(--line); }
+  .stat-row .num { display: block; font-size: clamp(44px, 5.4vw, 76px); font-weight: 600; letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat-row .lbl { display: block; margin-top: 12px; color: var(--muted); font-size: 15px; }
+  .stat-row small { display: block; margin-top: 6px; color: var(--dim); font-size: 12px; }
+  .marquee { margin-top: 72px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .marquee-track { display: flex; gap: 48px; width: max-content; animation: marquee 38s linear infinite; }
+  .marquee span { font-family: var(--mono); font-size: 14px; color: var(--dim); white-space: nowrap; }
+  .marquee span::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--line-2); margin-right: 14px; vertical-align: middle; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* Section heads */
+  .block { padding: 120px 0; }
+  .head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+  .head h2 { font-size: clamp(36px, 4.4vw, 60px); letter-spacing: -0.045em; }
+  .head p { margin-top: 16px; color: var(--muted); font-size: 18px; }
+
+  /* Studio */
+  .app { border-radius: var(--r-xl); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); padding: 10px; display: grid; gap: 10px; font-size: 15px; }
+  .app-row { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 10px; }
+  .panel { background: var(--card-2); border-radius: var(--r-lg); padding: 22px; min-width: 0; }
+  .app-side { display: flex; flex-direction: column; gap: 22px; }
+  .app h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .app .sub { color: var(--muted); font-size: 14px; margin: 2px 0 14px; }
   .samples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .sample { position: relative; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
-  .sample .thumb { aspect-ratio: 4 / 3; overflow: hidden; background: var(--paper); outline: 2px solid transparent; outline-offset: 2px; transition: outline-color .15s, transform .2s var(--ease); }
+  .sample .thumb { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px; background: var(--card-3); box-shadow: 0 0 0 0 var(--sky); transition: box-shadow .2s, transform .25s var(--ease); }
   .sample img { width: 100%; height: 100%; object-fit: cover; }
-  .sample span { display: block; font-size: 13px; color: var(--muted); margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sample:hover .thumb { transform: translateY(-2px); }
-  .sample[aria-pressed="true"] .thumb { outline-color: var(--blue); }
-  .sample[aria-pressed="true"] span { color: var(--ink); font-weight: 600; }
-  .sample .own { position: absolute; top: 4px; left: 4px; font: 600 11px/1 var(--font-text); font-style: normal; background: var(--night); color: var(--on-night); padding: 3px 6px; margin: 0; }
-  .drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 150px; padding: 16px; border: 2px dashed #C9C6BC; background: var(--paper); cursor: pointer; text-align: center; transition: border-color .15s, background-color .15s; }
-  .drop:hover, .drop.over { border-color: var(--blue); background: #EAF3FA; }
-  .drop svg { width: 30px; height: 30px; color: var(--blue); }
-  .drop b { font-weight: 600; font-size: 15px; }
-  .drop span { color: var(--muted); font-size: 13px; }
-  .progress { width: 100%; max-width: 220px; height: 6px; background: var(--line); overflow: hidden; display: none; }
-  .progress i { display: block; height: 100%; width: 0; background: var(--blue); transition: width .2s; }
+  .sample span { display: block; font-size: 13px; color: var(--dim); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sample[aria-pressed="true"] .thumb { box-shadow: 0 0 0 2px var(--sky); }
+  .sample[aria-pressed="true"] span { color: var(--text); }
+  @media (hover: hover) and (pointer: fine) { .sample:hover .thumb { transform: translateY(-2px); } }
+  .sample .own { position: absolute; top: 5px; left: 5px; font: 600 10px/1 var(--font); font-style: normal; background: var(--sky); color: var(--sky-ink); padding: 3px 6px; border-radius: 999px; margin: 0; }
+  .drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 150px; padding: 16px; border-radius: 14px; border: 1.5px dashed var(--line-2); background: rgba(255,255,255,.02); cursor: pointer; text-align: center; transition: border-color .2s, background-color .2s; }
+  .drop:hover, .drop.over { border-color: var(--sky); background: rgba(86,180,233,.06); }
+  .drop svg { width: 28px; height: 28px; color: var(--sky); }
+  .drop b { font-weight: 600; font-size: 14px; }
+  .drop span { color: var(--dim); font-size: 13px; }
+  .progress { width: 100%; max-width: 220px; height: 4px; border-radius: 999px; background: var(--line-2); overflow: hidden; display: none; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--sky); transition: width .2s; }
   .drop.busy .progress { display: block; }
-  .connected { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9BA1AA; margin-right: 6px; vertical-align: middle; }
+  .connected { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: var(--dim); }
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--dim); margin-right: 6px; vertical-align: middle; }
   .dot.on { background: var(--teal); }
-  .now { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--muted); padding: 10px 12px; background: var(--paper); }
-  .now b { color: var(--ink); }
+  .now { font-size: 13px; color: var(--dim); padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.03); }
+  .now b { color: var(--text); font-weight: 500; }
 
-  .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--paper); max-width: 100%; }
-  .seg button { border: 0; background: transparent; padding: 8px 12px; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; transition: background-color .15s, color .15s; }
-  .seg button:hover { color: var(--ink); background: #ECEAE3; }
-  .seg button[aria-pressed="true"] { background: var(--night); color: var(--on-night); }
-  .seg button:disabled { opacity: .45; cursor: not-allowed; }
-  .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
-  .strength { display: none; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+  .seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 4px; border-radius: 12px; background: rgba(255,255,255,.04); box-shadow: inset 0 0 0 1px var(--line); max-width: 100%; }
+  .seg button { border: 0; background: none; padding: 7px 12px; border-radius: 9px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; transition: background-color .2s, color .2s; }
+  .seg button:hover { color: var(--text); }
+  .seg button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+  .seg button:disabled { opacity: .4; cursor: not-allowed; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+  .strength { display: none; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
   .strength.show { display: inline-flex; }
-  .strength input { width: 140px; }
-  .cmp { position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: var(--paper); touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize; --pos: 50%; }
+  input[type=range] { accent-color: var(--sky); cursor: pointer; }
+  .strength input { width: 130px; }
+  .cmp { position: relative; aspect-ratio: 3 / 2; border-radius: 14px; overflow: hidden; background: var(--card-3); touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize; --pos: 50%; }
   .cmp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; transition: opacity .25s; }
   .cmp img:not([src]) { opacity: 0; }
   .cmp:not(.side) .pane { position: absolute; inset: 0; }
   .cmp .over { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
   .cmp .handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 0; display: flex; align-items: center; justify-content: center; outline: none; }
-  .cmp .handle::before { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; left: -1px; background: var(--night); }
-  .cmp .knob { position: relative; width: 46px; height: 46px; border-radius: 50%; background: var(--night); color: var(--on-night); display: flex; align-items: center; justify-content: center; transition: transform .2s var(--ease); }
+  .cmp .handle::before { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; left: -1px; background: #fff; }
+  .cmp .knob { position: relative; flex: none; width: 44px; height: 44px; border-radius: 50%; background: #fff; color: #08090B; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,.35); transition: transform .2s var(--ease); }
   .cmp:active .knob { transform: scale(1.08); }
-  .cmp .handle:focus-visible .knob { outline: 3px solid var(--sky); outline-offset: 3px; }
-  .chip { position: absolute; top: 12px; padding: 5px 10px; font-size: 13px; font-weight: 600; background: var(--night); color: var(--on-night); pointer-events: none; }
+  .cmp .handle:focus-visible .knob { outline: 2px solid var(--sky); outline-offset: 3px; }
+  .chip { position: absolute; top: 12px; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; background: rgba(8,9,11,.72); color: #fff; pointer-events: none; }
   .chip.l { left: 12px; } .chip.r { right: 12px; }
-  .cmp.side { aspect-ratio: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; cursor: default; background: var(--white); }
-  .cmp.side .pane { position: relative; aspect-ratio: 3 / 2; background: var(--paper); }
+  .cmp.side { aspect-ratio: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; cursor: default; background: none; }
+  .cmp.side .pane { position: relative; aspect-ratio: 3 / 2; border-radius: 12px; overflow: hidden; background: var(--card-3); }
   .cmp.side .over { clip-path: none; }
   .cmp.side #paneA { order: 1; } .cmp.side #paneB { order: 2; }
   .cmp.side .handle { display: none; }
-  .shimmer { /* taste-skill-ignore: loading placeholder, gone once the image arrives */ position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.6) 50%, transparent 70%) var(--paper); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
+  .shimmer { position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.06) 50%, transparent 70%) var(--card-3); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
   @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
   .loaded > .shimmer { display: none; }
-  .inspect-note { margin-top: 12px; color: var(--muted); font-size: 16px; min-height: 1.4em; }
+  .inspect-note { margin-top: 12px; color: var(--muted); font-size: 14px; min-height: 1.4em; }
 
-  .pack { background: var(--white); padding: 24px; }
   .pack-head { display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-  .card { background: var(--paper); display: flex; flex-direction: column; transition: background-color .2s, transform .25s var(--ease); }
-  .card:hover { background: #E9EBE8; transform: translateY(-2px); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .card { background: var(--card-3); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform .25s var(--ease), box-shadow .25s; }
   .card[hidden] { display: none; }
-  .card .media { position: relative; aspect-ratio: 3 / 2; background: #E6E8E5; border: 0; padding: 0; cursor: zoom-in; display: block; width: 100%; }
+  @media (hover: hover) and (pointer: fine) { .card:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px var(--line-2), 0 18px 40px rgba(0,0,0,.4); } }
+  .card .media { position: relative; aspect-ratio: 3 / 2; background: #fff; border: 0; padding: 0; cursor: zoom-in; display: block; width: 100%; }
   .card .media img { width: 100%; height: 100%; object-fit: contain; }
   .card .body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
-  .card h3 { font-size: 16px; margin: 0; }
-  .card .who { color: var(--muted); font-size: 15px; }
+  .card h3 { font-size: 14px; }
+  .card .who { color: var(--dim); font-size: 14px; line-height: 1.45; }
   .card .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .pill { display: inline-block; padding: 2px 7px; background: var(--paper); color: var(--muted); font-size: 12px; font-weight: 600; }
-  .pill.save { background: #E1EEF7; color: #00548A; }
-  .pill.more { background: #FBEEDA; color: #7A4A00; }
-  .tag { font-size: 12px; font-weight: 600; }
-  .tag.simulate { color: #A35D00; } .tag.fix { color: var(--blue); } .tag.reach { color: #8A4B79; } .tag.base { color: var(--muted); }
+  .pill-s, .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,.06); color: var(--muted); font-size: 12px; font-weight: 600; }
+  .pill.save { background: rgba(86,180,233,.14); color: var(--sky); }
+  .pill.more { background: rgba(230,159,0,.14); color: var(--orange); }
   .actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 10px; }
-  .actions .btn { min-height: 34px; padding: 0 10px; font-size: 13px; }
-  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px; }
-  .summary div { background: var(--paper); padding: 16px; }
-  .summary b { display: block; font: 700 22px/1.1 var(--font-display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-  .summary span { color: var(--muted); font-size: 13px; }
+  .actions .btn { height: 30px; padding: 0 10px; font-size: 12px; }
+  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+  .summary div { background: var(--card-3); border-radius: 14px; padding: 16px; }
+  .summary b { display: block; font-size: 24px; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .summary span { color: var(--dim); font-size: 13px; }
 
-  /* ---------- Chapter 5: the report (dark) ---------- */
-  .report-ch { background: var(--night); color: var(--on-night); padding: 160px var(--margin) 140px; }
-  .report-ch .ch-intro p { color: var(--on-night-2); }
-  .report { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 16px; }
+  /* Report */
+  .report { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 10px; }
   .report > *, .metrics > * { min-width: 0; }
-  .score { background: var(--night-2); padding: 36px 28px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .ring { position: relative; width: 180px; height: 180px; }
+  .score { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 36px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+  .ring { position: relative; width: 176px; height: 176px; }
   .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-  .ring circle { fill: none; stroke-width: 12; }
-  .ring .track { stroke: var(--night-3); }
-  .ring .val { stroke: var(--good-dark); stroke-linecap: butt; transition: stroke-dashoffset 1.1s var(--ease), stroke .3s; }
-  .ring b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font: 700 60px/1 var(--font-display); letter-spacing: -0.04em; }
-  .score .grade { font: 700 24px/1.1 var(--font-display); letter-spacing: -0.02em; }
-  .score p { color: var(--on-night-2); font-size: 16px; }
-  .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .metric { background: var(--night-2); padding: 24px; }
+  .ring circle { fill: none; stroke-width: 10; }
+  .ring .track { stroke: var(--card-3); }
+  .ring .val { stroke: var(--good-dark); stroke-linecap: round; transition: stroke-dashoffset 1.2s var(--ease), stroke .3s; }
+  .ring b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 56px; font-weight: 600; letter-spacing: -0.05em; }
+  .score .grade { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+  .score p { color: var(--muted); font-size: 14px; }
+  .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .metric { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 22px; }
   .metric .top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .metric h3 { font: 600 17px/1.3 var(--font-text); letter-spacing: 0; }
-  .metric .num { font: 700 32px/1 var(--font-display); }
-  .metric .rating { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 600; padding: 2px 8px; background: var(--night-3); vertical-align: middle; }
-  .metric .bar { height: 8px; background: var(--night-3); margin: 14px 0; overflow: hidden; }
-  .metric .bar i { display: block; height: 100%; width: 0; transition: width 1.1s var(--ease); }
-  .metric .bar i.fair { /* taste-skill-ignore: stripe pattern carries the rating without colour */ background-image: repeating-linear-gradient(135deg, rgba(0,0,0,.28) 0 3px, transparent 3px 9px) !important; }
-  .metric .bar i.poor { /* taste-skill-ignore: stripe pattern carries the rating without colour */ background-image: repeating-linear-gradient(135deg, rgba(0,0,0,.4) 0 4px, transparent 4px 7px) !important; }
-  .metric p { color: var(--on-night-2); font-size: 16px; }
+  .metric h3 { font-size: 16px; letter-spacing: -0.01em; }
+  .metric .num { font-size: 30px; font-weight: 600; letter-spacing: -0.04em; }
+  .metric .rating { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,.07); vertical-align: middle; }
+  .metric .bar { height: 6px; border-radius: 999px; background: var(--card-3); margin: 14px 0; overflow: hidden; }
+  .metric .bar i { display: block; height: 100%; width: 0; border-radius: 999px; transition: width 1.2s var(--ease); }
+  .metric .bar i.fair { background-image: repeating-linear-gradient(135deg, rgba(0,0,0,.3) 0 3px, transparent 3px 9px) !important; }
+  .metric .bar i.poor { background-image: repeating-linear-gradient(135deg, rgba(0,0,0,.42) 0 4px, transparent 4px 7px) !important; }
+  .metric p { color: var(--muted); font-size: 14px; }
   .pairs { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
-  .pair { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--on-night-2); }
-  .sw { display: inline-flex; }
-  .sw i { width: 28px; height: 28px; display: block; }
-  .recs { background: var(--night-2); padding: 24px 28px; margin-top: 16px; }
-  .recs h3 { font: 700 24px/1.1 var(--font-display); letter-spacing: -0.02em; margin-bottom: 14px; }
+  .pair { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .sw { display: inline-flex; border-radius: 8px; overflow: hidden; box-shadow: 0 0 0 1px var(--line-2); }
+  .sw i { width: 26px; height: 26px; display: block; }
+  .recs { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 24px 26px; margin-top: 10px; }
+  .recs h3 { font-size: 18px; margin-bottom: 14px; }
   .recs ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
-  .recs li { display: flex; gap: 12px; align-items: flex-start; }
+  .recs li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; }
   .recs li svg { margin-top: 3px; color: var(--sky); }
-  .recs .link { color: var(--sky); margin-left: 6px; }
-  .method { color: var(--on-night-2); font-size: 14px; margin-top: 18px; max-width: 70ch; }
-  .analyzing { color: var(--on-night-2); padding: 40px 0; }
+  .recs .link { margin-left: 6px; }
+  .method { color: var(--dim); font-size: 13px; margin-top: 18px; max-width: 80ch; }
+  .analyzing { color: var(--muted); padding: 40px 0; text-align: center; }
 
-  /* ---------- Chapter 6: publish (sky) ---------- */
-  .publish-ch { background: var(--sky); color: var(--ink); padding: 160px var(--margin) 140px; }
-  .publish { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; }
+  /* Publish */
+  .publish { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 10px; font-size: 15px; }
   .publish > * { min-width: 0; }
-  .ppanel { background: var(--white); padding: 24px; }
-  .ppanel h3 { font: 600 16px/1.3 var(--font-text); letter-spacing: 0; margin-bottom: 4px; }
-  label.field { display: block; font-weight: 600; margin-bottom: 8px; }
-  .hint { font-size: 13px; color: var(--muted); margin-top: 6px; }
-  textarea, input[type=text] { width: 100%; border: 1px solid #CFCCC3; border-radius: 0; padding: 12px 14px; background: var(--white); }
-  textarea:focus, input[type=text]:focus { outline: 3px solid rgba(0,114,178,.35); outline-offset: 0; border-color: var(--blue); }
-  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
-  pre.code { max-width: 100%; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; margin: 14px 0 0; padding: 14px 16px; min-height: 180px; max-height: 340px; overflow: auto; white-space: pre; background: var(--paper); }
+  .ppanel { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 24px; }
+  .ppanel h3 { font-size: 15px; margin-bottom: 4px; }
+  label.field { display: block; font-weight: 500; font-size: 14px; margin-bottom: 8px; }
+  .hint { font-size: 13px; color: var(--dim); margin-top: 6px; }
+  textarea, input[type=text] { width: 100%; border: 0; border-radius: 12px; padding: 12px 14px; background: var(--card-3); box-shadow: inset 0 0 0 1px var(--line-2); color: var(--text); }
+  textarea:focus, input[type=text]:focus { outline: 2px solid var(--sky); outline-offset: 0; }
+  pre.code { max-width: 100%; font-family: var(--mono); font-size: 12px; line-height: 1.65; margin: 14px 0 0; padding: 16px; min-height: 180px; max-height: 320px; overflow: auto; white-space: pre; border-radius: 12px; background: var(--bg-2); box-shadow: inset 0 0 0 1px var(--line); color: #C9CED6; }
   .qr { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
-  .qr canvas { width: 220px; height: 220px; image-rendering: pixelated; background: #fff; }
+  .qr canvas { width: 200px; height: 200px; image-rendering: pixelated; background: #fff; border-radius: 14px; }
 
-  /* ---------- Chapter 7: what it does (orange) ---------- */
-  .does { background: var(--orange); color: var(--ink); padding: 20vh var(--margin); }
-  .does-list { list-style: none; margin: 0; padding: 0; }
-  .does-list li { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--margin); align-items: first baseline; padding: .14em 0; }
-  .does-list .name { grid-column: 1 / 9; font: 700 clamp(2.5rem, 5.2vw, 5.25rem)/1 var(--font-display); letter-spacing: -0.04em; transition: color .2s; }
-  .does-list .desc { grid-column: 9 / 13; font-size: 17px; max-width: 34ch; }
-  .does-list li.head .name { color: #5A3E00; }
-  .does-list:hover li:not(.head):not(:hover) .name { color: #6B4A00; }
+  /* How */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .step { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 28px; display: flex; flex-direction: column; gap: 12px; min-height: 260px; transition: transform .25s var(--ease), box-shadow .25s; }
+  @media (hover: hover) and (pointer: fine) { .step:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px var(--line-2), 0 18px 40px rgba(0,0,0,.35); } }
+  .step .n { width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(86,180,233,.14); color: var(--sky); font-weight: 600; font-size: 15px; }
+  .step h3 { font-size: 22px; }
+  .step p { color: var(--muted); font-size: 15px; }
+  .step code { margin-top: auto; align-self: flex-start; font-family: var(--mono); font-size: 12px; padding: 6px 10px; border-radius: 8px; background: var(--card-3); color: #C9CED6; }
 
-  /* ---------- Chapter 8: how it works ---------- */
-  .how { background: var(--paper); padding: 160px var(--margin) 140px; }
-  .how .ch-intro h2 { grid-column: 1 / 6; }
-  .how .ch-intro p { grid-column: 7 / 12; }
-  .stages { display: flex; height: 520px; margin-top: 64px; }
-  .stage { position: relative; flex: 0 0 9%; overflow: hidden; transition: flex-basis .45s var(--ease); color: var(--white); }
-  .stage.open { flex: 1 1 auto; }
-  .stage:nth-child(1) { background: #052237; } .stage:nth-child(2) { background: #0A3D63; } .stage:nth-child(3) { background: var(--blue); }
-  .stage:nth-child(4) { background: #3F97CF; color: var(--ink); } .stage:nth-child(5) { background: #8ECBEE; color: var(--ink); }
-  .stage-btn { position: absolute; inset: 0; width: 100%; border: 0; background: none; cursor: pointer; color: inherit; text-align: left; padding: 0; }
-  .stage-btn span { position: absolute; left: 24px; bottom: 24px; transform-origin: left bottom; transform: rotate(-90deg) translate(-4px, 100%); white-space: nowrap; font: 700 20px/1 var(--font-display); letter-spacing: -0.02em; transition: opacity .2s; }
-  .stage.open .stage-btn { pointer-events: none; }
-  .stage.open .stage-btn span { opacity: 0; }
-  .stage-body { position: absolute; inset: 0; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; visibility: hidden; transition: opacity .3s var(--ease) .1s, visibility 0s .4s; pointer-events: none; min-width: 560px; }
-  .stage.open .stage-body { opacity: 1; visibility: visible; transition: opacity .3s var(--ease) .1s, visibility 0s; pointer-events: auto; }
-  .stage-body h3 { font-size: 40px; }
-  .stage-body p { max-width: 36ch; font-size: 18px; }
-  .stage-body code { display: inline-block; font-family: var(--font-mono); font-size: 14px; background: rgba(0,0,0,.22); padding: 6px 10px; margin-top: 14px; }
-  .stage:nth-child(4) .stage-body code, .stage:nth-child(5) .stage-body code { background: rgba(255,255,255,.45); }
+  /* Note */
+  .note { text-align: center; max-width: 860px; margin: 0 auto; }
+  .note blockquote { margin: 0; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.25; letter-spacing: -0.03em; font-weight: 500; }
+  .note blockquote .soft { color: var(--dim); }
+  .sign { display: inline-flex; align-items: center; gap: 12px; margin-top: 36px; text-align: left; }
+  .sign b { display: block; font-weight: 600; font-size: 15px; }
+  .sign span { color: var(--dim); font-size: 13px; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; background: var(--sky); color: var(--sky-ink); }
 
-  /* ---------- Chapter 9: why I built this ---------- */
-  .about { background: var(--paper); padding: 20px; }
-  .about-panel { position: relative; min-height: 92svh; background: var(--blue-deep); color: var(--on-night); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; }
-  .about-left { padding: 56px; }
-  .about-left h2 { font-size: var(--step-head); max-width: 12ch; }
-  .about-photo { position: absolute; left: 56px; bottom: -8vw; width: 38vw; aspect-ratio: 1; clip-path: circle(50%); }
-  .about-photo img { width: 100%; height: 100%; object-fit: cover; }
-  .about-right { grid-column: 2; padding: 56px 56px 56px 0; margin-left: 26%; display: flex; flex-direction: column; gap: 40px; }
-  .about-right h3 { font-size: 26px; letter-spacing: -0.02em; margin-bottom: 10px; }
-  .about-right p { color: #D3DCE6; font-size: 16px; max-width: 34ch; }
-  .sign { display: flex; align-items: center; gap: 12px; }
-  .sign b { display: block; }
-  .sign span { color: #D3DCE6; font-size: 14px; }
-  .avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; background: var(--sky); color: var(--ink); }
+  /* CTA */
+  .cta { position: relative; overflow: hidden; text-align: center; padding: 88px 24px; border-radius: var(--r-xl); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); }
+  .cta::before { content: ""; position: absolute; left: 50%; bottom: -320px; width: 900px; height: 560px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(86,180,233,.22), transparent 70%); pointer-events: none; }
+  .cta h2 { position: relative; font-size: clamp(34px, 4vw, 56px); letter-spacing: -0.045em; max-width: 16ch; margin: 0 auto; }
+  .cta p { position: relative; margin: 16px auto 0; color: var(--muted); max-width: 520px; }
+  .cta .ctas { position: relative; }
 
-  /* ---------- Footer ---------- */
-  .site-foot { background: var(--night); color: var(--on-night); padding: 72px var(--margin) 28px; min-height: 90svh; display: flex; flex-direction: column; }
-  .foot-name { font: 700 19vw/.8 var(--font-display); letter-spacing: -0.06em; margin: 0 0 72px -0.04em; color: var(--on-night); }
-  .foot-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--margin); }
-  .places { grid-column: 1 / 6; list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  .places a { font: 700 34px/1.15 var(--font-display); letter-spacing: -0.03em; color: var(--orange); text-decoration: none; transition: color .2s; }
-  .places a:hover { color: var(--yellow); }
-  .foot-cols { grid-column: 7 / 13; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--margin); font-size: 15px; }
-  .foot-cols h3 { font: 600 15px/1.3 var(--font-text); letter-spacing: 0; color: var(--on-night-2); margin-bottom: 10px; }
-  .foot-cols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-  .foot-cols a { text-decoration: none; }
-  .foot-cols a:hover { text-decoration: underline; }
-  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: auto; padding-top: 96px; font-size: 13px; color: var(--on-night-2); }
-  .legal a { color: var(--on-night); }
+  /* Footer */
+  .foot { padding: 72px 0 40px; border-top: 1px solid var(--line); margin-top: 120px; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 24px; }
+  .foot-grid p { color: var(--dim); font-size: 14px; margin-top: 12px; max-width: 30ch; }
+  .foot h3 { font-size: 13px; font-weight: 500; color: var(--dim); margin-bottom: 14px; letter-spacing: 0; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
+  .foot ul a { color: var(--muted); transition: color .2s; }
+  .foot ul a:hover { color: var(--text); }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--dim); }
 
-  /* ---------- The vision lens (live) ---------- */
-  .topbar { position: fixed; z-index: 40; top: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; gap: 24px; padding: 0 var(--margin); background: var(--night); color: var(--on-night); transform: translateY(-100%); transition: transform .35s var(--ease); }
-  .topbar.show { transform: none; }
-  .topbar .mark { color: var(--on-night); font-size: 22px; }
-  .topbar .mark svg path { stroke: var(--on-night); }
-  .topbar .btn { margin-left: auto; min-height: 40px; }
-  .lens { display: flex; align-items: center; gap: 2px; font-size: 14px; }
-  .lens > span { font-weight: 600; margin-right: 8px; color: var(--on-night-2); white-space: nowrap; }
-  .lens button { border: 0; background: transparent; color: var(--on-night-2); padding: 8px 10px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color .15s, color .15s; }
-  .lens button:hover { color: var(--on-night); background: var(--night-3); }
-  .lens button[aria-pressed="true"] { background: var(--sky); color: var(--ink); }
-  body[data-lens="deut"] :is(main, .site-foot) { filter: url(#cs-deut); }
-  body[data-lens="prot"] :is(main, .site-foot) { filter: url(#cs-prot); }
-  body[data-lens="trit"] :is(main, .site-foot) { filter: url(#cs-trit); }
-  body[data-lens="mono"] :is(main, .site-foot) { filter: url(#cs-mono); }
+  /* Page-wide vision lens */
+  body[data-lens="deut"] :is(main, .foot) { filter: url(#cs-deut); }
+  body[data-lens="prot"] :is(main, .foot) { filter: url(#cs-prot); }
+  body[data-lens="trit"] :is(main, .foot) { filter: url(#cs-trit); }
+  body[data-lens="mono"] :is(main, .foot) { filter: url(#cs-mono); }
 
-  /* ---------- Dialogs, toast ---------- */
-  dialog { /* taste-skill-ignore: dialog floats */ border: 0; padding: 0; border-radius: 0; box-shadow: 0 20px 60px rgba(0,0,0,.35); max-width: min(560px, calc(100vw - 32px)); width: 100%; max-height: calc(100dvh - 32px); overflow: auto; color: var(--ink); } /* taste-skill-ignore: dialog floats */
-  dialog::backdrop { background: rgba(14,17,22,.6); }
-  .dlg { padding: 32px; position: relative; }
-  .dlg h3 { font-size: 32px; margin-bottom: 8px; }
+  /* Dialogs, toast */
+  dialog { border: 0; padding: 0; border-radius: 22px; background: var(--card-2); color: var(--text); box-shadow: 0 0 0 1px var(--line-2), 0 30px 80px rgba(0,0,0,.6); max-width: min(540px, calc(100vw - 32px)); width: 100%; max-height: calc(100dvh - 32px); overflow: auto; }
+  dialog::backdrop { background: rgba(0,0,0,.6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  dialog[open] { animation: dlgIn .22s var(--ease); }
+  @keyframes dlgIn { from { opacity: 0; transform: scale(.96); } }
+  .dlg { padding: 30px; position: relative; }
+  .dlg h3 { font-size: 26px; margin-bottom: 8px; }
   .dlg ol { padding-left: 20px; color: var(--muted); font-size: 14px; margin: 12px 0 20px; }
   .dlg .fields { display: grid; gap: 14px; }
-  .dlg .err { color: var(--verm); font-size: 13px; min-height: 1.3em; margin-top: 8px; }
+  .dlg .err { color: var(--poor-dark); font-size: 13px; min-height: 1.3em; margin-top: 8px; }
   .dlg .row { justify-content: flex-end; margin-top: 20px; }
-  .x { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border: 0; background: var(--paper); cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  #lightbox { max-width: min(1100px, calc(100vw - 32px)); background: var(--night); color: var(--on-night); }
-  #lightbox .x { background: var(--night-3); color: var(--on-night); z-index: 2; }
+  .x { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(255,255,255,.08); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; }
+  #lightbox { max-width: min(1100px, calc(100vw - 32px)); }
   #lightbox .stage-lb { position: relative; background: #000; }
   #lightbox img { width: 100%; max-height: 72vh; object-fit: contain; }
   #lightbox .cap { padding: 18px 24px 22px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
-  #lightbox .cap p { color: var(--on-night-2); font-size: 14px; margin-top: 2px; }
-  .navbtn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; background: var(--night-3); color: var(--on-night); cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .navbtn.prev { left: 12px; } .navbtn.next { right: 12px; }
-  .toast { position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); background: var(--night); color: var(--on-night); padding: 12px 20px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s var(--ease); z-index: 200; max-width: calc(100vw - 32px); text-align: center; /* taste-skill-ignore: toast floats */ box-shadow: 0 8px 28px rgba(0,0,0,.28); }
+  #lightbox .cap p { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .navbtn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(8,9,11,.6); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .navbtn.prev { left: 14px; } .navbtn.next { right: 14px; }
+  .toast { position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom)); transform: translate(-50%, 16px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity .2s var(--ease), transform .2s var(--ease); z-index: 200; max-width: calc(100vw - 32px); text-align: center; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-  /* ---------- Entrances ---------- */
-  .js .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: var(--d, 0ms); }
-  .js .reveal.in { opacity: 1; transform: none; }
+  /* Scroll entrances */
+  .js .reveal { opacity: 0; transform: translateY(24px); filter: blur(6px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: var(--d, 0ms); }
+  .js .reveal.in { opacity: 1; transform: none; filter: none; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .js .reveal { opacity: 1; transform: none; transition: none; }
-    .js .hl .line > span, .js .hero-foot, .js .hero-top .btn { animation: none; transform: none; opacity: 1; }
-    .hero-foot { transform: translateX(-50%); }
+    .js .reveal, .js .rise, .js .demo { opacity: 1; transform: none; filter: none; animation: none; transition: opacity .2s; }
+    .marquee-track { animation: none; }
     .shimmer { animation: none; }
-    * { transition-duration: .01ms !important; }
+    .modes .ind, .lens-menu { transition: opacity .15s; }
   }
 </style>
 </head>
@@ -403,264 +379,245 @@
   <filter id="cs-prot" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/></filter>
   <filter id="cs-trit" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/></filter>
   <filter id="cs-mono" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/></filter>
-  <linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#0072B2"/><stop offset="1" stop-color="#56B4E9"/></linearGradient>
 </svg>
 
-<main id="top">
-  <!-- Chapter 1 -->
-  <header class="hero" id="hero">
-    <div class="hero-top">
-      <a class="mark" href="#top" aria-label="ClearSight home">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16z" fill="none" stroke="#0E1116" stroke-width="2.8" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.6" fill="#0072B2"/></svg>
-        ClearSight
-      </a>
-      <div class="hero-lens" id="heroLens" role="group" aria-label="See this page as">
-        <span>See this page as</span>
-        <button type="button" data-lens="none" aria-pressed="true">Normal</button>
-        <button type="button" data-lens="deut" aria-pressed="false">Deuteranopia</button>
-        <button type="button" data-lens="prot" aria-pressed="false">Protanopia</button>
-        <button type="button" data-lens="mono" aria-pressed="false">No colour</button>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="ClearSight home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16z" fill="none" stroke="#EDEEF0" stroke-width="2.4" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.4" fill="#56B4E9"/></svg>
+      ClearSight
+    </a>
+    <div class="nav-links">
+      <a href="#top">Demo</a>
+      <a href="#studio">Studio</a>
+      <a href="#report">Report</a>
+      <a href="#how">How it works</a>
+    </div>
+    <div class="nav-right">
+      <div class="lens-wrap">
+        <button type="button" class="lens-btn" id="lensBtn" aria-expanded="false" aria-controls="lensMenu" data-on="false"><span class="dotm" aria-hidden="true"></span><span id="lensLabel">Vision lens</span></button>
+        <div class="lens-menu" id="lensMenu" role="group" aria-label="See this whole page as">
+          <p>See this whole page as</p>
+          <button type="button" data-lens="none" aria-pressed="true">Normal vision</button>
+          <button type="button" data-lens="deut" aria-pressed="false">Deuteranopia <small>green-blind</small></button>
+          <button type="button" data-lens="prot" aria-pressed="false">Protanopia <small>red-blind</small></button>
+          <button type="button" data-lens="trit" aria-pressed="false">Tritanopia <small>blue-blind</small></button>
+          <button type="button" data-lens="mono" aria-pressed="false">No colour <small>monochromacy</small></button>
+        </div>
       </div>
-      <a class="btn" href="#studio">Check a notice</a>
+      <a class="btn small" href="#studio">Try it</a>
     </div>
-    <div class="hl-layer above">
-      <h1 class="hl"><span class="sr">ClearSight: </span><span class="line"><span>See what</span></span><span class="line"><span>they see</span></span></h1>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="hero">
+    <div class="wrap">
+      <span class="pill rise" style="--d:0ms"><b>Free</b>Open source · built on Cloudinary</span>
+      <h1><span class="line"><span class="w rise" style="--d:80ms">Design</span> <span class="w rise" style="--d:140ms">for</span></span> <span class="line"><span class="w rise soft" style="--d:200ms">every</span> <span class="w rise soft" style="--d:260ms">eye.</span></span></h1>
+      <p class="sub rise" style="--d:340ms">See your poster the way colour-blind, low-vision and offline readers do. Then fix it in one click.</p>
+      <div class="ctas rise" style="--d:420ms">
+        <a class="btn sky" href="#studio">Check your poster</a>
+        <a class="btn ghost" href="#how">How it works</a>
+      </div>
+
+      <div class="demo" id="demo">
+        <div class="dcmp" id="dcmp">
+          <img class="dB" id="dB" alt="" draggable="false" width="1400" height="933">
+          <img class="dtop" id="dA" alt="Flood warning poster in full colour" draggable="false" width="1400" height="933">
+          <span class="dlabel l">You see</span>
+          <span class="dlabel r" id="dLabel">Deuteranopia sees</span>
+          <div class="dhandle" id="dHandle" role="slider" tabindex="0" aria-label="Compare full colour with the selected vision" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <span class="dknob" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <div class="modes" id="modes2" role="group" aria-label="Choose a type of vision"><span class="ind" aria-hidden="true"></span></div>
+      <p class="demo-fact" id="demoFact" aria-live="polite"></p>
     </div>
-    <div class="hl-layer below" aria-hidden="true">
-      <p class="hl"><span class="line"><span>See what</span></span><span class="line"><span>they see</span></span></p>
-    </div>
-    <p class="hero-foot">ClearSight shows any public notice the way colour-blind, low-vision and offline readers see it, then fixes it with Cloudinary.</p>
   </header>
 
-  <!-- Chapter 2 -->
-  <section class="readers" id="why" aria-labelledby="readersTitle">
-    <div>
-      <h2 id="readersTitle" class="reveal">Who misses your red and green?</h2>
-      <div class="control reveal" style="--d:90ms">
-        <label for="readers">People who read your notice <output id="readersOut" for="readers">10,000</output></label>
-        <input type="range" id="readers" min="0" max="7" step="1" value="4" autocomplete="off">
+  <section class="stats" aria-label="Why it matters">
+    <div class="wrap">
+      <div class="stat-row">
+        <div class="reveal"><b class="num"><span data-count="12" data-prefix="1 in ">1 in 12</span></b><span class="lbl">men can’t tell red from green</span><small>Colour Blind Awareness</small></div>
+        <div class="reveal" style="--d:80ms"><b class="num"><span data-count="2.2" data-dec="1" data-suffix="B">2.2B</span></b><span class="lbl">people live with a vision impairment</span><small>WHO, World Report on Vision</small></div>
+        <div class="reveal" style="--d:160ms"><b class="num"><span data-count="97" data-suffix="%">97%</span></b><span class="lbl">smaller files for slow networks</span><small>Measured on our breakfast sample</small></div>
       </div>
     </div>
-    <div class="readers-result">
-      <p class="figure reveal" aria-live="polite"><span id="affected">425</span><small>can’t tell red from green</small></p>
-      <p class="note reveal" style="--d:120ms">Half your readers are men, half women. About 1 in 12 men and 1 in 200 women have red–green colour blindness (Colour Blind Awareness), so 4.25% of any crowd.</p>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text</span><span>e_simulate_colorblind:protanopia</span>
+        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text</span><span>e_simulate_colorblind:protanopia</span>
+      </div>
     </div>
   </section>
 
-  <!-- Chapter 3 -->
-  <section class="seeing" id="seeing" aria-labelledby="seeingTitle">
-    <div class="disc" id="disc" aria-hidden="true"></div>
-    <div class="poster" id="poster">
-      <img id="posterA" alt="Flood warning poster in full colour" width="1000" height="667">
-      <img id="posterB" class="out" alt="" width="1000" height="667">
-    </div>
-    <p class="fact" id="fact" aria-live="polite"></p>
-    <div class="show-list" id="showList" role="group" aria-labelledby="seeingTitle">
-      <h2 id="seeingTitle">One notice, six eyes</h2>
-    </div>
-  </section>
-
-  <!-- Chapter 4 -->
-  <section class="studio-ch" id="studio" aria-labelledby="studioTitle">
-    <div class="ch-intro">
-      <h2 id="studioTitle" class="reveal">Try it on any notice</h2>
-      <p class="reveal" style="--d:90ms">Pick one of ours or drop in your own poster, map or chart. Everything here is live: every version is made by Cloudinary from the real file.</p>
-    </div>
-    <div class="app reveal" style="--d:160ms">
-      <div class="app-row">
-        <div class="app-side">
-          <div>
-            <h3>Try one of ours</h3>
-            <p class="sub">No account needed.</p>
-            <div class="samples" id="samples" role="group" aria-label="Choose an image"></div>
+  <section class="block" id="studio" aria-labelledby="studioTitle">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="studioTitle" class="reveal">Try it on your own poster</h2>
+        <p class="reveal" style="--d:80ms">Pick a sample or drop in your own. Eleven versions, made live by Cloudinary from the real file.</p>
+      </div>
+      <div class="app reveal" style="--d:140ms">
+        <div class="app-row">
+          <div class="panel app-side">
+            <div>
+              <h3>Samples</h3>
+              <p class="sub">No account needed.</p>
+              <div class="samples" id="samples" role="group" aria-label="Choose an image"></div>
+            </div>
+            <div>
+              <h3>Your poster</h3>
+              <p class="sub">Drag, drop, paste or browse.</p>
+              <button type="button" class="drop" id="drop" aria-describedby="dropHint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+                <b id="dropTitle">Drop an image here</b>
+                <span id="dropHint">or click to browse. You can paste, too.</span>
+                <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+              </button>
+              <input type="file" id="file" accept="image/*" class="sr" tabindex="-1" aria-hidden="true">
+              <div class="connected"><span id="connState"><span class="dot"></span>Not connected</span><button type="button" class="link" id="openSettings">Connect Cloudinary</button></div>
+            </div>
+            <div class="now" aria-live="polite">Working on <b id="nowName">Flood warning</b></div>
           </div>
-          <div>
-            <h3>Use your own</h3>
-            <button type="button" class="drop" id="drop" aria-describedby="dropHint">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
-              <b id="dropTitle">Drop an image here</b>
-              <span id="dropHint">or click to browse. You can paste, too.</span>
-              <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
-            </button>
-            <input type="file" id="file" accept="image/*" class="sr" tabindex="-1" aria-hidden="true">
-            <div class="connected" style="margin-top:10px">
-              <span id="connState"><span class="dot"></span>Not connected</span>
-              <button type="button" class="link" id="openSettings">Connect Cloudinary</button>
+          <div class="panel" id="inspect">
+            <div class="toolbar"><div class="seg" id="views" role="group" aria-label="Version to compare"></div></div>
+            <div class="toolbar">
+              <div class="seg" id="modes" role="group" aria-label="Comparison layout">
+                <button type="button" data-mode="split" aria-pressed="true">Slider</button>
+                <button type="button" data-mode="side" aria-pressed="false">Side by side</button>
+              </div>
+              <label class="strength" id="strengthWrap">Stripe strength <input type="range" id="strength" min="10" max="100" step="10" value="40" autocomplete="off"> <output id="strengthOut">40</output></label>
+            </div>
+            <div class="cmp" id="cmp">
+              <div class="pane" id="paneB"><div class="shimmer"></div><img id="cmpB" alt="" draggable="false"><span class="chip r" id="chipB">Deuteranopia</span></div>
+              <div class="pane over" id="paneA"><div class="shimmer"></div><img id="cmpA" alt="" draggable="false"><span class="chip l">Original</span></div>
+              <div class="handle" id="handle" role="slider" tabindex="0" aria-label="Comparison position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% original">
+                <span class="knob" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+              </div>
+            </div>
+            <p class="inspect-note" id="inspectNote"></p>
+          </div>
+        </div>
+        <div class="panel" id="pack">
+          <div class="pack-head">
+            <div><h3>The accessibility pack</h3><p class="sub" style="margin-bottom:0">Each version is a live Cloudinary link.</p></div>
+            <div class="row">
+              <div class="seg" id="filters" role="group" aria-label="Filter versions">
+                <button type="button" data-filter="all" aria-pressed="true">All</button>
+                <button type="button" data-filter="simulate" aria-pressed="false">Simulate</button>
+                <button type="button" data-filter="fix" aria-pressed="false">Fix</button>
+                <button type="button" data-filter="reach" aria-pressed="false">Reach</button>
+              </div>
+              <button type="button" class="btn small" id="zipBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>Download pack</button>
             </div>
           </div>
-          <div class="now" aria-live="polite"><span>Working on: <b id="nowName">Flood warning</b></span></div>
+          <div class="grid" id="grid"></div>
+          <div class="summary" id="summary" aria-live="polite"></div>
         </div>
-        <div class="app-main" id="inspect">
-          <h3>Compare</h3>
-          <p class="sub">Drag the handle. Pick a view.</p>
-          <div class="toolbar"><div class="seg" id="views" role="group" aria-label="Version to compare"></div></div>
-          <div class="toolbar">
-            <div class="seg" id="modes" role="group" aria-label="Comparison layout">
-              <button type="button" data-mode="split" aria-pressed="true">Slider</button>
-              <button type="button" data-mode="side" aria-pressed="false">Side by side</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="report" aria-labelledby="reportTitle" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="reportTitle" class="reveal">Your report card</h2>
+        <p class="reveal" style="--d:80ms">Measured from the pixels. Every score has a word and a pattern, so none of it depends on colour.</p>
+      </div>
+      <div id="reportBody" class="reveal" style="--d:140ms" aria-live="polite"><p class="analyzing">Analysing…</p></div>
+    </div>
+  </section>
+
+  <section class="block" id="publish" aria-labelledby="publishTitle" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="publishTitle" class="reveal">Publish it everywhere</h2>
+        <p class="reveal" style="--d:80ms">Paste-ready code with your alt text, and a QR code for the paper copy.</p>
+      </div>
+      <div class="publish reveal" style="--d:140ms">
+        <div class="ppanel">
+          <label class="field" for="alt">Describe the image</label>
+          <textarea id="alt" rows="2" placeholder="e.g. Flood warning. Zone A: evacuate now. Zone B: get ready. Zone C: safe."></textarea>
+          <p class="hint">Screen readers read this aloud. Include any words that appear in the image.</p>
+          <div class="row" style="justify-content:space-between;margin-top:14px">
+            <div class="seg" id="formats" role="group" aria-label="Snippet format">
+              <button type="button" data-format="html" aria-pressed="true">HTML</button>
+              <button type="button" data-format="md" aria-pressed="false">Markdown</button>
+              <button type="button" data-format="links" aria-pressed="false">Links</button>
             </div>
-            <label class="strength" id="strengthWrap">Stripe strength
-              <input type="range" id="strength" min="10" max="100" step="10" value="40" autocomplete="off">
-              <output id="strengthOut">40</output>
-            </label>
+            <button type="button" class="btn small" id="copySnippet">Copy</button>
           </div>
-          <div class="cmp" id="cmp" data-ui>
-            <div class="pane" id="paneB"><div class="shimmer"></div><img id="cmpB" alt="" draggable="false"><span class="chip r" id="chipB">Deuteranopia</span></div>
-            <div class="pane over" id="paneA"><div class="shimmer"></div><img id="cmpA" alt="" draggable="false"><span class="chip l">Original</span></div>
-            <div class="handle" id="handle" role="slider" tabindex="0" aria-label="Comparison position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% original">
-              <span class="knob" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
-            </div>
-          </div>
-          <p class="inspect-note" id="inspectNote"></p>
+          <pre id="snippet" class="code" tabindex="0" aria-label="Snippet to paste into your website"></pre>
         </div>
-      </div>
-      <div class="pack" id="pack">
-        <div class="pack-head">
-          <div>
-            <h3>The accessibility pack</h3>
-            <p class="sub" style="margin:0">Eleven versions, each a live Cloudinary link.</p>
+        <div class="ppanel qr">
+          <h3>QR for the printed poster</h3>
+          <div class="seg" id="qrTargets" role="group" aria-label="QR destination">
+            <button type="button" data-qr="pack" aria-pressed="true">This pack</button>
+            <button type="button" data-qr="stripes" aria-pressed="false">Colour-blind</button>
+            <button type="button" data-qr="lowdata" aria-pressed="false">Low data</button>
           </div>
-          <div class="row" style="margin:0">
-            <div class="seg" id="filters" role="group" aria-label="Filter versions">
-              <button type="button" data-filter="all" aria-pressed="true">All</button>
-              <button type="button" data-filter="simulate" aria-pressed="false">Simulate</button>
-              <button type="button" data-filter="fix" aria-pressed="false">Fix</button>
-              <button type="button" data-filter="reach" aria-pressed="false">Reach</button>
-            </div>
-            <button type="button" class="btn small" id="zipBtn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>Download pack (.zip)</button>
+          <canvas id="qr" width="200" height="200" role="img" aria-label="QR code"></canvas>
+          <p class="hint" id="qrNote"></p>
+          <div class="row" style="justify-content:center">
+            <button type="button" class="btn small" id="qrDownload">Download PNG</button>
+            <button type="button" class="btn small ghost" id="shareBtn" hidden>Share</button>
           </div>
-        </div>
-        <div class="grid" id="grid"></div>
-        <div class="summary" id="summary" aria-live="polite"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Chapter 5 -->
-  <section class="report-ch" id="report" aria-labelledby="reportTitle">
-    <div class="ch-intro">
-      <h2 id="reportTitle" class="reveal">Your report card</h2>
-      <p class="reveal" style="--d:90ms">Measured from the pixels, not guessed. Every score comes with a word and a pattern, so none of it depends on colour.</p>
-    </div>
-    <div id="reportBody" class="reveal" style="--d:160ms" aria-live="polite"><p class="analyzing">Analysing…</p></div>
-  </section>
-
-  <!-- Chapter 6 -->
-  <section class="publish-ch" id="publish" aria-labelledby="publishTitle">
-    <div class="ch-intro">
-      <h2 id="publishTitle" class="reveal">Publish it everywhere</h2>
-      <p class="reveal" style="--d:90ms">Paste-ready code with your alt text, and a QR code for the paper copy that opens the accessible version on any phone.</p>
-    </div>
-    <div class="publish reveal" style="--d:160ms">
-      <div class="ppanel">
-        <label class="field" for="alt">Describe the image</label>
-        <textarea id="alt" rows="2" placeholder="e.g. Flood warning. Zone A: evacuate now. Zone B: get ready. Zone C: safe."></textarea>
-        <p class="hint">Screen readers read this aloud. Include any words that appear in the image.</p>
-        <div class="row" style="justify-content:space-between">
-          <div class="seg" id="formats" role="group" aria-label="Snippet format">
-            <button type="button" data-format="html" aria-pressed="true">HTML</button>
-            <button type="button" data-format="md" aria-pressed="false">Markdown</button>
-            <button type="button" data-format="links" aria-pressed="false">Links</button>
-          </div>
-          <button type="button" class="btn small" id="copySnippet">Copy</button>
-        </div>
-        <pre id="snippet" class="code" tabindex="0" aria-label="Snippet to paste into your website"></pre>
-      </div>
-      <div class="ppanel qr">
-        <h3>QR for the printed poster</h3>
-        <div class="seg" id="qrTargets" role="group" aria-label="QR destination">
-          <button type="button" data-qr="pack" aria-pressed="true">This pack</button>
-          <button type="button" data-qr="stripes" aria-pressed="false">Colour-blind</button>
-          <button type="button" data-qr="lowdata" aria-pressed="false">Low data</button>
-        </div>
-        <canvas id="qr" width="220" height="220" role="img" aria-label="QR code"></canvas>
-        <p class="hint" id="qrNote"></p>
-        <div class="row" style="justify-content:center;margin:0">
-          <button type="button" class="btn small" id="qrDownload">Download PNG</button>
-          <button type="button" class="btn small ghost" id="shareBtn" hidden>Share</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Chapter 7 -->
-  <section class="does" id="does" aria-labelledby="doesTitle">
-    <ul class="does-list">
-      <li class="head reveal"><h2 class="name" id="doesTitle">What it does</h2><span class="desc"></span></li>
-      <li class="reveal"><span class="name">Simulate</span><span class="desc">Four kinds of colour blindness, rendered by Cloudinary from the real file.</span></li>
-      <li class="reveal"><span class="name">Fix</span><span class="desc">Stripe patterns keep red and green apart, even on a black-and-white photocopy.</span></li>
-      <li class="reveal"><span class="name">Lighten</span><span class="desc">A version up to 97% smaller for slow, metered or disaster-hit networks.</span></li>
-      <li class="reveal"><span class="name">Score</span><span class="desc">An accessibility report measured from the pixels, with what to fix first.</span></li>
-      <li class="reveal"><span class="name">Print</span><span class="desc">A QR code for the paper copy that opens the accessible version.</span></li>
-      <li class="reveal"><span class="name">Share</span><span class="desc">Every version is a link, a zip, or code you can paste anywhere.</span></li>
-    </ul>
-  </section>
-
-  <!-- Chapter 8 -->
-  <section class="how" id="how" aria-labelledby="howTitle">
-    <div class="ch-intro">
-      <h2 id="howTitle" class="reveal">How it works</h2>
-      <p class="reveal" style="--d:90ms">No servers and no image code. Cloudinary does the heavy lifting, from upload to the last byte on a phone.</p>
-    </div>
-    <div class="stages reveal" id="stages" style="--d:160ms">
-      <div class="stage open"><button type="button" class="stage-btn" aria-expanded="true"><span>Upload</span></button><div class="stage-body"><h3>Upload</h3><div><p>The image goes straight from the browser to the Cloudinary Upload API through an unsigned preset. No secret ever reaches the page.</p><code>POST /v1_1/&lt;cloud&gt;/image/upload</code></div></div></div>
-      <div class="stage"><button type="button" class="stage-btn" aria-expanded="false"><span>Transform</span></button><div class="stage-body"><h3>Transform</h3><div><p>Every version is a URL. Cloudinary renders it at the edge on first request: simulations, stripes, greyscale, contrast.</p><code>e_simulate_colorblind:deuteranopia</code></div></div></div>
-      <div class="stage"><button type="button" class="stage-btn" aria-expanded="false"><span>Deliver</span></button><div class="stage-body"><h3>Deliver</h3><div><p>f_auto and q_auto send each device the lightest format it can open, then the CDN caches it worldwide.</p><code>w_480,c_limit/f_auto,q_auto:eco</code></div></div></div>
-      <div class="stage"><button type="button" class="stage-btn" aria-expanded="false"><span>Measure</span></button><div class="stage-body"><h3>Measure</h3><div><p>The browser reads the real bytes and pixels Cloudinary returns, to size every file and score the image.</p><code>Access-Control-Allow-Origin: *</code></div></div></div>
-      <div class="stage"><button type="button" class="stage-btn" aria-expanded="false"><span>Share</span></button><div class="stage-body"><h3>Share</h3><div><p>Links, a zip of every version, paste-ready HTML and a QR code for the printed poster.</p><code>e_assist_colorblind:40/e_grayscale</code></div></div></div>
-    </div>
-  </section>
-
-  <!-- Chapter 9 -->
-  <section class="about" id="note" aria-labelledby="noteTitle">
-    <div class="about-panel">
-      <div class="about-left">
-        <h2 id="noteTitle" class="reveal">Notices are for everyone</h2>
+  <section class="block" id="how" aria-labelledby="howTitle" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="howTitle" class="reveal">How it works</h2>
+        <p class="reveal" style="--d:80ms">No servers. No image code. Cloudinary does the heavy lifting.</p>
       </div>
-      <div class="about-photo reveal" style="--d:120ms"><img src="img/notice-board.jpg" width="1200" height="900" alt="A public notice board in a village shelter, covered in posters and leaflets" loading="lazy" decoding="async"></div>
-      <div class="about-right">
-        <div class="reveal"><h3>Why I built this</h3><p>Public notices exist to keep people safe. Too many are designed for one kind of reader: perfect colour vision, a fast connection, a big screen.</p></div>
-        <div class="reveal" style="--d:90ms"><h3>Free and open</h3><p>A clinic, a school or a local council can check a notice and fix it in a minute, without a designer. Every fix is a link anyone can share.</p></div>
-        <div class="sign reveal" style="--d:160ms"><span class="avatar" aria-hidden="true">BS</span><div><b>Bhavishya Sharma</b><span>Designer and developer of ClearSight</span></div></div>
-        <a class="btn light reveal" style="--d:200ms;align-self:flex-start" href="https://github.com/Sharmabhavishya/clearsight" rel="noopener">Read the source</a>
+      <div class="steps">
+        <div class="step reveal"><span class="n">1</span><h3>Upload</h3><p>Your poster goes straight from the browser to Cloudinary through an unsigned preset. No secret ever touches the page.</p><code>POST /image/upload</code></div>
+        <div class="step reveal" style="--d:80ms"><span class="n">2</span><h3>Transform</h3><p>Every version is just a URL. Cloudinary renders it at the edge: simulations, stripe fixes, greyscale, contrast.</p><code>e_simulate_colorblind</code></div>
+        <div class="step reveal" style="--d:160ms"><span class="n">3</span><h3>Deliver</h3><p>f_auto and q_auto send each phone the lightest format it can open, cached on a global CDN.</p><code>f_auto,q_auto:eco</code></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="note" aria-labelledby="noteTitle" style="padding-top:40px">
+    <div class="wrap">
+      <div class="note">
+        <h2 id="noteTitle" class="sr">Why I built this</h2>
+        <blockquote class="reveal">Public notices exist to keep people safe. <span class="soft">Too many are designed for one kind of reader: perfect colour vision, a fast connection, a big screen. So I built the tool that checks and fixes them in a minute.</span></blockquote>
+        <div class="sign reveal" style="--d:100ms"><span class="avatar" aria-hidden="true">BS</span><div><b>Bhavishya Sharma</b><span>Designer and developer of ClearSight</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="ctaTitle">
+    <div class="wrap">
+      <div class="cta reveal">
+        <h2 id="ctaTitle">Make your next notice readable by everyone.</h2>
+        <p>Free, open source, and it takes about a minute.</p>
+        <div class="ctas"><a class="btn sky" href="#studio">Check your poster</a><a class="btn ghost" href="https://github.com/Sharmabhavishya/clearsight" rel="noopener">View on GitHub</a></div>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="site-foot">
-  <p class="foot-name" aria-hidden="true">ClearSight</p>
-  <div class="foot-row">
-    <ul class="places">
-      <li><a href="#studio">Check a notice</a></li>
-      <li><a href="https://github.com/Sharmabhavishya/clearsight" rel="noopener">Source on GitHub</a></li>
-      <li><a href="https://app.notion.com/p/ClearSight-a0c4f103a05483a2b79d8136e1df028e" rel="noopener">Project write-up</a></li>
-    </ul>
-    <div class="foot-cols">
-      <nav aria-label="Tool"><h3>Tool</h3><ul><li><a href="#studio">Studio</a></li><li><a href="#inspect">Compare</a></li><li><a href="#report">Report</a></li><li><a href="#publish">Publish</a></li></ul></nav>
-      <nav aria-label="Project"><h3>Project</h3><ul><li><a href="#how">How it works</a></li><li><a href="#note">Why I built this</a></li><li><a href="https://github.com/Sharmabhavishya/clearsight/blob/main/LICENSE" rel="noopener">MIT License</a></li></ul></nav>
-      <nav aria-label="Built with"><h3>Built with</h3><ul><li><a href="https://cloudinary.com" rel="noopener">Cloudinary</a></li><li><a href="https://jfly.uni-koeln.de/color/" rel="noopener">Okabe–Ito colours</a></li></ul></nav>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="mark" href="#top" aria-label="ClearSight, back to top"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16z" fill="none" stroke="#EDEEF0" stroke-width="2.4" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.4" fill="#56B4E9"/></svg>ClearSight</a>
+        <p>Public information that every reader can actually use.</p>
+      </div>
+      <nav aria-label="Tool"><h3>Tool</h3><ul><li><a href="#top">Live demo</a></li><li><a href="#studio">Studio</a></li><li><a href="#report">Report card</a></li><li><a href="#publish">Publish</a></li></ul></nav>
+      <nav aria-label="Project"><h3>Project</h3><ul><li><a href="https://github.com/Sharmabhavishya/clearsight" rel="noopener">GitHub</a></li><li><a href="https://app.notion.com/p/ClearSight-a0c4f103a05483a2b79d8136e1df028e" rel="noopener">Write-up</a></li><li><a href="https://github.com/Sharmabhavishya/clearsight/blob/main/LICENSE" rel="noopener">MIT License</a></li></ul></nav>
+      <nav aria-label="Built with"><h3>Built with</h3><ul><li><a href="https://cloudinary.com" rel="noopener">Cloudinary</a></li><li><a href="https://jfly.uni-koeln.de/color/" rel="noopener">Okabe–Ito palette</a></li></ul></nav>
     </div>
-  </div>
-  <div class="legal">
-    <span>© <span id="year">2026</span> ClearSight. Designed and built by Bhavishya Sharma.</span>
-    <span>Photo: “Notice board on public shelter” by Bob Harvey, <a href="https://creativecommons.org/licenses/by-sa/2.0/" rel="noopener">CC BY-SA 2.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Notice_board_on_public_shelter_-_geograph.org.uk_-_4516156.jpg" rel="noopener">Wikimedia Commons</a>.</span>
-    <a href="#top">Back to top</a>
+    <div class="legal"><span>© <span id="year">2026</span> ClearSight. Designed and built by Bhavishya Sharma.</span><a href="#top">Back to top ↑</a></div>
   </div>
 </footer>
-
-<div class="topbar" id="topbar">
-  <a class="mark" href="#top" aria-label="ClearSight, back to top"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16z" fill="none" stroke-width="2.8" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.6" fill="#56B4E9"/></svg>ClearSight</a>
-  <div class="lens" id="lens" role="group" aria-label="See this page as">
-  <span>See this page as</span>
-  <button type="button" data-lens="none" aria-pressed="true">Normal</button>
-  <button type="button" data-lens="deut" aria-pressed="false">Deuteranopia</button>
-  <button type="button" data-lens="prot" aria-pressed="false">Protanopia</button>
-  <button type="button" data-lens="trit" aria-pressed="false">Tritanopia</button>
-  <button type="button" data-lens="mono" aria-pressed="false">No colour</button>
-  </div>
-  <a class="btn light" href="#studio">Check a notice</a>
-</div>
 
 <!-- Settings dialog -->
 <dialog id="settings" aria-labelledby="settingsTitle">
@@ -751,7 +708,7 @@
       t: () => "e_simulate_colorblind:tritanopia/" + VIEW },
     { key: "mono", group: "simulate", tag: "Simulate", title: "Monochromacy",
       who: "No colour at all. Only light and dark remain.",
-      t: () => "e_simulate_colorblind:rod_monochromacy/" + VIEW },
+      t: () => "e_grayscale/" + VIEW },
     { key: "stripes", group: "fix", tag: "Fix", title: "Colour-blind stripes",
       who: "Adds stripe patterns to colours that are easy to confuse, so meaning survives without colour.",
       t: () => "e_assist_colorblind:" + state.strength },
@@ -882,74 +839,117 @@
     group.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset[attr] === value)));
   }
 
-  // ---------- One notice, six eyes ----------
+  // ---------- Hero demo: drag to compare, pick a way of seeing ----------
   const SHOW = [
-    { name: "Full colour", disc: "var(--verm)", t: () => "w_1000/" + VIEW, fact: "Red means evacuate. Green means safe." },
-    { name: "Deuteranopia", disc: "var(--orange)", t: () => "e_simulate_colorblind:deuteranopia/w_1000/" + VIEW, fact: "Evacuate and Safe turn the same olive. The most common kind." },
-    { name: "Protanopia", disc: "var(--sky)", t: () => "e_simulate_colorblind:protanopia/w_1000/" + VIEW, fact: "Red loses its brightness and sinks into mud." },
-    { name: "Tritanopia", disc: "var(--yellow)", t: () => "e_simulate_colorblind:tritanopia/w_1000/" + VIEW, fact: "Blue and yellow shift. Rare, but real." },
-    { name: "No colour at all", disc: "var(--paper)", t: () => "e_simulate_colorblind:rod_monochromacy/w_1000/" + VIEW, fact: "Only light and dark are left." },
-    { name: "Fixed by ClearSight", disc: "var(--teal)", t: () => "e_assist_colorblind:40/e_simulate_colorblind:deuteranopia/w_1000", fact: "Still deuteranopia, after the fix: stripes keep every zone apart." }
+    { name: "Deuteranopia", label: "Deuteranopia sees", t: () => "e_simulate_colorblind:deuteranopia/w_1400/" + VIEW, fact: "Green-blind, the most common kind. Evacuate and Safe turn the same olive." },
+    { name: "Protanopia", label: "Protanopia sees", t: () => "e_simulate_colorblind:protanopia/w_1400/" + VIEW, fact: "Red-blind. Red warnings sink into dark mud." },
+    { name: "Tritanopia", label: "Tritanopia sees", t: () => "e_simulate_colorblind:tritanopia/w_1400/" + VIEW, fact: "Blue-blind. Rarer, and blues and yellows shift." },
+    { name: "No colour", label: "Monochromacy sees", t: () => "e_grayscale/w_1400/" + VIEW, fact: "No colour at all. Only light and dark are left." },
+    { name: "Blurry vision", label: "Blurry vision sees", t: () => "e_blur:400/w_1400/" + VIEW, fact: "Low vision. Small text and fine detail are the first to go." },
+    { name: "ClearSight fix", label: "Deuteranopia, fixed", t: () => "e_assist_colorblind:40/e_simulate_colorblind:deuteranopia/w_1400", fact: "Same deuteranopia, after the fix. Stripes keep every zone apart." }
   ];
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   function renderShowcase() {
     const poster = { cloud: DEMO, base: POSTER, path: "sample.png" };
-    const list = $("showList"), imgs = [$("posterA"), $("posterB")];
-    let front = 0;
+    const box = $("modes2"), ind = box.querySelector(".ind"), A = $("dA"), B = $("dB"), cmp = $("dcmp"), handle = $("dHandle");
     const urls = SHOW.map(s => cld(poster, s.t()));
     urls.forEach(u => { const i = new Image(); i.src = u; });
-    const pick = i => {
-      list.querySelectorAll("button").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
-      $("disc").style.backgroundColor = SHOW[i].disc;
-      $("fact").textContent = SHOW[i].fact;
-      const next = imgs[1 - front], cur = imgs[front];
-      next.onload = () => { next.classList.remove("out"); cur.classList.add("out"); next.alt = "Flood warning poster: " + SHOW[i].name.toLowerCase(); cur.alt = ""; front = 1 - front; };
-      next.src = urls[i];
+    let pos = 50, anim = 0;
+    const setPos = p => {
+      pos = Math.max(0, Math.min(100, p));
+      cmp.style.setProperty("--pos", pos + "%");
+      handle.setAttribute("aria-valuenow", String(Math.round(pos)));
+    };
+    const moveInd = b => { if (!b) return; ind.style.width = b.offsetWidth + "px"; ind.style.transform = "translateX(" + (b.offsetLeft) + "px)"; };
+    // One eased sweep so the comparison explains itself; any touch stops it.
+    const sweep = () => {
+      if (reduced()) return;
+      cancelAnimationFrame(anim);
+      const keys = [pos, 80, 22, 50], dur = 2000, t0 = performance.now();
+      const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      const step = now => {
+        const t = Math.min(1, (now - t0) / dur), seg = t * (keys.length - 1), i = Math.min(keys.length - 2, Math.floor(seg));
+        setPos(keys[i] + (keys[i + 1] - keys[i]) * ease(seg - i));
+        if (t < 1) anim = requestAnimationFrame(step);
+      };
+      anim = requestAnimationFrame(step);
+    };
+    const buttons = [];
+    const pick = (i, doSweep) => {
+      buttons.forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+      moveInd(buttons[i]);
+      $("dLabel").textContent = SHOW[i].label;
+      $("demoFact").textContent = SHOW[i].fact;
+      B.classList.add("swap");
+      const pre = new Image();
+      pre.onload = () => { B.src = urls[i]; B.alt = "Flood warning poster as seen with " + SHOW[i].name.toLowerCase(); B.classList.remove("swap"); };
+      pre.src = urls[i];
+      if (doSweep) sweep();
     };
     SHOW.forEach((s, i) => {
       const b = el("button", null, s.name);
       b.type = "button";
-      b.addEventListener("click", () => pick(i));
-      list.appendChild(b);
+      b.addEventListener("click", () => pick(i, true));
+      box.appendChild(b);
+      buttons.push(b);
     });
-    imgs[0].src = urls[0];
-    pick(0);
+    let dragging = false;
+    const at = e => { const r = cmp.getBoundingClientRect(); setPos((e.clientX - r.left) / r.width * 100); };
+    cmp.addEventListener("pointerdown", e => { if (e.button !== 0) return; cancelAnimationFrame(anim); dragging = true; cmp.setPointerCapture(e.pointerId); at(e); e.preventDefault(); });
+    cmp.addEventListener("pointermove", e => { if (dragging) at(e); });
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach(ev => cmp.addEventListener(ev, () => { dragging = false; }));
+    handle.addEventListener("keydown", e => {
+      const s = e.shiftKey ? 10 : 2, m = { ArrowLeft: -s, ArrowDown: -s, ArrowRight: s, ArrowUp: s };
+      if (e.key in m) { cancelAnimationFrame(anim); setPos(pos + m[e.key]); e.preventDefault(); }
+      else if (e.key === "Home") { setPos(0); e.preventDefault(); }
+      else if (e.key === "End") { setPos(100); e.preventDefault(); }
+    });
+    const realign = () => moveInd(buttons.find(b => b.getAttribute("aria-pressed") === "true"));
+    window.addEventListener("resize", realign);
+    if (document.fonts) document.fonts.ready.then(realign);
+    setPos(50);
+    A.addEventListener("load", () => setTimeout(sweep, 1500), { once: true });
+    A.src = cld(poster, "w_1400/" + VIEW);
+    pick(0, false);
   }
 
-  // ---------- Live: readers, lens, stages ----------
-  const READERS = [100, 500, 1000, 5000, 10000, 50000, 100000, 1000000];
-  function bindReaders() {
-    const r = $("readers");
-    const upd = () => {
-      const n = READERS[Number(r.value)];
-      $("readersOut").textContent = n.toLocaleString("en-IN");
-      $("affected").textContent = Math.round(n * 0.0425).toLocaleString("en-IN");
-      r.setAttribute("aria-valuetext", n.toLocaleString("en-IN") + " readers");
-    };
-    r.addEventListener("input", upd);
-    upd();
-  }
+  // ---------- Page-wide vision lens ----------
+  const LENS = { none: "Vision lens", deut: "Deuteranopia", prot: "Protanopia", trit: "Tritanopia", mono: "No colour" };
   function bindLens() {
-    const docks = [$("lens"), $("heroLens")];
-    docks.forEach(dock => dock.addEventListener("click", e => {
-      const b = e.target.closest("button"); if (!b) return;
-      document.body.dataset.lens = b.dataset.lens;
-      docks.forEach(d => setPressed(d, "lens", b.dataset.lens));
-    }));
-    // The bar slides in once the hero, which has its own controls, has scrolled away.
-    // Kept on state: an observer nothing references can be garbage-collected and stop firing.
-    state.topIO = new IntersectionObserver(([en]) => $("topbar").classList.toggle("show", !en.isIntersecting), { threshold: 0.05 });
-    state.topIO.observe($("hero"));
-  }
-  function bindStages() {
-    const row = $("stages");
-    row.addEventListener("click", e => {
-      const b = e.target.closest(".stage-btn"); if (!b) return;
-      row.querySelectorAll(".stage").forEach(s => {
-        const open = s.contains(b);
-        s.classList.toggle("open", open);
-        s.querySelector(".stage-btn").setAttribute("aria-expanded", String(open));
-      });
+    const btn = $("lensBtn"), menu = $("lensMenu");
+    const close = () => { menu.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); };
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      const open = !menu.classList.contains("open");
+      menu.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", String(open));
     });
+    menu.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      const v = b.dataset.lens;
+      document.body.dataset.lens = v;
+      setPressed(menu, "lens", v);
+      $("lensLabel").textContent = LENS[v];
+      btn.dataset.on = String(v !== "none");
+      close();
+      toast(v === "none" ? "Back to normal vision" : "Whole page now shown with " + LENS[v].toLowerCase());
+    });
+    document.addEventListener("click", e => { if (!e.target.closest(".lens-wrap")) close(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  }
+
+  // ---------- Count-up figures ----------
+  function bindCounts() {
+    state.countIO = new IntersectionObserver(entries => entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      state.countIO.unobserve(en.target);
+      if (reduced()) return;
+      const n = en.target, to = parseFloat(n.dataset.count), dec = Number(n.dataset.dec || 0), pre = n.dataset.prefix || "", suf = n.dataset.suffix || "";
+      const t0 = performance.now(), d = 1400;
+      const f = now => { const t = Math.min(1, (now - t0) / d); n.textContent = pre + (to * (1 - Math.pow(1 - t, 3))).toFixed(dec) + suf; if (t < 1) requestAnimationFrame(f); };
+      requestAnimationFrame(f);
+    }), { threshold: 0.6 });
+    document.querySelectorAll("[data-count]").forEach(n => state.countIO.observe(n));
   }
 
   // ---------- Sources ----------
@@ -1722,13 +1722,13 @@
 
   // ---------- Page chrome ----------
   function bindNav() {
+    // Kept on state: an observer nothing references can be garbage-collected and stop firing.
     const rv = state.revealIO = new IntersectionObserver(entries => {
       entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); rv.unobserve(en.target); } });
     }, { rootMargin: "0px 0px -8% 0px" });
     document.querySelectorAll(".reveal").forEach(n => rv.observe(n));
     bindLens();
-    bindReaders();
-    bindStages();
+    bindCounts();
   }
 
   function bindPublish() {
