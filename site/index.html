@@ -108,8 +108,8 @@
   /* Hero */
   .hero { padding: 96px 0 40px; text-align: center; overflow: hidden; }
   .hero::before { content: ""; position: absolute; left: 50%; top: -260px; width: 1100px; height: 700px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(86,180,233,.18), transparent 70%); pointer-events: none; }
-  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px var(--line-2); font-size: 13px; color: var(--muted); }
-  .pill b { display: inline-flex; padding: 2px 8px; border-radius: 999px; background: var(--sky); color: var(--sky-ink); font-weight: 600; font-size: 12px; }
+  .hero-pill { display: inline-flex; align-items: center; gap: 10px; padding: 5px 16px 5px 5px; border-radius: 999px; background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px var(--line-2); font-size: 13px; color: var(--muted); }
+  .hero-pill b { display: inline-flex; padding: 3px 10px; border-radius: 999px; background: var(--sky); color: var(--sky-ink); font-weight: 600; font-size: 12px; }
   .hero h1 { margin: 28px auto 0; font-size: clamp(52px, 7.4vw, 108px); line-height: .98; letter-spacing: -0.05em; font-weight: 600; }
   .hero h1 .line { display: block; }
   .hero h1 .w { display: inline-block; }
@@ -568,7 +568,7 @@
 <main id="top">
   <header class="hero">
     <div class="wrap">
-      <span class="pill rise" style="--d:0ms"><b>Free</b>Open source · built on Cloudinary</span>
+      <span class="hero-pill rise" style="--d:0ms"><b>Free</b>Open source · built on Cloudinary</span>
       <h1><span class="line"><span class="w rise" style="--d:80ms">Design</span> <span class="w rise" style="--d:140ms">for</span></span> <span class="line"><span class="w rise soft" style="--d:200ms">every</span> <span class="w rise soft" style="--d:260ms">eye.</span></span></h1>
       <p class="sub rise" style="--d:340ms">See your poster the way colour-blind, low-vision and offline readers do. Then fix it in one click.</p>
       <div class="ctas rise" style="--d:420ms">
@@ -922,7 +922,7 @@
       </div>
       <div class="steps">
         <div class="step glow reveal"><span class="n">1</span><h3>Upload</h3><p>Your poster goes straight from the browser to Cloudinary through an unsigned preset. No secret ever touches the page.</p><code>POST /image/upload</code></div>
-        <div class="step glow reveal" style="--d:80ms"><span class="n">2</span><h3>Transform</h3><p>Every version is just a URL. Cloudinary renders it at the edge: simulations, stripe fixes, greyscale, contrast.</p><code>e_simulate_colorblind</code></div>
+        <div class="step glow reveal" style="--d:80ms"><span class="n">2</span><h3>Transform</h3><p>Every version is just a URL. Cloudinary renders it at the edge: simulations, stripe fixes, the colour spotlight, greyscale, contrast.</p><code>e_simulate_colorblind</code></div>
         <div class="step glow reveal" style="--d:160ms"><span class="n">3</span><h3>Deliver</h3><p>f_auto and q_auto send each phone the lightest format it can open, cached on a global CDN.</p><code>f_auto,q_auto:eco</code></div>
       </div>
     </div>
@@ -2725,9 +2725,26 @@
           chips.appendChild(b);
         });
         out.textContent = colours.length ? "Pick a colour, or tap anywhere on the image." : "No strong colours here. Tap the image to pick one.";
+        autoPlay();
       }).catch(() => { if (my === ticket) out.textContent = "Couldn’t load this image from Cloudinary."; });
     }
     state.refreshSpot = load;
+
+    // The first time the section is on screen, spotlight red once, so the idea lands before anyone touches it.
+    let autoState = "waiting"; // waiting → wanted (on screen) → done
+    const autoPlay = () => {
+      if (autoState !== "wanted" || pick || !chips.children.length) return;
+      autoState = "done";
+      const b = [...chips.children].find(x => /red/i.test(x.textContent)) || chips.firstElementChild;
+      b.click();
+    };
+    state.spotIO = new IntersectionObserver(entries => {
+      if (!entries.some(en => en.isIntersecting)) return;
+      state.spotIO.disconnect();
+      if (autoState === "waiting") { autoState = "wanted"; setTimeout(autoPlay, 500); }
+    }, { threshold: 0.6 });
+    state.spotIO.observe(stage);
+    $("spotlight").addEventListener("pointerdown", () => { autoState = "done"; }, { once: true });
 
     // The stage can show the deuteranopia view, so people with full colour vision feel the problem the spotlight solves.
     let deutView = false, baseTicket = 0;
