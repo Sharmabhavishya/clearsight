@@ -1,0 +1,14 @@
+{
+  "name": "ClearSight",
+  "short_name": "ClearSight",
+  "description": "See any poster the way colour-blind and low-vision readers do, then fix it with Cloudinary.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#08090B",
+  "theme_color": "#08090B",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

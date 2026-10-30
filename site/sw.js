@@ -1,6 +1,6 @@
 // Keeps the demo alive on bad venue Wi-Fi: the page is network-first, everything it loads is cached.
-const VERSION = "clearsight-v4";
-const CORE = ["./", "index.html", "favicon.svg"];
+const VERSION = "clearsight-v5";
+const CORE = ["./", "index.html", "favicon.svg", "manifest.webmanifest", "icon-192.png"];
 const CACHED_HOSTS = ["res.cloudinary.com", "cdnjs.cloudflare.com", "fonts.googleapis.com", "fonts.gstatic.com"];
 
 self.addEventListener("install", (e) => {
