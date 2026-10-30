@@ -6,7 +6,7 @@
 
 One public notice in. A full accessibility pack out: colour-blind-safe, low-vision, low-data and print-ready versions in seconds, powered by [Cloudinary](https://cloudinary.com).
 
-[**Live demo →**](https://resplendent-maamoul-58cc39.netlify.app) &nbsp;·&nbsp; [Project write-up](docs/NOTION.md) &nbsp;·&nbsp; Designed and built by [Bhavishya Sharma](https://github.com/Sharmabhavishya)
+[**Live demo →**](https://resplendent-maamoul-58cc39.netlify.app) &nbsp;·&nbsp; [Project write-up](docs/NOTION.md) &nbsp;·&nbsp; [Complete guide](docs/GUIDE.md) &nbsp;·&nbsp; Designed and built by [Bhavishya Sharma](https://github.com/Sharmabhavishya)
 
 ![ClearSight hero](docs/screenshots/hero.jpg)
 
@@ -144,6 +144,7 @@ clearsight/
 │   ├── favicon.svg
 │   └── _headers          Netlify security headers (CSP etc.)
 ├── docs/
+│   ├── GUIDE.md          every feature, the tech, and the limits, explained
 │   ├── NOTION.md         full project journey and technical decisions
 │   ├── SUBMISSION.txt    problem statement and solution brief
 │   └── screenshots/
@@ -169,7 +170,10 @@ clearsight/
 
 **Bhavishya Sharma** designed and built ClearSight as an open-source project, so anyone publishing public information can make it readable for everyone. Find me on GitHub: [@Sharmabhavishya](https://github.com/Sharmabhavishya).
 
-**Team:** Bhavishya Sharma and Dhruv Mittal.
+**Team**
+
+- **Bhavishya Sharma**
+- **Dhruv Mittal**
 
 Ideas, issues and pull requests are welcome.
 

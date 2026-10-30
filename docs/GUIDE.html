@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClearSight Guide</title>
+<style>
+  body { margin: 0; background: #fff; color: #1d1d1f; font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; padding: 48px 20px 80px; }
+  .tip { background: #F0F6FF; border: 1px solid #cfe2fb; border-radius: 12px; padding: 14px 18px; margin-bottom: 36px; font-size: 14px; }
+  h1 { font-size: 36px; line-height: 1.15; margin: 0 0 16px; }
+  h2 { font-size: 26px; margin: 40px 0 12px; }
+  h3 { font-size: 20px; margin: 28px 0 8px; }
+  blockquote { margin: 0 0 20px; padding: 10px 16px; border-left: 3px solid #0066CC; background: #f5f5f7; border-radius: 0 8px 8px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; }
+  th, td { border: 1px solid #d2d2d7; padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f7; }
+  code { font-family: ui-monospace, Consolas, monospace; font-size: 13px; background: #f5f5f7; padding: 1px 5px; border-radius: 4px; }
+  pre { background: #f5f5f7; padding: 14px 16px; border-radius: 10px; overflow: auto; }
+  pre code { background: none; padding: 0; }
+  a { color: #0066CC; }
+  hr { border: 0; border-top: 1px solid #d2d2d7; margin: 28px 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>ClearSight: the complete guide</h1>
+<blockquote>
+<p><strong>See what everyone sees.</strong> A free, open-source accessibility tool built on Cloudinary.</p>
+<p><strong>Bhavishya Sharma</strong></p>
+<p><strong>Dhruv Mittal</strong></p>
+</blockquote>
+<p><strong>Live site:</strong> <a href="https://resplendent-maamoul-58cc39.netlify.app">https://resplendent-maamoul-58cc39.netlify.app</a> · <strong>Code:</strong> <a href="https://github.com/Sharmabhavishya/clearsight">https://github.com/Sharmabhavishya/clearsight</a></p>
+<hr>
+<h2>1. ClearSight in one minute</h2>
+<p><strong>The purpose.</strong> Public information is mostly published as one full-colour image: flood maps, air-quality maps, vaccination posters, school notices, charts. That single image quietly fails a lot of people. ClearSight does two jobs:</p>
+<ol>
+<li><strong>For colour-blind people:</strong> it answers the question they are asked, and stuck on, every day: <em>“which part is red?”</em></li>
+<li><strong>For the people who publish notices:</strong> it turns one image into a full <strong>accessibility pack</strong> (13 versions) in seconds, scores how accessible it is, and gives them everything they need to publish the fixes.</li>
+</ol>
+<p><strong>How it’s built.</strong> Every image ClearSight shows is a <strong>Cloudinary URL</strong>. There is no server and no image-processing code of our own. Cloudinary uploads, transforms, measures and delivers everything.</p>
+<hr>
+<h2>2. The problem, with sources</h2>
+<table>
+<thead>
+<tr>
+<th>Fact</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1 in 12 men</strong> (and 1 in 200 women) have colour vision deficiency</td>
+<td>Colour Blind Awareness</td>
+</tr>
+<tr>
+<td>In India, <strong>8.12% of men</strong> in a 3,131-person hospital study had colour vision deficiency, often undetected</td>
+<td>JCDR, 2022</td>
+</tr>
+<tr>
+<td><strong>2.2 billion people</strong> live with a vision impairment</td>
+<td>WHO, <em>World Report on Vision</em></td>
+</tr>
+<tr>
+<td><strong>2.6 billion people</strong> were offline in 2024, and many more are on slow, metered data</td>
+<td>ITU, <em>Facts and Figures 2024</em></td>
+</tr>
+<tr>
+<td><strong>66–90%</strong> of colour-blind people have trouble with everyday tasks such as reading charts</td>
+<td>BMC Ophthalmology, 2017</td>
+</tr>
+<tr>
+<td>Matching a chart’s legend to the chart is <em>“impossible”</em>, and many colour-blind people simply skip pie charts</td>
+<td>We Are Colorblind</td>
+</tr>
+<tr>
+<td>Recolouring filters (“daltonisation”) are often criticised for making images look unnatural</td>
+<td>Accessibility guides and research summaries</td>
+</tr>
+</tbody></table>
+<p><strong>What this means:</strong> the most common problem is <strong>colour used as the only label</strong> (“the red zone”, “the green line”). That is exactly what ClearSight attacks.</p>
+<hr>
+<h2>3. Who it is for</h2>
+<table>
+<thead>
+<tr>
+<th>Person</th>
+<th>What they get</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>A colour-blind reader</strong></td>
+<td>Colour Spotlight, the colour reader, the camera view, the pair checker</td>
+</tr>
+<tr>
+<td><strong>A publisher</strong> (municipality, clinic, school, NGO) with no designer</td>
+<td>The Studio: simulate, fix, score and publish a poster in a minute</td>
+</tr>
+<tr>
+<td><strong>Anyone with full colour vision</strong> (including judges)</td>
+<td>The vision lens, the hero demo and the dot-plate test let them <em>feel</em> the problem in seconds</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. A tour of the site, top to bottom</h2>
+<h3>4.1 Navigation bar and the Vision lens</h3>
+<ul>
+<li>Links jump to each section: Demo, Spotlight, Camera, Test, Tools, Studio, Report, How it works.</li>
+<li><strong>Vision lens</strong> (top right): turns the <strong>whole website</strong> into what a colour-blind person sees: Deuteranopia, Protanopia, Tritanopia or No colour. A small chip at the bottom (“Viewing as Deuteranopia · Reset”) reminds you it’s on and switches it off in one click.</li>
+<li><strong>Tech:</strong> SVG <code>feColorMatrix</code> filters built from the Machado 2009 colour-vision matrices, applied with a CSS <code>filter</code>. This happens in the browser so the whole page, not just one image, changes instantly.</li>
+</ul>
+<h3>4.2 Hero: “Design for every eye.”</h3>
+<ul>
+<li>A <strong>live drag slider</strong> over a flood-warning poster. Left side: what you see. Right side: what someone else sees.</li>
+<li>Seven ways of seeing: <strong>Deuteranopia, Protanopia, Tritanopia, No colour, Blurry vision, Safe palette, Stripes fix</strong>.</li>
+<li>The flood poster itself is <strong>drawn entirely by Cloudinary</strong>: coloured blocks (<code>e_colorize</code>) and text (<code>l_text</code>) layered on a sample image. No design file was ever uploaded.</li>
+<li><strong>Cloudinary:</strong> <code>e_simulate_colorblind</code>, <code>e_grayscale</code>, <code>e_blur</code>, <code>e_replace_color</code>, <code>e_assist_colorblind</code>.</li>
+<li>Below the hero: three numbers that count up (1 in 12 men, 2.2B people, 97% smaller files) and a scrolling strip of the Cloudinary transformations the site uses.</li>
+</ul>
+<h3>4.3 Colour Spotlight: “Which part is red?” (flagship)</h3>
+<p><strong>What it does.</strong> Tap a colour, and only that colour stays in colour. Everything else turns grey.</p>
+<p><strong>How to use it.</strong></p>
+<ol>
+<li>Choose an image: <strong>Air quality map</strong>, Flood warning, Dahlias, Breakfast, or <strong>your own image</strong>.</li>
+<li>Tap a <strong>colour chip</strong> (ClearSight lists the image’s main colours in everyday words: Red, Orange, Hot pink…), or <strong>tap anywhere on the image</strong>, including a legend swatch.</li>
+<li>Read the answer: <em>“Red covers 8% of the image, in 3 places.”</em></li>
+<li>Optional: <strong>See it as deuteranopia</strong> (feel the problem first), <strong>Hold to see all colours</strong> (compare), the <strong>Match</strong> slider (catch lighter and darker shades in photos), <strong>Download</strong>, <strong>Clear</strong>.</li>
+</ol>
+<p><strong>The demo moment.</strong> On the air-quality map, switch on <em>See it as deuteranopia</em>: red, orange and green tiles turn into similar olives. Tap the <em>Severe</em> legend swatch: only Delhi and Noida light up.</p>
+<p><strong>How it works.</strong></p>
+<ul>
+<li><strong>Cloudinary</strong> <code>e_make_transparent:&lt;tolerance&gt;,co_rgb:&lt;colour&gt;</code> cuts the chosen colour out of the image, and <code>e_grayscale</code> greys the rest.</li>
+<li>The browser lays that grey layer over the original, so the holes show the true colour.</li>
+<li>ClearSight then reads the layer’s transparent pixels to count <strong>how much</strong> of the image is that colour and <strong>in how many separate places</strong> (a flood-fill count that ignores specks).</li>
+<li>The colour chips come from reading the image’s pixels and grouping them by everyday colour name. Washed-out colours (near white) are ignored because they are usually compression noise.</li>
+<li>A tap reads a 15×15 patch of the <strong>full-size, lossless</strong> image and prefers the most vivid colour, so tapping on a letter inside a red tile still picks the red tile.</li>
+<li>Animation: the grey spreads out in a circle from where you tapped.</li>
+</ul>
+<p><strong>Why it matters.</strong> It answers the question directly, without recolouring anything, so nothing looks unnatural and nothing new gets confused.</p>
+<h3>4.4 See any poster, live (Camera)</h3>
+<ul>
+<li>Point your camera at a real notice and see it <strong>live</strong> through colour-blind eyes, with a drag slider between “You see” and “Deuteranopia sees”. Modes: Deuteranopia, Protanopia, Tritanopia, No colour, Blurry vision.</li>
+<li><strong>Snap and build the pack</strong> sends that frame to Cloudinary, and the whole site (Studio, Report, Spotlight) switches to it.</li>
+<li><strong>Privacy:</strong> the video never leaves the device until you press Snap.</li>
+<li><strong>Tech:</strong> <code>getUserMedia</code> for the camera, SVG filters for the live view, Cloudinary Upload API for the snapshot.</li>
+</ul>
+<h3>4.5 Can you read this number? (Dot-plate test)</h3>
+<ul>
+<li>A circle of coloured dots, <strong>drawn fresh every time</strong> in a canvas, hides a two-digit number. Type what you see and press Check.</li>
+<li><strong>See it as 1 in 12 men do</strong> flips the plate to the deuteranopia view, and the number disappears.</li>
+<li>The colours were chosen by calculation: clearly different for normal vision (colour difference about 53) and nearly identical under deuteranopia (about 5).</li>
+<li>Labelled <strong>“Just for fun. Not a medical test.”</strong></li>
+</ul>
+<h3>4.6 Tools for every day</h3>
+<p><strong>What colour is this? (Colour reader)</strong></p>
+<ul>
+<li>Move over the poster (or use arrow keys), or switch to the <strong>camera</strong>, and it names the colour in everyday words (30 names, like Navy, Olive or Coral) with its hex code. <strong>Copy</strong> puts it on the clipboard.</li>
+<li>It averages a small patch so one stray pixel doesn’t decide the name.</li>
+<li>Warning shown on the page: lighting changes colours, so double-check anything safety-critical like electrical wiring.</li>
+</ul>
+<p><strong>Can everyone tell these apart? (Pair checker)</strong></p>
+<ul>
+<li>Pick two colours (or a preset like Red + green). It shows:<ul>
+<li>the <strong>WCAG contrast ratio</strong> with an AA pass or fail (4.5:1 for text, 3:1 for large text);</li>
+<li>whether the two colours stay distinguishable for <strong>normal vision, deuteranopia, protanopia and tritanopia</strong> (“Clearly different”, “Close, add a label”, “Hard to tell apart”).</li>
+</ul>
+</li>
+<li><strong>Suggest a safer second colour</strong> picks one from the <strong>Okabe–Ito</strong> colour-blind-safe palette: the one that stays most different across all three kinds of colour blindness, preferring ones that also pass contrast.</li>
+</ul>
+<h3>4.7 The Studio: three calm steps</h3>
+<p><strong>Step 1: Pick a poster.</strong> Seven samples (including the flood warning and the air-quality map), your recent uploads, or <strong>Upload a poster</strong> (drag and drop, paste, or browse). Images only, up to 10 MB. Uploads show a progress bar.</p>
+<p><strong>Step 2: Look through their eyes.</strong> A big comparison of the original against any version, as a <strong>drag slider</strong> or <strong>side by side</strong>. Works with the keyboard. For the stripes fix, a <strong>Strength</strong> slider (10–100) controls how strong the pattern is.</p>
+<p><strong>Step 3: The pack.</strong> All <strong>13 versions</strong> as cards, each with its <strong>real delivered size</strong> and the % saved. Filter by All, Simulate, Fix, Reach. Each card has Open, Download and Copy link.</p>
+<ul>
+<li><strong>Full-screen viewer:</strong> step through versions. It shows <strong>“How Cloudinary made this”</strong>: the real width, height, format and file size reported by Cloudinary (<code>fl_getinfo</code>), and every part of the URL explained in plain English.</li>
+<li><strong>Download pack (.zip):</strong> every version as JPG/PNG so they open anywhere, plus a README.</li>
+<li><strong>Share card:</strong> a ready-made 1600×900 image, “What you see vs. what 1 in 12 men see”, for WhatsApp or LinkedIn.</li>
+</ul>
+<h3>4.8 The 13-version accessibility pack</h3>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Version</th>
+<th>What it does</th>
+<th>Cloudinary transformation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Baseline</td>
+<td>Original</td>
+<td>The image as published</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Simulate</td>
+<td>Deuteranopia</td>
+<td>Green-weak vision</td>
+<td><code>e_simulate_colorblind:deuteranopia</code></td>
+</tr>
+<tr>
+<td>Simulate</td>
+<td>Protanopia</td>
+<td>Red-weak vision</td>
+<td><code>e_simulate_colorblind:protanopia</code></td>
+</tr>
+<tr>
+<td>Simulate</td>
+<td>Tritanopia</td>
+<td>Blue-yellow weak vision</td>
+<td><code>e_simulate_colorblind:tritanopia</code></td>
+</tr>
+<tr>
+<td>Simulate</td>
+<td>Monochromacy</td>
+<td>No colour at all</td>
+<td><code>e_grayscale</code></td>
+</tr>
+<tr>
+<td>Fix</td>
+<td>Colour-blind stripes</td>
+<td>Adds stripes to confusable colours</td>
+<td><code>e_assist_colorblind:&lt;strength&gt;</code></td>
+</tr>
+<tr>
+<td>Fix</td>
+<td>Colour-blind X-ray</td>
+<td>Pushes confusable hues apart</td>
+<td><code>e_assist_colorblind:xray</code></td>
+</tr>
+<tr>
+<td>Fix</td>
+<td>Print-safe</td>
+<td>Survives black-and-white photocopying</td>
+<td><code>e_assist_colorblind:40/e_grayscale/e_contrast:30</code></td>
+</tr>
+<tr>
+<td>Fix</td>
+<td>Safe palette</td>
+<td>Swaps red→vermillion, green→blue</td>
+<td><code>e_replace_color</code> (twice)</td>
+</tr>
+<tr>
+<td>Reach</td>
+<td>Low-vision boost</td>
+<td>Sharper and higher contrast, up to 1600 px wide</td>
+<td><code>w_1600,c_limit/e_sharpen:80/e_auto_contrast</code></td>
+</tr>
+<tr>
+<td>Reach</td>
+<td>Low data</td>
+<td>For slow, metered networks</td>
+<td><code>w_480,c_limit/f_auto,q_auto:eco</code></td>
+</tr>
+<tr>
+<td>Reach</td>
+<td>Chat-ready square</td>
+<td>Nothing cropped in chat apps</td>
+<td><code>w_1080,h_1080,c_pad,b_white</code></td>
+</tr>
+<tr>
+<td>Reach</td>
+<td>Story (9:16)</td>
+<td>WhatsApp/Instagram status</td>
+<td><code>ar_9:16,c_pad,b_auto,w_1080</code></td>
+</tr>
+</tbody></table>
+<p>Every version except the original and the stripes and print versions (which must stay sharp) also gets <code>f_auto,q_auto</code>, so each browser receives the lightest format it supports (AVIF or WebP).</p>
+<h3>4.9 Accessibility report</h3>
+<ul>
+<li>A score <strong>out of 100</strong>, with a verdict: <strong>Ready to publish</strong> (85+), <strong>Needs work</strong> (60+), or <strong>At risk</strong>.</li>
+<li>Four checks, calculated from the <strong>actual pixels</strong>:<ol>
+<li><strong>Colour-blind safety:</strong> colours that are clearly different normally but collapse together under deuteranopia or protanopia.</li>
+<li><strong>Photocopy safety:</strong> different colours with almost the same lightness, which merge in black-and-white printing.</li>
+<li><strong>Tonal contrast:</strong> the spread between light and dark.</li>
+<li><strong>Data weight:</strong> the real file size.</li>
+</ol>
+</li>
+<li>It lists the <strong>exact colour pairs</strong> that collapse, and tells you what to fix.</li>
+<li><strong>How:</strong> ClearSight downloads small versions from Cloudinary (original, deuteranopia, protanopia), groups pixels into colour clusters, and compares them with CIELAB colour difference (ΔE).</li>
+</ul>
+<h3>4.10 Publish it everywhere</h3>
+<ul>
+<li><strong>Say it in plain words:</strong> type a line and Cloudinary prints it under the poster (<code>l_text</code>). Six languages at one tap: <strong>English, हिन्दी, বাংলা, தமிழ், తెలుగు, ગુજરાતી</strong>. ClearSight detects the script and picks the matching Google font Cloudinary supports: Hind, Hind Siliguri, Hind Madurai, Hind Guntur, Hind Vadodara. The translations are examples; you can edit them.</li>
+<li><strong>Turn it into a story video:</strong> Cloudinary’s <code>e_zoompan</code> turns the poster (with or without your line) into a six-second MP4. Download included.</li>
+<li><strong>Describe the image:</strong> alt text for screen readers, plus a paste-ready snippet in <strong>HTML</strong> (with <code>srcset</code> and links to the accessible versions), <strong>Markdown</strong> or plain <strong>Links</strong>.</li>
+<li><strong>QR code for the printed poster:</strong> points to <strong>this pack</strong>, the <strong>colour-blind</strong> version or the <strong>low-data</strong> version. Download as PNG and print it on the notice.</li>
+<li><strong>Share:</strong> uses the phone’s share sheet where available.</li>
+</ul>
+<h3>4.11 How it works, the note, and the footer</h3>
+<ul>
+<li><strong>How it works:</strong> Upload → Transform → Deliver, the three Cloudinary steps.</li>
+<li><strong>The note:</strong> “Why I built this”. The quote <strong>lights up word by word as you scroll</strong>. Signed by Bhavishya Sharma and Dhruv Mittal.</li>
+<li><strong>Footer:</strong> links, the team (Bhavishya Sharma, Dhruv Mittal), GitHub, the write-up and the MIT licence.</li>
+</ul>
+<h3>4.12 Behind the scenes</h3>
+<ul>
+<li><strong>Connect your own Cloudinary:</strong> a settings dialog takes a cloud name and an <strong>unsigned upload preset</strong>. Stored only in your browser. ClearSight never asks for an API key or secret.</li>
+<li><strong>Shareable links:</strong> every pack has its own address (for example <code>#s=aqi</code>), so you can send someone the exact pack you made.</li>
+<li><strong>Works offline:</strong> a service worker keeps the site and the images you’ve already seen working on bad Wi-Fi.</li>
+</ul>
+<hr>
+<h2>5. Every Cloudinary feature we use, and why</h2>
+<table>
+<thead>
+<tr>
+<th>Cloudinary feature</th>
+<th>Where</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Upload API, unsigned preset</strong></td>
+<td>Upload, camera snap</td>
+<td>Browser uploads with no server and no secret in the code</td>
+</tr>
+<tr>
+<td><code>e_simulate_colorblind</code></td>
+<td>Hero, pack, report</td>
+<td>Shows what colour-blind readers see</td>
+</tr>
+<tr>
+<td><code>e_assist_colorblind</code> (stripes, X-ray)</td>
+<td>Pack, hero</td>
+<td>Meaning survives without colour</td>
+</tr>
+<tr>
+<td><code>e_replace_color</code></td>
+<td>Safe palette</td>
+<td>Swaps risky reds and greens for safe colours</td>
+</tr>
+<tr>
+<td><code>e_make_transparent</code> + <code>e_grayscale</code></td>
+<td><strong>Colour Spotlight</strong></td>
+<td>Finds every pixel of one colour</td>
+</tr>
+<tr>
+<td><code>e_grayscale</code>, <code>e_contrast</code>, <code>e_auto_contrast</code>, <code>e_sharpen</code>, <code>e_blur</code></td>
+<td>Pack, hero</td>
+<td>Print-safe, low-vision and blur views</td>
+</tr>
+<tr>
+<td><code>l_text</code> + <code>fl_layer_apply</code> (with Hind fonts)</td>
+<td>Posters, label</td>
+<td>Draws posters and prints labels in Indian scripts</td>
+</tr>
+<tr>
+<td><code>e_colorize</code></td>
+<td>Sample posters</td>
+<td>Solid colour blocks, no uploaded design needed</td>
+</tr>
+<tr>
+<td><code>c_pad</code>, <code>b_white</code>, <code>b_auto</code>, <code>ar_9:16</code></td>
+<td>Square and story</td>
+<td>Reformat without cropping anything</td>
+</tr>
+<tr>
+<td><code>e_zoompan</code> → <code>.mp4</code></td>
+<td>Story video</td>
+<td>Turns an image into a video</td>
+</tr>
+<tr>
+<td><code>f_auto</code>, <code>q_auto</code>, <code>q_auto:eco</code></td>
+<td>Everywhere</td>
+<td>Lightest file for each device and network</td>
+</tr>
+<tr>
+<td><code>fl_getinfo</code></td>
+<td>Full-screen viewer</td>
+<td>Real dimensions, format and bytes, straight from Cloudinary</td>
+</tr>
+<tr>
+<td><code>fl_attachment</code></td>
+<td>Downloads</td>
+<td>Download instead of open</td>
+</tr>
+<tr>
+<td>Global CDN + open CORS</td>
+<td>Everywhere</td>
+<td>Fast delivery; lets the browser measure and analyse pixels</td>
+</tr>
+</tbody></table>
+<p><strong>The point to make:</strong> ClearSight has <strong>no image-processing code</strong>. Cloudinary is the engine, not an add-on.</p>
+<hr>
+<h2>6. The rest of the tech stack, and why</h2>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Why we chose it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Plain HTML, CSS and JavaScript, one file</strong></td>
+<td>No build step and no framework to break. It loads fast and anyone can read the code.</td>
+</tr>
+<tr>
+<td><strong>Canvas API</strong></td>
+<td>Reads pixels for the report, Spotlight counts, colour reader and dot plate; draws the share card.</td>
+</tr>
+<tr>
+<td><strong>SVG colour-matrix filters</strong></td>
+<td>Instant page-wide vision lens and live camera simulation.</td>
+</tr>
+<tr>
+<td><strong>Colour science:</strong> Machado 2009 matrices, CIELAB ΔE, WCAG contrast, Okabe–Ito palette</td>
+<td>Recognised research and standards, not guesswork.</td>
+</tr>
+<tr>
+<td><strong>getUserMedia</strong></td>
+<td>Live camera, on the device.</td>
+</tr>
+<tr>
+<td><strong>Web Share, Clipboard APIs</strong></td>
+<td>Share and copy in one tap.</td>
+</tr>
+<tr>
+<td><strong>Service worker</strong></td>
+<td>Offline mode for bad venue or field Wi-Fi.</td>
+</tr>
+<tr>
+<td><strong>IntersectionObserver, MutationObserver</strong></td>
+<td>Scroll animations, the lit quote, keeping panels in sync.</td>
+</tr>
+<tr>
+<td><strong>JSZip, qrcode-generator</strong> (via cdnjs)</td>
+<td>Zip export and QR codes, no server needed.</td>
+</tr>
+<tr>
+<td><strong>Geist and Geist Mono</strong> (Google Fonts)</td>
+<td>Clean, modern type that stays readable.</td>
+</tr>
+<tr>
+<td><strong>Netlify</strong></td>
+<td>Static hosting, with strict security headers.</td>
+</tr>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>Open source under the MIT licence.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Architecture</h2>
+<pre><code>Browser (ClearSight, one HTML file)
+   │  upload (unsigned preset)            ┌──────────────────────────┐
+   ├────────────────────────────────────► │ Cloudinary Upload API     │
+   │                                      └──────────────────────────┘
+   │  every version = a URL               ┌──────────────────────────┐
+   ├────────────────────────────────────► │ Cloudinary transformations│
+   │  ◄──── image / video / JSON ──────── │ + global CDN              │
+   │                                      └──────────────────────────┘
+   └─ reads pixels in a canvas → report, Spotlight counts, colour names
+</code></pre>
+<p>No backend, no database, no tracking.</p>
+<hr>
+<h2>8. Security and privacy</h2>
+<ul>
+<li><strong>No secrets in the code or the repository.</strong> Uploads use an unsigned preset; the API key and secret are never used in the browser.</li>
+<li><strong>Strict Content Security Policy:</strong> scripts only from the site and cdnjs; images and video only from Cloudinary.</li>
+<li><strong>Camera privacy:</strong> the live video never leaves the device until you press Snap.</li>
+<li><strong>No analytics, no cookies for tracking.</strong> Your own Cloudinary details, if you add them, stay in your browser.</li>
+</ul>
+<hr>
+<h2>9. Accessibility of ClearSight itself</h2>
+<ul>
+<li>Colour is never the only signal: every rating also has a <strong>word</strong> and a <strong>pattern</strong>.</li>
+<li>Semantic HTML, a keyboard-operable slider, visible focus, live regions that announce results.</li>
+<li>Respects <strong>reduced motion</strong>: animations are turned down for people who ask for that.</li>
+<li>The site’s own palette is colour-blind-safe (Okabe–Ito blue and orange).</li>
+</ul>
+<hr>
+<h2>10. Nuances and honest limits</h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What happens, and why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Simulations are approximations</strong></td>
+<td>They model typical deuteranopia, protanopia and tritanopia. Real people vary, especially with milder forms.</td>
+</tr>
+<tr>
+<td><strong>Spotlight on photos</strong></td>
+<td>Real photos have many shades of one colour. Use the <strong>Match</strong> slider to widen or narrow what counts.</td>
+</tr>
+<tr>
+<td><strong>Tapping text or edges in the Spotlight</strong></td>
+<td>Letters are anti-aliased. ClearSight prefers the vivid tile colour; a tap on pure white says “That spot is white, grey or black”.</td>
+</tr>
+<tr>
+<td><strong>Similar colours</strong> (orange vs yellow)</td>
+<td>The default match (12) keeps them apart. A very loose match can merge them.</td>
+</tr>
+<tr>
+<td><strong>First time a version is requested</strong></td>
+<td>Cloudinary renders it on demand, which can take a second or two. After that it comes from the CDN.</td>
+</tr>
+<tr>
+<td><strong>Story video</strong></td>
+<td>Cloudinary keeps text and layers in video but drops colour effects, so the video offers the poster and the poster with your line only.</td>
+</tr>
+<tr>
+<td><strong>Camera</strong></td>
+<td>Needs permission and a secure (https) page. Lighting changes colours.</td>
+</tr>
+<tr>
+<td><strong>Colour reader</strong></td>
+<td>Names are everyday words, not paint-chart names. Double-check anything safety-critical.</td>
+</tr>
+<tr>
+<td><strong>Dot plate</strong></td>
+<td>For awareness only, not a diagnosis.</td>
+</tr>
+<tr>
+<td><strong>Air-quality map</strong></td>
+<td><strong>Example data</strong>, clearly labelled on the image. Not a live reading.</td>
+</tr>
+<tr>
+<td><strong>Uploads</strong></td>
+<td>Go to the project’s Cloudinary account unless you connect your own. Images only, up to 10 MB.</td>
+</tr>
+<tr>
+<td><strong>Label languages</strong></td>
+<td>Six scripts are tested with matching fonts. Others fall back to Arial.</td>
+</tr>
+<tr>
+<td><strong>Offline mode</strong></td>
+<td>Works for pages and images you’ve already opened. New uploads need a connection.</td>
+</tr>
+<tr>
+<td><strong>QR “This pack”</strong></td>
+<td>Needs the site to be on a web address (it is, on Netlify).</td>
+</tr>
+<tr>
+<td><strong>Screen size</strong></td>
+<td>Designed desktop first.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>11. Questions judges might ask</h2>
+<p><strong>Is this just a filter?</strong>
+No. Filters recolour. ClearSight’s Spotlight <strong>answers a question</strong> (“which part is red?”) and its Studio produces 13 ready-to-publish versions, scores the original, and gives publishing tools.</p>
+<p><strong>Why Cloudinary and not your own code?</strong>
+Cloudinary already has the colour-blind effects, colour keying, text layers in Indian fonts, video, format optimisation and a global CDN. Using URLs means <strong>zero servers</strong> and every version is cached worldwide.</p>
+<p><strong>How do you know the numbers are real?</strong>
+File sizes come from the actual delivered files and from Cloudinary’s <code>fl_getinfo</code>. Report scores come from reading the actual pixels.</p>
+<p><strong>What about privacy?</strong>
+No backend, no tracking, camera stays on the device until Snap, no secrets in the code.</p>
+<p><strong>What’s next?</strong>
+More Indian languages for the label, a bulk mode for whole folders of notices, and AI-generated alt text with Cloudinary’s add-ons.</p>
+<hr>
+<h2>12. Team</h2>
+<p><strong>Bhavishya Sharma</strong></p>
+<p><strong>Dhruv Mittal</strong></p>
+<p>Open source under the MIT licence: <a href="https://github.com/Sharmabhavishya/clearsight">https://github.com/Sharmabhavishya/clearsight</a></p>
+
+</main>
+</body>
+</html>

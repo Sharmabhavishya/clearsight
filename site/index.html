@@ -455,7 +455,10 @@
   .js h2.split.reveal { opacity: 1; transform: none; filter: none; }
   .js h2.split .hw { display: inline-block; opacity: 0; transform: translateY(.5em); filter: blur(6px); transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease); transition-delay: calc(var(--i) * 55ms + var(--d, 0ms)); }
   .js h2.split.in .hw { opacity: 1; transform: none; filter: none; }
-  .sign { display: inline-flex; align-items: center; gap: 12px; margin-top: 36px; text-align: left; }
+  .signs { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 36px; }
+  .sign { display: inline-flex; align-items: center; gap: 12px; text-align: left; }
+  .avatar.alt { background: var(--orange); }
+  .sign .avatar { color: var(--sky-ink); font-size: 15px; }
   .sign b { display: block; font-weight: 600; font-size: 15px; }
   .sign span { color: var(--dim); font-size: 13px; }
   .avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; background: var(--sky); color: var(--sky-ink); }
@@ -933,7 +936,10 @@
       <div class="note">
         <h2 id="noteTitle" class="sr">Why I built this</h2>
         <blockquote id="litQuote">Public notices exist to keep people safe. Too many are designed for one kind of reader: perfect colour vision, a fast connection, a big screen. So I built the tool that checks and fixes them in a minute.</blockquote>
-        <div class="sign reveal" style="--d:100ms"><span class="avatar" aria-hidden="true">BS</span><div><b>Bhavishya Sharma</b><span>Designer and developer of ClearSight</span></div></div>
+        <div class="signs">
+          <div class="sign reveal" style="--d:100ms"><span class="avatar" aria-hidden="true">BS</span><div><b>Bhavishya Sharma</b><span>Designer and developer of ClearSight</span></div></div>
+          <div class="sign reveal" style="--d:180ms"><span class="avatar alt" aria-hidden="true">DM</span><div><b>Dhruv Mittal</b><span>Teammate on ClearSight</span></div></div>
+        </div>
       </div>
     </div>
   </section>

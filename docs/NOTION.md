@@ -1,6 +1,10 @@
 # ClearSight: See what everyone sees
 
-> **A free, open-source accessibility tool · Built on Cloudinary · By Bhavishya Sharma**
+> **A free, open-source accessibility tool · Built on Cloudinary**
+>
+> **Bhavishya Sharma**
+>
+> **Dhruv Mittal**
 > One public notice in, a full accessibility pack out: colour-blind-safe, low-vision, low-data and print-ready versions, each a shareable Cloudinary URL.
 
 **Live demo:** https://resplendent-maamoul-58cc39.netlify.app
