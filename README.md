@@ -33,9 +33,28 @@ The local governments, clinics, schools and NGOs that publish these images rarel
 
 The flood-warning sample is built entirely with Cloudinary text and colour overlays. Under Cloudinary’s deuteranopia simulation, **“Evacuate now” and “Safe” turn the same olive colour**. With `e_assist_colorblind`, red gets horizontal stripes and green gets vertical stripes, so the meaning survives without colour.
 
+## Built on real problems
+
+| What colour-blind people report | What ClearSight does |
+|---|---|
+| 66–90% have trouble with everyday tasks such as reading charts ([BMC Ophthalmology, 2017](https://bmcophthalmol.biomedcentral.com/track/pdf/10.1186/s12886-017-0579-z)) | Simulates any poster, chart or map and fixes it |
+| Many ask others to check colours on wires, medicine labels and clothes ([EnChroma survey](https://businesswire.com/news/home/20210726005726/en), a vendor study) | **What colour is this?** names the colour under your cursor or camera |
+| Red/green “traffic light” palettes break charts and maps ([Datawrapper](https://www.datawrapper.de/blog/colorblindness-part2), [data.europa.eu](https://data.europa.eu/apps/data-visualisation-guide/accessible-colours)) | **Safe palette** swaps them for vermillion and blue; **pair checker** flags risky pairs |
+| WCAG 1.4.1 forbids colour as the only signal; 1.4.3 needs 4.5:1 text contrast ([WebAIM](https://webaim.org/articles/contrast/)) | Plain-words label on the poster; contrast ratio with AA pass/fail |
+| In India, 8.12% of men in a 3,131-person hospital study had colour vision deficiency, often undetected ([JCDR, 2022](https://doaj.org/article/054cdcb82c8244988387b6bd782667c8)) | **Can you read this number?** shows anyone what it’s like, in seconds |
+
 ## Features
 
-- **11-version accessibility pack:** four colour-blindness simulations, two colour-blind fixes (stripes and X-ray), print-safe, low-vision boost, low data and a chat-ready square
+- **Live hero demo:** drag to compare the flood poster in seven ways of seeing, with a page-wide **vision lens** in the nav
+- **Live camera:** point your camera at any poster, see it through colour-blind eyes, snap to build the pack
+- **Can you read this number?** a dot plate drawn fresh each time, whose number vanishes under deuteranopia (for fun, not a medical test)
+- **What colour is this?** colour names and hex codes from any poster or the camera
+- **Can everyone tell these apart?** contrast ratio, WCAG AA verdict and a check under each kind of colour blindness
+- **Safe palette:** Cloudinary `e_replace_color` swaps red for vermillion and green for blue
+- **Say it in plain words:** a Cloudinary text layer prints your line under the poster
+- **Share card:** “what you see vs. what 1 in 12 men see”, ready for WhatsApp or LinkedIn
+- **Works offline:** a service worker keeps the demo running on bad Wi-Fi
+- **12-version accessibility pack:** four colour-blindness simulations, three fixes (stripes, X-ray, safe palette), print-safe, low-vision boost, low data and a chat-ready square
 - **Inspector:** drag slider or side-by-side comparison of any version, with keyboard support and adjustable stripe strength
 - **Accessibility report:** scores colour-blind safety, photocopy safety, tonal contrast and data weight from the actual pixels, shows the colour pairs that collapse together, and says what to fix
 - **Real measurements:** each version’s actual delivered size (WebP/AVIF via `f_auto`) and the data saved per 10,000 views
@@ -133,6 +152,8 @@ clearsight/
 ![Why I built this](docs/screenshots/note.jpg)
 
 **Bhavishya Sharma** designed and built ClearSight as an open-source project, so anyone publishing public information can make it readable for everyone. Find me on GitHub: [@Sharmabhavishya](https://github.com/Sharmabhavishya).
+
+**Team:** Bhavishya Sharma and Dhruv Mittal.
 
 Ideas, issues and pull requests are welcome.
 
