@@ -78,7 +78,7 @@ ClearSight contains **no image-processing code**. Every version is a Cloudinary 
 - **`f_auto` + `q_auto`:** each browser gets the lightest format it supports. `q_auto:eco` drives the low-data version.
 - **Layers as a design tool:** the flood-warning sample is made from `e_colorize` solid fills, `l_text` overlays and `fl_layer_apply`, with no uploaded asset.
 - **Readability effects:** `e_auto_contrast`, `e_sharpen`, `e_grayscale`, `e_contrast`, `c_pad`.
-- **Text in Indian scripts:** the plain-words label picks a Google font Cloudinary supports for the script it detects: Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu) and Hind Vadodara (Gujarati).
+- **Text in Indian scripts:** the plain-words label picks a Google font Cloudinary supports for the script it detects, for 11 languages (English plus 10 Indian scripts): Arial (English), Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu), Hind Vadodara (Gujarati), Mukta Mahee (Gurmukhi), Baloo Tamma (Kannada), Baloo Chettan (Malayalam), Baloo Bhaina (Odia) and Lateef (Urdu). Cloudinary supports only some Google fonts (the Noto Sans Indic fonts return “Unsupported font family”), so each was checked by rendering a real sentence.
 - **Image to video:** `e_zoompan` turns the poster, with its label, into a six-second MP4 for status updates. Cloudinary keeps overlays in the video but drops colour effects, so the video offers only what really survives.
 - **`e_make_transparent` for the Colour Spotlight:** keys out the chosen colour with an adjustable tolerance; `e_grayscale` greys the rest.
 - **`fl_getinfo`:** the fullscreen viewer asks Cloudinary for each version’s real width, height, format and bytes, and explains every parameter in its URL.
@@ -131,7 +131,8 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 | **Accessible UI** | Semantic landmarks, a keyboard-operable slider, live regions, visible focus, reduced-motion support, mobile-first layout. An accessibility tool has to be accessible itself. |
 | **Apple-inspired design** | Generous whitespace, large type and restrained colour keep the focus on the images. |
 | **Colour-blind-safe interface** | ClearSight practises what it preaches. Ratings use a blue/orange/vermillion palette (based on Okabe–Ito) instead of green/red, and every rating also has a word (Good, Fair, Poor) and a pattern (solid or striped bars), so no information depends on colour alone. |
-| **Works on every phone** | Tested at 320, 360, 375, 390, 414 and 430px wide and in landscape. Finger-sized tap targets on touch screens, notch-safe spacing, no zoom-on-focus on iPhone, and a swipeable view picker. |
+| **Works on every phone** | Every section has a phone layout, tested at 320, 360, 375, 390, 414 and 430px wide and in landscape, with no horizontal scrolling at 320, 390, 768 and 1440px. Under 760px the nav shows only the logo and the Vision lens, and a bottom thumb dock gives Spotlight, Camera, Tools and Studio. Finger-sized tap targets on touch screens, notch-safe spacing, no zoom-on-focus on iPhone, and a swipeable view picker. |
+| **Installable** | A web app manifest (`site/manifest.webmanifest`) and icons (`icon-180.png`, `icon-192.png`, `icon-512.png`) make “Add to Home screen” work. The PNG icons were rendered by Cloudinary from an SVG (`w_512,h_512,c_fill/f_png`). The service worker cache is `clearsight-v5` and pre-caches the manifest and an icon. |
 
 ## 6. Architecture
 
@@ -179,25 +180,25 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
    - deep-link reload, no console errors, and no horizontal overflow at phone width
    - real uploads on the live site: an image dropped in by a visitor goes to Cloudinary through the unsigned preset and produces the full pack and report
 9. **More Cloudinary, easier to use:**
-   - the plain-words label in six languages, each script rendered in a matching Hind font
+   - the plain-words label in six languages, each script rendered in a matching Hind font (later extended to 11, see item 11)
    - a story video made with `e_zoompan`; testing showed colour effects don’t survive into video, so the options were cut to the poster and the poster with its label
    - a 9:16 story version with `b_auto` padding, making the pack 13 versions
    - “How Cloudinary made this” in the fullscreen viewer, from `fl_getinfo`
    - “Suggest a safer second colour” in the pair checker (Okabe–Ito palette, best worst-case ΔE across all three kinds of colour blindness, WCAG AA contrast first)
    - a Copy button on the colour reader and a “Viewing as … Reset” chip for the vision lens
    - a service-worker fix: a cached `<img>` copy could block a later download of the same file
-10. **Which part is red?** Research on everyday colour-blind problems pointed to colour-only labels and legends. I tested Cloudinary’s `e_make_transparent` + `e_grayscale` on the flood poster and a photo, then built the Colour Spotlight around it, with an example air-quality map, a deuteranopia view, and a self-check for the colour-grouping and patch-counting code.
+10. **Which part is red?** Research on everyday colour-blind problems pointed to colour-only labels and legends. I tested Cloudinary’s `e_make_transparent` + `e_grayscale` on the flood poster and a photo, then built the Colour Spotlight around it, with an example air-quality map, a deuteranopia view, and a self-check for the colour-grouping and patch-counting code. I also tested Cloudinary’s generative AI recolour (`e_gen_recolor`) on the flood poster. It erased the letter C and missed the legend swatch, so ClearSight uses deterministic transformations.
+11. **Phone, install and polish.** A phone layout and thumb dock for every section, an installable app (manifest and icons), the hero words cycling through colour-blind views, the label in 11 languages, presenter keys, and Lighthouse scores of 100 for accessibility, best practices and SEO.
 
 ## 8. What’s next
 
 - **AI alt text and OCR** (Cloudinary AI add-ons) so screen-reader users get the words inside posters automatically.
-- **More languages** for the label (Kannada, Malayalam, Punjabi, Odia, Urdu), once matching fonts are confirmed in Cloudinary.
 - **Bulk mode** to process a whole folder of notices using the `clearsight` tag.
-- **Offline PWA** so field workers can prepare packs before going into low-connectivity areas.
+- **Fuller offline mode** so field workers can prepare packs, including new uploads, before going into low-connectivity areas. The app already installs and caches pages and images you have opened.
 - **Formal WCAG contrast checks** for text regions, alongside the colour-cluster screening.
 
 ## 9. Links
 
 - **Live demo:** https://resplendent-maamoul-58cc39.netlify.app
 - **Source code:** https://github.com/Sharmabhavishya/clearsight
-- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind fonts) · e_zoompan · b_auto · fl_getinfo · e_make_transparent
+- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind, Baloo, Mukta and Lateef fonts) · e_zoompan · b_auto · fl_getinfo · e_make_transparent

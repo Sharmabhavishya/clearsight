@@ -53,18 +53,19 @@ The flood-warning sample is built entirely with Cloudinary text and colour overl
 ## Features
 
 - **Which part is red? (Colour Spotlight):** tap a colour chip or any spot on the image, even a legend swatch, and only that colour stays in colour. Cloudinary keys it out with `e_make_transparent` and greys the rest with `e_grayscale`. It says how much of the image the colour covers and in how many places, has a “See it as deuteranopia” view, hold-to-compare and download. It never recolours the image
-- **Live hero demo:** drag to compare the flood poster in seven ways of seeing, with a page-wide **vision lens** in the nav
+- **Live hero demo:** drag to compare the flood poster in seven ways of seeing, with a page-wide **vision lens** in the nav. The words “every eye.” cycle through red, amber and green as seen with normal vision, deuteranopia, protanopia, tritanopia and no colour (Machado 2009 matrices), with a small sticker naming the vision type. It stops for reduced-motion users
 - **Live camera:** point your camera at any poster, see it through colour-blind eyes, snap to build the pack
 - **Can you read this number?** a dot plate drawn fresh each time, whose number vanishes under deuteranopia (for fun, not a medical test)
 - **What colour is this?** colour names and hex codes from any poster or the camera
 - **Can everyone tell these apart?** contrast ratio, WCAG AA verdict, a check under each kind of colour blindness, and a one-click safer colour from the Okabe–Ito palette
 - **Safe palette:** Cloudinary `e_replace_color` swaps red for vermillion and green for blue
-- **Say it in plain words:** a Cloudinary text layer prints your line under the poster, in English, हिन्दी, বাংলা, தமிழ், తెలుగు or ગુજરાતી, each in a matching Hind font
+- **Say it in plain words:** a Cloudinary text layer prints your line under the poster, in 11 languages: English plus 10 Indian scripts (हिन्दी, বাংলা, தமிழ், తెలుగు, ગુજરાતી, ਪੰਜਾਬੀ, ಕನ್ನಡ, മലയാളം, ଓଡ଼ିଆ and اردو). Six are one-tap examples (English, Hindi, Bengali, Tamil, Telugu, Gujarati); the rest work by typing. Each script gets a matching font that Cloudinary supports
 - **Story video:** Cloudinary `e_zoompan` turns the poster and your line into a six-second MP4
 - **How Cloudinary made this:** the fullscreen viewer shows `fl_getinfo` facts and explains every URL parameter
 - **Share card:** “what you see vs. what 1 in 12 men see”, ready for WhatsApp or LinkedIn
 - **Works offline:** a service worker keeps the demo running on bad Wi-Fi
-- **13-version accessibility pack:** four colour-blindness simulations, three fixes (stripes, X-ray, safe palette), print-safe, low-vision boost, low data, a chat-ready square and a 9:16 story
+- **Installable:** a web app manifest and icons let you use “Add to Home screen” on a phone
+- **13-version accessibility pack:** four colour-blindness simulations, three fixes (stripes, X-ray, safe palette), print-safe, low-vision boost, low data, a chat-ready square and a 9:16 story. The Original card is shown large, leading the grid
 - **Inspector:** drag slider or side-by-side comparison of any version, with keyboard support and adjustable stripe strength
 - **Accessibility report:** scores colour-blind safety, photocopy safety, tonal contrast and data weight from the actual pixels, shows the colour pairs that collapse together, and says what to fix
 - **Real measurements:** each version’s actual delivered size (WebP/AVIF via `f_auto`) and the data saved per 10,000 views
@@ -73,7 +74,10 @@ The flood-warning sample is built entirely with Cloudinary text and colour overl
 - **Shareable links:** every pack has its own URL (for example `#s=poster`)
 - **Bring your own image:** drag and drop, paste or browse. Uploads go straight to your Cloudinary account through an unsigned preset, with a progress bar and a list of recent uploads
 - **Built to be accessible itself:** a colour-blind-safe palette where every rating also has a word and a pattern, semantic HTML, a keyboard-operable slider, live regions, visible focus and reduced-motion support
-- **Works on every phone:** tested from 320px to 430px wide and in landscape, with finger-sized tap targets and notch-safe spacing
+- **Works on every phone:** every section has a phone layout (320–430px), tested with no horizontal scrolling at 320, 390, 768 and 1440px. Under 760px the nav shows only the logo and the Vision lens button, and a bottom thumb dock (Spotlight, Camera, Tools, Studio) highlights the section you are in. Finger-sized tap targets and notch-safe spacing
+- **Presenter keys (desktop):** 1–9 jump to sections, V cycles the page-wide vision lens, ? shows the list. Ignored while typing
+- **Scan to phone:** a QR code in the closing card on desktop opens the site on a phone
+- **Lighthouse (30 Oct 2026):** 100 accessibility, 100 best practices and 100 SEO, on both mobile and desktop
 
 | Inspector | Report | Pack |
 |---|---|---|
@@ -142,6 +146,8 @@ clearsight/
 ├── site/                 ← deploy this folder
 │   ├── index.html        the whole app (HTML, CSS, JS)
 │   ├── favicon.svg
+│   ├── manifest.webmanifest   makes the site installable
+│   ├── icon-180.png, icon-192.png, icon-512.png
 │   └── _headers          Netlify security headers (CSP etc.)
 ├── docs/
 │   ├── GUIDE.md          every feature, the tech, and the limits, explained

@@ -457,7 +457,7 @@
   /* Note */
   .note { text-align: center; max-width: 860px; margin: 0 auto; }
   .note blockquote { margin: 0; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.25; letter-spacing: -0.03em; font-weight: 500; }
-  .lw { color: #31363F; transition: color .45s var(--ease); }
+  .lw { color: #767C86; transition: color .45s var(--ease); }
   .lw.on { color: var(--text); }
   .js h2.split.reveal { opacity: 1; transform: none; filter: none; }
   .js h2.split .hw { display: inline-block; opacity: 0; transform: translateY(.5em); filter: blur(6px); transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease); transition-delay: calc(var(--i) * 55ms + var(--d, 0ms)); }
@@ -524,6 +524,7 @@
   .hero h1 .tint .eye { position: relative; background-image: linear-gradient(100deg, var(--t2), var(--t3)); }
   .vtag { position: absolute; left: calc(100% - .2em); top: .05em; transform: rotate(-6deg); padding: 6px 12px; border-radius: 999px; background: var(--text); color: var(--bg); font: 600 13px/1 var(--mono); letter-spacing: 0; white-space: nowrap; box-shadow: 0 10px 30px rgba(0,0,0,.45); -webkit-text-fill-color: var(--bg); transition: opacity .3s var(--ease); }
   .vtag.swap { opacity: 0; }
+  @media (forced-colors: active) { .hero h1 .tint .w { background: none; color: CanvasText; } .vtag { forced-color-adjust: auto; } }
 
   /* Calmer camera box until the camera is on */
   .cam-stage:not(.live) { aspect-ratio: 21 / 8; }
@@ -1113,7 +1114,7 @@
       <div class="video-panel glow reveal" style="--d:120ms">
         <div>
           <h3>Turn it into a story video</h3>
-          <p class="hint">Cloudinary turns your poster into a six-second MP4 for WhatsApp status and reels. Add the plain-words line from above, in any of the six languages, and it’s in the video too.</p>
+          <p class="hint">Cloudinary turns your poster into a six-second MP4 for WhatsApp status and reels. Add the plain-words line from above, in Hindi, Punjabi, Urdu or eight other languages, and it’s in the video too.</p>
           <div class="seg" id="videoFix" role="group" aria-label="What goes in the video" style="margin-top:16px">
             <button type="button" data-fix="label" aria-pressed="true">With your line</button>
             <button type="button" data-fix="poster" aria-pressed="false">Poster only</button>
@@ -2335,8 +2336,10 @@
   // ---------- Feature: say it in plain words (Cloudinary text layer) ----------
   // Cloudinary text layers need commas, slashes and colons double-encoded.
   const encText = s => encodeURIComponent(s).replace(/%2C/gi, "%252C").replace(/%2F/gi, "%252F").replace(/%3A/gi, "%253A");
-  // Cloudinary renders Indian scripts with the matching Google font from the Hind family.
-  const SCRIPT_FONTS = [[/[\u0900-\u097F]/, "Hind", "Devanagari"], [/[\u0980-\u09FF]/, "Hind Siliguri", "Bengali"], [/[\u0B80-\u0BFF]/, "Hind Madurai", "Tamil"], [/[\u0C00-\u0C7F]/, "Hind Guntur", "Telugu"], [/[\u0A80-\u0AFF]/, "Hind Vadodara", "Gujarati"]];
+  // Cloudinary renders Indian scripts with a matching Google font. It supports only some Google fonts
+  // (no Noto Sans Indic), so each one below was checked by rendering a real sentence.
+  const SCRIPT_FONTS = [[/[\u0900-\u097F]/, "Hind", "Devanagari"], [/[\u0980-\u09FF]/, "Hind Siliguri", "Bengali"], [/[\u0B80-\u0BFF]/, "Hind Madurai", "Tamil"], [/[\u0C00-\u0C7F]/, "Hind Guntur", "Telugu"], [/[\u0A80-\u0AFF]/, "Hind Vadodara", "Gujarati"],
+    [/[\u0A00-\u0A7F]/, "Mukta Mahee", "Gurmukhi"], [/[\u0C80-\u0CFF]/, "Baloo Tamma", "Kannada"], [/[\u0D00-\u0D7F]/, "Baloo Chettan", "Malayalam"], [/[\u0B00-\u0B7F]/, "Baloo Bhaina", "Odia"], [/[\u0600-\u06FF]/, "Lateef", "Urdu"]];
   const fontFor = text => SCRIPT_FONTS.find(([re]) => re.test(text)) || [null, "Arial", "Latin"];
   const labelT = text => "c_pad,w_1.0,h_1.2,g_north,b_white/l_text:" + encodeURIComponent(fontFor(text)[1]) + "_80_bold:" + encText(text) + ",co_rgb:111317/c_fit,fl_relative,w_0.9,h_0.12/fl_layer_apply,g_south,y_0.04,fl_relative";
   const labelUrl = text => cld(state.src, labelT(text) + "/" + VIEW);
@@ -2789,7 +2792,7 @@
   const videoUrl = withLine => {
     const line = $("labelText").value.trim().slice(0, 90);
     const t = [state.src.base && state.src.base.replace(...VIDEO_GROUND), withLine && line ? labelT(line) : "", "e_zoompan:du_6", "w_720"].filter(Boolean).join("/");
-    return "https://res.cloudinary.com/" + state.src.cloud + "/image/upload/" + t + "/" + state.src.path.replace(/.[a-z0-9]+$/i, "") + ".mp4";
+    return "https://res.cloudinary.com/" + state.src.cloud + "/image/upload/" + t + "/" + state.src.path.replace(/\.[a-z0-9]+$/i, "") + ".mp4";
   };
   function bindVideo() {
     const vid = $("storyVid"), box = $("videoFix"), status = $("videoStatus");
@@ -3051,7 +3054,7 @@
   }
 
   // ---------- Hero tint, phone dock, scan-to-phone QR, presenter keys ----------
-  // The hero's red, amber and green, re-seen with the same Machado matrices as the lens (see simcol.js).
+  // The hero's red, amber and green, re-seen with the same Machado matrices as the lens, precomputed.
   const TINTS = [
     ["normal vision", "#ff4d4d", "#ffb000", "#2fd36b"],
     ["deuteranopia", "#ac9c47", "#dfc714", "#c2b373"],

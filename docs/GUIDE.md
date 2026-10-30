@@ -51,13 +51,15 @@
 
 ### 4.1 Navigation bar and the Vision lens
 
-- Links jump to each section: Demo, Spotlight, Camera, Test, Tools, Studio, Report, How it works.
+- Links jump to each section: Spotlight, Camera, Tools, Studio, Report.
+- **On phones** (under 760 px wide) the nav shows only the logo and the Vision lens button. A bottom **thumb dock** gives Spotlight, Camera, Tools and Studio, and highlights the section you are in.
 - **Vision lens** (top right): turns the **whole website** into what a colour-blind person sees: Deuteranopia, Protanopia, Tritanopia or No colour. A small chip at the bottom (“Viewing as Deuteranopia · Reset”) reminds you it’s on and switches it off in one click.
 - **Tech:** SVG `feColorMatrix` filters built from the Machado 2009 colour-vision matrices, applied with a CSS `filter`. This happens in the browser so the whole page, not just one image, changes instantly.
 
 ### 4.2 Hero: “Design for every eye.”
 
 - A **live drag slider** over a flood-warning poster. Left side: what you see. Right side: what someone else sees.
+- The words “every eye.” cycle through red, amber and green as seen with normal vision, deuteranopia, protanopia, tritanopia and no colour (computed with the Machado 2009 matrices), with a small sticker naming the current vision type. It stops for reduced-motion users.
 - Seven ways of seeing: **Deuteranopia, Protanopia, Tritanopia, No colour, Blurry vision, Safe palette, Stripes fix**.
 - The flood poster itself is **drawn entirely by Cloudinary**: coloured blocks (`e_colorize`) and text (`l_text`) layered on a sample image. No design file was ever uploaded.
 - **Cloudinary:** `e_simulate_colorblind`, `e_grayscale`, `e_blur`, `e_replace_color`, `e_assist_colorblind`.
@@ -118,7 +120,7 @@
 
 **Step 2: Look through their eyes.** A big comparison of the original against any version, as a **drag slider** or **side by side**. Works with the keyboard. For the stripes fix, a **Strength** slider (10–100) controls how strong the pattern is.
 
-**Step 3: The pack.** All **13 versions** as cards, each with its **real delivered size** and the % saved. Filter by All, Simulate, Fix, Reach. Each card has Open, Download and Copy link.
+**Step 3: The pack.** All **13 versions** as cards, with the Original shown large, leading the grid. Each card has its with its **real delivered size** and the % saved. Filter by All, Simulate, Fix, Reach. Each card has Open, Download and Copy link.
 - **Full-screen viewer:** step through versions. It shows **“How Cloudinary made this”**: the real width, height, format and file size reported by Cloudinary (`fl_getinfo`), and every part of the URL explained in plain English.
 - **Download pack (.zip):** every version as JPG/PNG so they open anywhere, plus a README.
 - **Share card:** a ready-made 1600×900 image, “What you see vs. what 1 in 12 men see”, for WhatsApp or LinkedIn.
@@ -156,11 +158,12 @@ Every version except the original and the stripes and print versions (which must
 
 ### 4.10 Publish it everywhere
 
-- **Say it in plain words:** type a line and Cloudinary prints it under the poster (`l_text`). Six languages at one tap: **English, हिन्दी, বাংলা, தமிழ், తెలుగు, ગુજરાતી**. ClearSight detects the script and picks the matching Google font Cloudinary supports: Hind, Hind Siliguri, Hind Madurai, Hind Guntur, Hind Vadodara. The translations are examples; you can edit them.
+- **Say it in plain words:** type a line and Cloudinary prints it under the poster (`l_text`). 11 languages: English plus 10 Indian scripts. Six are one-tap examples: **English, हिन्दी, বাংলা, தமிழ், తెలుగు, ગુજરાતી**. The others (Marathi, Punjabi, Kannada, Malayalam, Odia, Urdu) work by typing. ClearSight detects the script and picks the matching Google font Cloudinary supports: Arial (English), Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu), Hind Vadodara (Gujarati), Mukta Mahee (Gurmukhi), Baloo Tamma (Kannada), Baloo Chettan (Malayalam), Baloo Bhaina (Odia), Lateef (Urdu). Cloudinary supports only some Google fonts (the Noto Sans Indic fonts return “Unsupported font family”), so each one was checked by rendering a real sentence. The translations are examples; you can edit them.
 - **Turn it into a story video:** Cloudinary’s `e_zoompan` turns the poster (with or without your line) into a six-second MP4. Download included.
 - **Describe the image:** alt text for screen readers, plus a paste-ready snippet in **HTML** (with `srcset` and links to the accessible versions), **Markdown** or plain **Links**.
 - **QR code for the printed poster:** points to **this pack**, the **colour-blind** version or the **low-data** version. Download as PNG and print it on the notice.
 - **Share:** uses the phone’s share sheet where available.
+- **Scan to phone:** on desktop, a QR code in the closing card opens the site on a phone.
 
 ### 4.11 How it works, the note, and the footer
 
@@ -172,7 +175,11 @@ Every version except the original and the stripes and print versions (which must
 
 - **Connect your own Cloudinary:** a settings dialog takes a cloud name and an **unsigned upload preset**. Stored only in your browser. ClearSight never asks for an API key or secret.
 - **Shareable links:** every pack has its own address (for example `#s=aqi`), so you can send someone the exact pack you made.
-- **Works offline:** a service worker keeps the site and the images you’ve already seen working on bad Wi-Fi.
+- **Works offline:** a service worker (cache `clearsight-v5`, which also pre-caches the manifest and an icon) keeps the site and the images you’ve already seen working on bad Wi-Fi.
+- **Installable:** a web app manifest (`site/manifest.webmanifest`) and icons (`icon-180.png`, `icon-192.png`, `icon-512.png`) make “Add to Home screen” work. The PNG icons were rendered by Cloudinary from an SVG (`w_512,h_512,c_fill/f_png`).
+- **Presenter keyboard shortcuts (desktop):** 1–9 jump to sections (1 top, 2 Spotlight, 3 Camera, 4 dot plate, 5 tools, 6 Studio, 7 Report, 8 Publish, 9 How it works). V cycles the page-wide vision lens. ? shows the list. They are ignored while you are typing.
+- **Phone layout:** every section has a proper phone layout (320–430 px), tested with no horizontal scrolling at 320, 390, 768 and 1440 px.
+- **Lighthouse (30 Oct 2026):** 100 accessibility, 100 best practices and 100 SEO, on both mobile and desktop.
 
 ---
 
@@ -186,7 +193,7 @@ Every version except the original and the stripes and print versions (which must
 | `e_replace_color` | Safe palette | Swaps risky reds and greens for safe colours |
 | `e_make_transparent` + `e_grayscale` | **Colour Spotlight** | Finds every pixel of one colour |
 | `e_grayscale`, `e_contrast`, `e_auto_contrast`, `e_sharpen`, `e_blur` | Pack, hero | Print-safe, low-vision and blur views |
-| `l_text` + `fl_layer_apply` (with Hind fonts) | Posters, label | Draws posters and prints labels in Indian scripts |
+| `l_text` + `fl_layer_apply` (with Hind, Baloo, Mukta and Lateef fonts) | Posters, label | Draws posters and prints labels in Indian scripts |
 | `e_colorize` | Sample posters | Solid colour blocks, no uploaded design needed |
 | `c_pad`, `b_white`, `b_auto`, `ar_9:16` | Square and story | Reformat without cropping anything |
 | `e_zoompan` → `.mp4` | Story video | Turns an image into a video |
@@ -269,10 +276,10 @@ No backend, no database, no tracking.
 | **Dot plate** | For awareness only, not a diagnosis. |
 | **Air-quality map** | **Example data**, clearly labelled on the image. Not a live reading. |
 | **Uploads** | Go to the project’s Cloudinary account unless you connect your own. Images only, up to 10 MB. |
-| **Label languages** | Six scripts are tested with matching fonts. Others fall back to Arial. |
+| **Label languages** | Ten Indian scripts are tested with matching fonts, plus English. Others fall back to Arial. |
 | **Offline mode** | Works for pages and images you’ve already opened. New uploads need a connection. |
 | **QR “This pack”** | Needs the site to be on a web address (it is, on Netlify). |
-| **Screen size** | Designed desktop first. |
+| **Screen size** | Every section has a phone layout (320–430 px). Presenter keys are desktop only. |
 
 ---
 
@@ -282,7 +289,7 @@ No backend, no database, no tracking.
 No. Filters recolour. ClearSight’s Spotlight **answers a question** (“which part is red?”) and its Studio produces 13 ready-to-publish versions, scores the original, and gives publishing tools.
 
 **Why Cloudinary and not your own code?**
-Cloudinary already has the colour-blind effects, colour keying, text layers in Indian fonts, video, format optimisation and a global CDN. Using URLs means **zero servers** and every version is cached worldwide.
+Cloudinary already has the colour-blind effects, colour keying, text layers in Indian fonts, video, format optimisation and a global CDN. Using URLs means **zero servers** and every version is cached worldwide. We also tested Cloudinary’s generative AI recolour (`e_gen_recolor`): it erased the letter C on the flood poster and missed the legend swatch, so ClearSight uses deterministic transformations.
 
 **How do you know the numbers are real?**
 File sizes come from the actual delivered files and from Cloudinary’s `fl_getinfo`. Report scores come from reading the actual pixels.
@@ -291,7 +298,7 @@ File sizes come from the actual delivered files and from Cloudinary’s `fl_geti
 No backend, no tracking, camera stays on the device until Snap, no secrets in the code.
 
 **What’s next?**
-More Indian languages for the label, a bulk mode for whole folders of notices, and AI-generated alt text with Cloudinary’s add-ons.
+A bulk mode for whole folders of notices, and AI-generated alt text with Cloudinary’s add-ons.
 
 ---
 
