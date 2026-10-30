@@ -21,7 +21,7 @@ The organisations that publish these images (local governments, clinics, schools
 
 ## 2. The solution: ClearSight
 
-ClearSight takes one image and produces an **11-version accessibility pack** with Cloudinary, then tells you how accessible the original is and how to publish the fixes.
+ClearSight takes one image and produces a **13-version accessibility pack** with Cloudinary, then tells you how accessible the original is and how to publish the fixes.
 
 ### The fix, proven on a real-style notice
 
@@ -37,7 +37,9 @@ The demo includes a **flood-warning poster built entirely from Cloudinary overla
 | **Print-safe** | Stripes plus high-contrast greyscale | Photocopied notice boards |
 | **Low-vision boost** | Auto-contrast and sharpening | Low-vision readers, dim or low-cost screens |
 | **Low data** | 480px, WebP/AVIF, eco quality | Slow, metered or disaster-hit networks |
+| **Safe palette** | Swaps red for vermillion and green for blue (`e_replace_color`) | Colour-blind readers, without changing the design |
 | **Chat-ready square** | Padded 1080×1080 so nothing gets cropped | Forwarding in WhatsApp and community groups |
+| **Story (9:16)** | Tall format padded with the image’s own colours (`b_auto`) | WhatsApp and Instagram status |
 
 ### User flow
 
@@ -64,18 +66,27 @@ ClearSight contains **no image-processing code**. Every version is a Cloudinary 
 - **`f_auto` + `q_auto`:** each browser gets the lightest format it supports. `q_auto:eco` drives the low-data version.
 - **Layers as a design tool:** the flood-warning sample is made from `e_colorize` solid fills, `l_text` overlays and `fl_layer_apply`, with no uploaded asset.
 - **Readability effects:** `e_auto_contrast`, `e_sharpen`, `e_grayscale`, `e_contrast`, `c_pad`.
+- **Text in Indian scripts:** the plain-words label picks a Google font Cloudinary supports for the script it detects: Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu) and Hind Vadodara (Gujarati).
+- **Image to video:** `e_zoompan` turns the poster, with its label, into a six-second MP4 for status updates. Cloudinary keeps overlays in the video but drops colour effects, so the video offers only what really survives.
+- **`fl_getinfo`:** the fullscreen viewer asks Cloudinary for each version’s real width, height, format and bytes, and explains every parameter in its URL.
 - **Open CORS on delivery:** Cloudinary serves `Access-Control-Allow-Origin: *`, so the browser can measure real byte sizes, build the zip and analyse pixels for the report.
 
 ### Transformation reference
 
 ```
-Simulate      e_simulate_colorblind:deuteranopia | protanopia | tritanopia | rod_monochromacy
+Simulate      e_simulate_colorblind:deuteranopia | protanopia | tritanopia
+No colour     e_grayscale
 Stripes       e_assist_colorblind:<10–100>
 X-ray         e_assist_colorblind:xray
 Print-safe    e_assist_colorblind:40/e_grayscale/e_contrast:30
 Low vision    w_1600,c_limit/e_sharpen:80/e_auto_contrast/f_auto,q_auto
 Low data      w_480,c_limit/f_auto,q_auto:eco
+Safe palette  e_replace_color:0072b2:40:2e9e44/e_replace_color:d55e00:40:d62828/f_auto,q_auto
 Chat square   w_1080,h_1080,c_pad,b_white/f_auto,q_auto
+Story         ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto
+Label         c_pad,w_1.0,h_1.2,b_white/l_text:Hind_80_bold:<line>/fl_layer_apply,g_south
+Video         <label>/e_zoompan:du_6/w_720 → .mp4
+Details       <any version>/fl_getinfo
 ```
 
 Every transformation was tested against the live `res.cloudinary.com` endpoint before it went into the app, and the visual results were checked by eye.
@@ -153,11 +164,19 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
    - settings validation, upload error handling and non-image rejection
    - deep-link reload, no console errors, and no horizontal overflow at phone width
    - real uploads on the live site: an image dropped in by a visitor goes to Cloudinary through the unsigned preset and produces the full pack and report
+9. **More Cloudinary, easier to use:**
+   - the plain-words label in six languages, each script rendered in a matching Hind font
+   - a story video made with `e_zoompan`; testing showed colour effects don’t survive into video, so the options were cut to the poster and the poster with its label
+   - a 9:16 story version with `b_auto` padding, making the pack 13 versions
+   - “How Cloudinary made this” in the fullscreen viewer, from `fl_getinfo`
+   - “Suggest a safer second colour” in the pair checker (Okabe–Ito palette, best worst-case ΔE across all three kinds of colour blindness, WCAG AA contrast first)
+   - a Copy button on the colour reader and a “Viewing as … Reset” chip for the vision lens
+   - a service-worker fix: a cached `<img>` copy could block a later download of the same file
 
 ## 8. What’s next
 
 - **AI alt text and OCR** (Cloudinary AI add-ons) so screen-reader users get the words inside posters automatically.
-- **Translated text overlays** for multilingual communities.
+- **More languages** for the label (Kannada, Malayalam, Punjabi, Odia, Urdu), once matching fonts are confirmed in Cloudinary.
 - **Bulk mode** to process a whole folder of notices using the `clearsight` tag.
 - **Offline PWA** so field workers can prepare packs before going into low-connectivity areas.
 - **Formal WCAG contrast checks** for text regions, alongside the colour-cluster screening.
@@ -166,4 +185,4 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 
 - **Live demo:** https://resplendent-maamoul-58cc39.netlify.app
 - **Source code:** https://github.com/Sharmabhavishya/clearsight
-- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind
+- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind fonts) · e_zoompan · b_auto · fl_getinfo

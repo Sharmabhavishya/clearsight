@@ -43,7 +43,7 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 </ul>
 <p>The organisations that publish these images (local governments, clinics, schools, small NGOs) rarely have a designer, an accessibility specialist or a developer. They need something that fixes all of this <strong>in seconds, without redesigning anything</strong>.</p>
 <h2>2. The solution: ClearSight</h2>
-<p>ClearSight takes one image and produces an <strong>11-version accessibility pack</strong> with Cloudinary, then tells you how accessible the original is and how to publish the fixes.</p>
+<p>ClearSight takes one image and produces a <strong>13-version accessibility pack</strong> with Cloudinary, then tells you how accessible the original is and how to publish the fixes.</p>
 <h3>The fix, proven on a real-style notice</h3>
 <p>The demo includes a <strong>flood-warning poster built entirely from Cloudinary overlays</strong>: three colour-coded zones (red “Evacuate now”, amber “Get ready”, green “Safe”). Under Cloudinary’s deuteranopia simulation, the red and green zones <strong>turn almost the same olive colour</strong>. With Cloudinary’s <code>e_assist_colorblind</code>, red gets horizontal stripes and green gets vertical ones, so the zones are distinguishable again. They stay distinguishable even after conversion to black and white.</p>
 <h3>The pack</h3>
@@ -86,9 +86,19 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 <td>Slow, metered or disaster-hit networks</td>
 </tr>
 <tr>
+<td><strong>Safe palette</strong></td>
+<td>Swaps red for vermillion and green for blue (<code>e_replace_color</code>)</td>
+<td>Colour-blind readers, without changing the design</td>
+</tr>
+<tr>
 <td><strong>Chat-ready square</strong></td>
 <td>Padded 1080×1080 so nothing gets cropped</td>
 <td>Forwarding in WhatsApp and community groups</td>
+</tr>
+<tr>
+<td><strong>Story (9:16)</strong></td>
+<td>Tall format padded with the image’s own colours (<code>b_auto</code>)</td>
+<td>WhatsApp and Instagram status</td>
 </tr>
 </tbody></table>
 <h3>User flow</h3>
@@ -114,16 +124,25 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 <li><strong><code>f_auto</code> + <code>q_auto</code>:</strong> each browser gets the lightest format it supports. <code>q_auto:eco</code> drives the low-data version.</li>
 <li><strong>Layers as a design tool:</strong> the flood-warning sample is made from <code>e_colorize</code> solid fills, <code>l_text</code> overlays and <code>fl_layer_apply</code>, with no uploaded asset.</li>
 <li><strong>Readability effects:</strong> <code>e_auto_contrast</code>, <code>e_sharpen</code>, <code>e_grayscale</code>, <code>e_contrast</code>, <code>c_pad</code>.</li>
+<li><strong>Text in Indian scripts:</strong> the plain-words label picks a Google font Cloudinary supports for the script it detects: Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu) and Hind Vadodara (Gujarati).</li>
+<li><strong>Image to video:</strong> <code>e_zoompan</code> turns the poster, with its label, into a six-second MP4 for status updates. Cloudinary keeps overlays in the video but drops colour effects, so the video offers only what really survives.</li>
+<li><strong><code>fl_getinfo</code>:</strong> the fullscreen viewer asks Cloudinary for each version’s real width, height, format and bytes, and explains every parameter in its URL.</li>
 <li><strong>Open CORS on delivery:</strong> Cloudinary serves <code>Access-Control-Allow-Origin: *</code>, so the browser can measure real byte sizes, build the zip and analyse pixels for the report.</li>
 </ul>
 <h3>Transformation reference</h3>
-<pre><code>Simulate      e_simulate_colorblind:deuteranopia | protanopia | tritanopia | rod_monochromacy
+<pre><code>Simulate      e_simulate_colorblind:deuteranopia | protanopia | tritanopia
+No colour     e_grayscale
 Stripes       e_assist_colorblind:&lt;10–100&gt;
 X-ray         e_assist_colorblind:xray
 Print-safe    e_assist_colorblind:40/e_grayscale/e_contrast:30
 Low vision    w_1600,c_limit/e_sharpen:80/e_auto_contrast/f_auto,q_auto
 Low data      w_480,c_limit/f_auto,q_auto:eco
+Safe palette  e_replace_color:0072b2:40:2e9e44/e_replace_color:d55e00:40:d62828/f_auto,q_auto
 Chat square   w_1080,h_1080,c_pad,b_white/f_auto,q_auto
+Story         ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto
+Label         c_pad,w_1.0,h_1.2,b_white/l_text:Hind_80_bold:&lt;line&gt;/fl_layer_apply,g_south
+Video         &lt;label&gt;/e_zoompan:du_6/w_720 → .mp4
+Details       &lt;any version&gt;/fl_getinfo
 </code></pre>
 <p>Every transformation was tested against the live <code>res.cloudinary.com</code> endpoint before it went into the app, and the visual results were checked by eye.</p>
 <h2>4. How the accessibility report works</h2>
@@ -243,11 +262,21 @@ Chat square   w_1080,h_1080,c_pad,b_white/f_auto,q_auto
 <li>real uploads on the live site: an image dropped in by a visitor goes to Cloudinary through the unsigned preset and produces the full pack and report</li>
 </ul>
 </li>
+<li><strong>More Cloudinary, easier to use:</strong><ul>
+<li>the plain-words label in six languages, each script rendered in a matching Hind font</li>
+<li>a story video made with <code>e_zoompan</code>; testing showed colour effects don’t survive into video, so the options were cut to the poster and the poster with its label</li>
+<li>a 9:16 story version with <code>b_auto</code> padding, making the pack 13 versions</li>
+<li>“How Cloudinary made this” in the fullscreen viewer, from <code>fl_getinfo</code></li>
+<li>“Suggest a safer second colour” in the pair checker (Okabe–Ito palette, best worst-case ΔE across all three kinds of colour blindness, WCAG AA contrast first)</li>
+<li>a Copy button on the colour reader and a “Viewing as … Reset” chip for the vision lens</li>
+<li>a service-worker fix: a cached <code>&lt;img&gt;</code> copy could block a later download of the same file</li>
+</ul>
+</li>
 </ol>
 <h2>8. What’s next</h2>
 <ul>
 <li><strong>AI alt text and OCR</strong> (Cloudinary AI add-ons) so screen-reader users get the words inside posters automatically.</li>
-<li><strong>Translated text overlays</strong> for multilingual communities.</li>
+<li><strong>More languages</strong> for the label (Kannada, Malayalam, Punjabi, Odia, Urdu), once matching fonts are confirmed in Cloudinary.</li>
 <li><strong>Bulk mode</strong> to process a whole folder of notices using the <code>clearsight</code> tag.</li>
 <li><strong>Offline PWA</strong> so field workers can prepare packs before going into low-connectivity areas.</li>
 <li><strong>Formal WCAG contrast checks</strong> for text regions, alongside the colour-cluster screening.</li>
@@ -256,7 +285,7 @@ Chat square   w_1080,h_1080,c_pad,b_white/f_auto,q_auto
 <ul>
 <li><strong>Live demo:</strong> <a href="https://resplendent-maamoul-58cc39.netlify.app">https://resplendent-maamoul-58cc39.netlify.app</a></li>
 <li><strong>Source code:</strong> <a href="https://github.com/Sharmabhavishya/clearsight">https://github.com/Sharmabhavishya/clearsight</a></li>
-<li><strong>Built with:</strong> Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind</li>
+<li><strong>Built with:</strong> Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind fonts) · e_zoompan · b_auto · fl_getinfo</li>
 </ul>
 
 </main>

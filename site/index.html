@@ -391,6 +391,25 @@
   .lp-preview { position: relative; aspect-ratio: 5 / 4; border-radius: 14px; overflow: hidden; background: #fff; }
   .lp-preview img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 
+  /* Languages, Cloudinary details, video, lens chip */
+  .langs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .langs button { border: 0; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.06); color: var(--muted); font-size: 13px; cursor: pointer; transition: background-color .2s, color .2s; }
+  .langs button:hover { color: var(--text); background: rgba(255,255,255,.1); }
+  .font-note { margin-top: 8px; font-size: 12px; color: var(--dim); }
+  .lb-cld { padding: 0 24px 22px; display: grid; gap: 10px; }
+  .lb-cld p { font-size: 14px; color: var(--muted); }
+  .lb-cld ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .lb-cld li { font-size: 13px; color: var(--muted); padding: 6px 10px; border-radius: 10px; background: var(--card-3); }
+  .lb-cld code { font-family: var(--mono); font-size: 12px; color: var(--sky); margin-right: 4px; }
+  .video-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; margin-top: 10px; padding: 24px; border-radius: var(--r-lg); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); font-size: 15px; }
+  .video-panel h3 { font-size: 20px; letter-spacing: -0.02em; }
+  .video-panel video { width: 100%; aspect-ratio: 3 / 2; border-radius: 14px; background: #000; object-fit: contain; }
+  .video-ph { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 2; border-radius: 14px; background: var(--card-2); color: var(--dim); font-size: 14px; text-align: center; padding: 20px; }
+  .lens-chip { position: fixed; z-index: 60; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 999px; background: var(--card-2); box-shadow: 0 0 0 1px var(--line-2), 0 16px 40px rgba(0,0,0,.5); font-size: 14px; }
+  .lens-chip b { color: var(--orange); font-weight: 600; }
+  .reader-out { position: relative; }
+  .reader-out .btn { margin-left: auto; }
+
   /* How */
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .step { background: var(--card); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--line); padding: 28px; display: flex; flex-direction: column; gap: 12px; min-height: 260px; transition: transform .25s var(--ease), box-shadow .25s; }
@@ -450,7 +469,7 @@
   .x { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(255,255,255,.08); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; }
   #lightbox { max-width: min(1100px, calc(100vw - 32px)); }
   #lightbox .stage-lb { position: relative; background: #000; }
-  #lightbox img { width: 100%; max-height: 72vh; object-fit: contain; }
+  #lightbox img { width: 100%; max-height: max(240px, calc(100vh - 380px)); object-fit: contain; }
   #lightbox .cap { padding: 18px 24px 22px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
   #lightbox .cap p { color: var(--muted); font-size: 14px; margin-top: 2px; }
   .navbtn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(8,9,11,.6); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
@@ -552,8 +571,8 @@
     </div>
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text</span><span>e_simulate_colorblind:protanopia</span>
-        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text</span><span>e_simulate_colorblind:protanopia</span>
+        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text:Hind</span><span>e_replace_color</span><span>e_zoompan</span><span>b_auto</span><span>fl_getinfo</span><span>e_simulate_colorblind:protanopia</span>
+        <span>e_simulate_colorblind:deuteranopia</span><span>e_assist_colorblind:40</span><span>f_auto</span><span>q_auto:eco</span><span>e_grayscale</span><span>e_auto_contrast</span><span>e_sharpen:80</span><span>c_pad,b_white</span><span>l_text:Hind</span><span>e_replace_color</span><span>e_zoompan</span><span>b_auto</span><span>fl_getinfo</span><span>e_simulate_colorblind:protanopia</span>
       </div>
     </div>
   </section>
@@ -642,7 +661,7 @@
             <video id="readerVid" playsinline muted hidden></video>
             <span class="reticle" id="reticle" aria-hidden="true"></span>
           </div>
-          <div class="reader-out" aria-live="polite"><span class="swatch" id="readerSwatch"></span><div><b id="readerName">Move over the poster</b><span id="readerHex"></span></div></div>
+          <div class="reader-out" aria-live="polite"><span class="swatch" id="readerSwatch"></span><div><b id="readerName">Move over the poster</b><span id="readerHex"></span></div><button type="button" class="btn small ghost" id="readerCopy">Copy</button></div>
           <p class="hint" style="margin:0">Lighting changes colours. Double-check anything safety-critical, like electrical wiring.</p>
         </div>
         <div class="tool glow reveal" id="pair" style="--d:80ms">
@@ -659,6 +678,7 @@
             <button type="button" data-a="#9aa0aa" data-b="#ffffff" aria-pressed="false">Grey on white</button>
           </div>
           <div class="pair-preview" id="pairPreview"><span>Aa</span>Evacuate now</div>
+          <button type="button" class="btn small sky" id="pairSuggest" style="align-self:flex-start">Suggest a safer second colour</button>
           <ul class="pair-results" id="pairResults" aria-live="polite"></ul>
         </div>
       </div>
@@ -753,7 +773,16 @@
           <h3>Say it in plain words</h3>
           <p class="hint">Colour alone can’t carry meaning. Add a line and Cloudinary prints it on the poster.</p>
           <label class="field" for="labelText" style="margin-top:18px">Your line</label>
-          <input type="text" id="labelText" maxlength="90" value="Red means evacuate. Green means safe." autocomplete="off" spellcheck="true">
+          <input type="text" id="labelText" maxlength="90" value="Red means evacuate. Green means safe." autocomplete="off" spellcheck="true" lang="mul">
+          <div class="langs" id="labelLangs" role="group" aria-label="Example lines in Indian languages">
+            <button type="button" lang="en" data-text="Red means evacuate. Green means safe.">English</button>
+            <button type="button" lang="hi" data-text="लाल मतलब तुरंत निकलें। हरा मतलब सुरक्षित।">हिन्दी</button>
+            <button type="button" lang="bn" data-text="লাল মানে এখনই সরে যান। সবুজ মানে নিরাপদ।">বাংলা</button>
+            <button type="button" lang="ta" data-text="சிவப்பு என்றால் உடனே வெளியேறு. பச்சை என்றால் பாதுகாப்பு.">தமிழ்</button>
+            <button type="button" lang="te" data-text="ఎరుపు అంటే వెంటనే ఖాళీ చేయండి. ఆకుపచ్చ అంటే సురక్షితం.">తెలుగు</button>
+            <button type="button" lang="gu" data-text="લાલ એટલે તરત નીકળો. લીલો એટલે સુરક્ષિત.">ગુજરાતી</button>
+          </div>
+          <p class="font-note" id="labelFont">Rendered by Cloudinary in Arial. Type in any Indian script and the font follows.</p>
           <div class="row" style="margin-top:14px">
             <button type="button" class="btn small" id="labelDl">Download</button>
             <button type="button" class="btn small ghost" id="labelCopy">Copy link</button>
@@ -761,6 +790,22 @@
           </div>
         </div>
         <div class="lp-preview" id="labelPane"><div class="shimmer"></div><img id="labelImg" alt="The poster with your plain-words label printed underneath"></div>
+      </div>
+      <div class="video-panel glow reveal" style="--d:120ms">
+        <div>
+          <h3>Turn it into a story video</h3>
+          <p class="hint">Cloudinary turns your poster into a six-second MP4 for WhatsApp status and reels. Add the plain-words line from above, in any of the six languages, and it’s in the video too.</p>
+          <div class="seg" id="videoFix" role="group" aria-label="What goes in the video" style="margin-top:16px">
+            <button type="button" data-fix="label" aria-pressed="true">With your line</button>
+            <button type="button" data-fix="poster" aria-pressed="false">Poster only</button>
+          </div>
+          <div class="row" style="margin-top:16px">
+            <button type="button" class="btn small sky" id="makeVideo">Make the video</button>
+            <button type="button" class="btn small ghost" id="videoDl" disabled>Download MP4</button>
+          </div>
+          <p class="hint" id="videoStatus" aria-live="polite" style="margin-top:12px"></p>
+        </div>
+        <div><video id="storyVid" muted loop playsinline controls hidden></video><div class="video-ph" id="videoPh">Your video appears here</div></div>
       </div>
       <div class="publish reveal" style="--d:160ms">
         <div class="ppanel">
@@ -879,8 +924,10 @@
     <button type="button" class="navbtn next" id="lbNext" aria-label="Next version"><svg class="i" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
   </div>
   <div class="cap"><div><b id="lbTitle"></b><p id="lbWho"></p></div><div class="row"><span class="pill" id="lbCount"></span><a class="btn small ghost" id="lbOpen" target="_blank" rel="noopener">Open</a><button type="button" class="btn small ghost" id="lbDl">Download</button><button type="button" class="btn small" id="lbCopy">Copy link</button></div></div>
+  <div class="lb-cld"><p id="lbInfo"></p><ul id="lbAnatomy" aria-label="How Cloudinary made this version"></ul></div>
 </dialog>
 
+<div class="lens-chip" id="lensChip" hidden role="status">Viewing as <b id="lensChipName">Deuteranopia</b><button type="button" class="btn small" id="lensReset">Reset</button></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));</script>
@@ -957,7 +1004,10 @@
       t: () => "w_480,c_limit/f_auto,q_auto:eco" },
     { key: "square", group: "reach", tag: "Reach", title: "Chat-ready square",
       who: "Square and padded, so nothing is cropped when it’s forwarded in WhatsApp or community groups.",
-      t: () => "w_1080,h_1080,c_pad,b_white/" + VIEW }
+      t: () => "w_1080,h_1080,c_pad,b_white/" + VIEW },
+    { key: "story", group: "reach", tag: "Reach", title: "Story (9:16)",
+      who: "Tall format for WhatsApp and Instagram status, padded with Cloudinary’s automatic background colour.",
+      t: () => "ar_9:16,c_pad,b_auto,w_1080/" + VIEW }
   ];
   const byKey = Object.fromEntries(VARIANTS.map(v => [v.key, v]));
 
@@ -1417,7 +1467,8 @@
     safe: "Reds become vermillion and greens become blue, so the meaning survives for every eye.",
     lowvision: "Stronger contrast and crisper edges.",
     lowdata: "Smaller and lighter. Shown at its real 480px size.",
-    square: "Padded to a square so chat apps don’t crop it."
+    square: "Padded to a square so chat apps don’t crop it.",
+    story: "Tall 9:16 for status updates. Cloudinary fills the padding with the image’s own colours."
   };
 
   function renderCompare() {
@@ -1958,7 +2009,11 @@
   // ---------- Feature: say it in plain words (Cloudinary text layer) ----------
   // Cloudinary text layers need commas, slashes and colons double-encoded.
   const encText = s => encodeURIComponent(s).replace(/%2C/gi, "%252C").replace(/%2F/gi, "%252F").replace(/%3A/gi, "%253A");
-  const labelUrl = text => cld(state.src, "c_pad,w_1.0,h_1.2,g_north,b_white/l_text:Arial_80_bold:" + encText(text) + ",co_rgb:111317/c_fit,fl_relative,w_0.9,h_0.12/fl_layer_apply,g_south,y_0.04,fl_relative/" + VIEW);
+  // Cloudinary renders Indian scripts with the matching Google font from the Hind family.
+  const SCRIPT_FONTS = [[/[\u0900-\u097F]/, "Hind", "Devanagari"], [/[\u0980-\u09FF]/, "Hind Siliguri", "Bengali"], [/[\u0B80-\u0BFF]/, "Hind Madurai", "Tamil"], [/[\u0C00-\u0C7F]/, "Hind Guntur", "Telugu"], [/[\u0A80-\u0AFF]/, "Hind Vadodara", "Gujarati"]];
+  const fontFor = text => SCRIPT_FONTS.find(([re]) => re.test(text)) || [null, "Arial", "Latin"];
+  const labelT = text => "c_pad,w_1.0,h_1.2,g_north,b_white/l_text:" + encodeURIComponent(fontFor(text)[1]) + "_80_bold:" + encText(text) + ",co_rgb:111317/c_fit,fl_relative,w_0.9,h_0.12/fl_layer_apply,g_south,y_0.04,fl_relative";
+  const labelUrl = text => cld(state.src, labelT(text) + "/" + VIEW);
   function bindLabel() {
     const inp = $("labelText"), img = $("labelImg"), pane = $("labelPane");
     let timer;
@@ -1967,6 +2022,8 @@
       if (!v) { state.labelUrl = ""; pane.classList.remove("loaded"); img.removeAttribute("src"); return; }
       const u = labelUrl(v);
       state.labelUrl = u;
+      const [, font, script] = fontFor(v);
+      $("labelFont").textContent = "Rendered by Cloudinary in " + font + (script === "Latin" ? ". Type in any Indian script and the font follows." : ", for " + script + " script.");
       $("labelOpen").href = u;
       pane.classList.remove("loaded");
       getBlob(u).then(({ obj }) => {
@@ -1977,6 +2034,7 @@
     };
     state.refreshLabel = upd;
     inp.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(upd, 500); });
+    $("labelLangs").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; inp.value = b.dataset.text; inp.lang = b.lang; clearTimeout(timer); upd(); });
     $("labelCopy").addEventListener("click", () => { if (state.labelUrl) copyText(state.labelUrl, "Labelled poster link copied"); });
     $("labelDl").addEventListener("click", async () => {
       if (!state.labelUrl) return;
@@ -2341,6 +2399,125 @@
     render();
   }
 
+  // ---------- How Cloudinary made this (full-screen view) ----------
+  const CLD_PARAMS = {
+    e_simulate_colorblind: "simulates a kind of colour blindness",
+    e_assist_colorblind: "adds patterns so colour-blind readers can tell colours apart",
+    e_replace_color: "swaps one colour for another",
+    e_grayscale: "removes colour, keeps light and dark",
+    e_contrast: "raises contrast",
+    e_auto_contrast: "balances light and dark automatically",
+    e_sharpen: "sharpens edges",
+    e_blur: "blurs, like low vision does",
+    f_auto: "picks the lightest format each browser can open",
+    q_auto: "finds the smallest file that still looks right",
+    w: "sets the width",
+    h: "sets the height",
+    ar: "sets the aspect ratio",
+    c_limit: "never enlarges the image",
+    c_pad: "pads instead of cropping, so nothing is cut off",
+    b_white: "pads with white",
+    b_auto: "pads with the image’s own colours",
+    l_text: "prints text as a layer",
+    fl_layer_apply: "places the layer",
+    fl_relative: "sizes the layer relative to the image",
+    c_fit: "fits inside a box",
+    e_zoompan: "turns the image into a slow-zoom video",
+    fl_attachment: "downloads instead of opening"
+  };
+  const explain = token => {
+    const head = token.split(":")[0];
+    return CLD_PARAMS[head] || CLD_PARAMS[head.split("_")[0]] || null;
+  };
+  function bindCloudinaryInfo() {
+    const cur = () => visibleVariants()[state.lbIndex];
+    const render = () => {
+      const v = cur(); if (!v) return;
+      const list = $("lbAnatomy"); list.textContent = "";
+      const t = v.t();
+      const tokens = t ? t.split("/").flatMap(c => c.split(",")) : [];
+      if (!tokens.length) list.appendChild(el("li", null, "No transformation: the file exactly as uploaded."));
+      tokens.forEach(tok => {
+        const why = explain(tok); if (!why) return;
+        const li = el("li"); li.appendChild(el("code", null, tok)); li.appendChild(document.createTextNode(" " + why)); list.appendChild(li);
+      });
+      const info = $("lbInfo"); info.textContent = "Asking Cloudinary…";
+      const want = t;
+      fetch(cld(state.src, (t ? t + "/" : "") + "fl_getinfo"))
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(j => {
+          if (cur() !== v || v.t() !== want) return;
+          const o = j.output || {}, i = j.input || {};
+          info.textContent = "Cloudinary reports " + o.width + " × " + o.height + " px, " + String(o.format || "").toUpperCase() + ", " + fmt(o.bytes) + " (source file " + fmt(i.bytes) + ").";
+        })
+        .catch(() => { if (cur() === v) info.textContent = "Couldn’t reach Cloudinary for the file details."; });
+    };
+    state.lbMO2 = new MutationObserver(render);
+    state.lbMO2.observe($("lbTitle"), { childList: true, characterData: true, subtree: true });
+  }
+
+  // ---------- Story video (Cloudinary turns the poster into an MP4) ----------
+  // e_zoompan keeps overlays and padding but drops colour effects, so the video offers only what survives.
+  // The built-in poster paints its white ground with e_colorize, which video drops; a padded text layer paints it instead.
+  const VIDEO_GROUND = ["e_colorize:100,co_rgb:ffffff", "l_text:Arial_20:%20,b_white,w_1200,h_800,c_pad/fl_layer_apply"];
+  const videoUrl = withLine => {
+    const line = $("labelText").value.trim().slice(0, 90);
+    const t = [state.src.base && state.src.base.replace(...VIDEO_GROUND), withLine && line ? labelT(line) : "", "e_zoompan:du_6", "w_720"].filter(Boolean).join("/");
+    return "https://res.cloudinary.com/" + state.src.cloud + "/image/upload/" + t + "/" + state.src.path.replace(/.[a-z0-9]+$/i, "") + ".mp4";
+  };
+  function bindVideo() {
+    const vid = $("storyVid"), box = $("videoFix"), status = $("videoStatus");
+    let fix = "label";
+    box.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; fix = b.dataset.fix; setPressed(box, "fix", fix); });
+    $("makeVideo").addEventListener("click", () => {
+      const u = videoUrl(fix === "label");
+      status.textContent = "Cloudinary is rendering your video. The first time takes a few seconds…";
+      vid.hidden = false; $("videoPh").hidden = true;
+      vid.oncanplay = () => { status.textContent = "Done. Six seconds, made entirely from your poster by Cloudinary."; };
+      vid.onerror = () => { status.textContent = "Cloudinary couldn’t render that video. Try again in a moment."; };
+      vid.src = u;
+      vid.play().catch(() => {});
+      $("videoDl").disabled = false;
+      $("videoDl").onclick = async () => {
+        try { const r = await fetch(u); if (!r.ok) throw new Error(r.status); saveBlob(await r.blob(), "clearsight-story.mp4"); }
+        catch (e) { toast("Download failed. Try again once the video has played."); }
+      };
+    });
+  }
+
+  // ---------- Small helpers that make the tools easier to use ----------
+  const OKABE_ITO = ["#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000", "#FFFFFF"];
+  function bindPairSuggest() {
+    $("pairSuggest").addEventListener("click", () => {
+      const a = hexToRgb($("pairA").value);
+      const score = c => Math.min(...[null, "deut", "prot", "trit"].map(k => dE(lab(...(k ? simulate(a, k) : a)), lab(...(k ? simulate(c, k) : c)))));
+      const ranked = OKABE_ITO.map(h => { const c = hexToRgb(h); return { h, s: score(c), cr: contrast(a, c) }; }).filter(x => x.s > 0.5);
+      const pick = (min) => ranked.filter(x => x.cr >= min).sort((x, y) => y.s - x.s)[0];
+      const best = pick(4.5) || pick(3) || ranked.sort((x, y) => y.s - x.s)[0];
+      $("pairB").value = best.h.toLowerCase();
+      $("pairB").dispatchEvent(new Event("input"));
+      setPressed($("pairPresets"), "a", "");
+      toast("Suggested " + best.h + " from the colour-blind-safe Okabe–Ito palette");
+    });
+  }
+  function bindReaderCopy() {
+    $("readerCopy").addEventListener("click", () => {
+      const hex = $("readerHex").textContent; if (!hex) { toast("Move over the poster first."); return; }
+      copyText($("readerName").textContent + " " + hex, "Copied " + hex);
+    });
+  }
+  function bindLensChip() {
+    const chip = $("lensChip");
+    const sync = () => {
+      const v = document.body.dataset.lens;
+      chip.hidden = v === "none";
+      if (v !== "none") $("lensChipName").textContent = LENS[v];
+    };
+    state.lensMO = new MutationObserver(sync);
+    state.lensMO.observe(document.body, { attributes: true, attributeFilter: ["data-lens"] });
+    $("lensReset").addEventListener("click", () => $("lensMenu").querySelector('[data-lens="none"]').click());
+  }
+
   // ---------- Page chrome ----------
   function bindNav() {
     // Kept on state: an observer nothing references can be garbage-collected and stop firing.
@@ -2359,6 +2536,11 @@
     bindPlate();
     bindReader();
     bindPair();
+    bindCloudinaryInfo();
+    bindVideo();
+    bindPairSuggest();
+    bindReaderCopy();
+    bindLensChip();
     bindMotion();
   }
 

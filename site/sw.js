@@ -1,5 +1,5 @@
 // Keeps the demo alive on bad venue Wi-Fi: the page is network-first, everything it loads is cached.
-const VERSION = "clearsight-v3";
+const VERSION = "clearsight-v4";
 const CORE = ["./", "index.html", "favicon.svg"];
 const CACHED_HOSTS = ["res.cloudinary.com", "cdnjs.cloudflare.com", "fonts.googleapis.com", "fonts.gstatic.com"];
 
@@ -18,6 +18,8 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return; // uploads always go to the network
+  // Video streams in byte ranges, which the cache can't store; let the browser handle it.
+  if (req.headers.has("range") || req.destination === "video" || req.destination === "audio") return;
   const url = new URL(req.url);
 
   if (req.mode === "navigate") {
@@ -31,10 +33,14 @@ self.addEventListener("fetch", (e) => {
 
   if (url.origin === self.location.origin || CACHED_HOSTS.includes(url.hostname)) {
     e.respondWith(
-      caches.match(req).then((hit) => hit || fetch(req).then((res) => {
-        if (res.ok || res.type === "opaque") { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); }
-        return res;
-      }))
+      caches.match(req).then((hit) => {
+        // An opaque copy (cached from an <img>) can't answer a script's fetch(), so go to the network instead.
+        if (hit && (hit.type !== "opaque" || req.mode === "no-cors")) return hit;
+        return fetch(req).then((res) => {
+          if (res.status === 200 || res.type === "opaque") { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); }
+          return res;
+        });
+      })
     );
   }
 });

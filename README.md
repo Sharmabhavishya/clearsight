@@ -49,12 +49,14 @@ The flood-warning sample is built entirely with Cloudinary text and colour overl
 - **Live camera:** point your camera at any poster, see it through colour-blind eyes, snap to build the pack
 - **Can you read this number?** a dot plate drawn fresh each time, whose number vanishes under deuteranopia (for fun, not a medical test)
 - **What colour is this?** colour names and hex codes from any poster or the camera
-- **Can everyone tell these apart?** contrast ratio, WCAG AA verdict and a check under each kind of colour blindness
+- **Can everyone tell these apart?** contrast ratio, WCAG AA verdict, a check under each kind of colour blindness, and a one-click safer colour from the Okabe–Ito palette
 - **Safe palette:** Cloudinary `e_replace_color` swaps red for vermillion and green for blue
-- **Say it in plain words:** a Cloudinary text layer prints your line under the poster
+- **Say it in plain words:** a Cloudinary text layer prints your line under the poster, in English, हिन्दी, বাংলা, தமிழ், తెలుగు or ગુજરાતી, each in a matching Hind font
+- **Story video:** Cloudinary `e_zoompan` turns the poster and your line into a six-second MP4
+- **How Cloudinary made this:** the fullscreen viewer shows `fl_getinfo` facts and explains every URL parameter
 - **Share card:** “what you see vs. what 1 in 12 men see”, ready for WhatsApp or LinkedIn
 - **Works offline:** a service worker keeps the demo running on bad Wi-Fi
-- **12-version accessibility pack:** four colour-blindness simulations, three fixes (stripes, X-ray, safe palette), print-safe, low-vision boost, low data and a chat-ready square
+- **13-version accessibility pack:** four colour-blindness simulations, three fixes (stripes, X-ray, safe palette), print-safe, low-vision boost, low data, a chat-ready square and a 9:16 story
 - **Inspector:** drag slider or side-by-side comparison of any version, with keyboard support and adjustable stripe strength
 - **Accessibility report:** scores colour-blind safety, photocopy safety, tonal contrast and data weight from the actual pixels, shows the colour pairs that collapse together, and says what to fix
 - **Real measurements:** each version’s actual delivered size (WebP/AVIF via `f_auto`) and the data saved per 10,000 views
@@ -75,13 +77,18 @@ ClearSight contains **no image-processing code**. Every version is a Cloudinary 
 
 | Version | Transformation |
 |---|---|
-| Colour-blind simulations | `e_simulate_colorblind:deuteranopia` · `protanopia` · `tritanopia` · `rod_monochromacy` |
+| Colour-blind simulations | `e_simulate_colorblind:deuteranopia` · `protanopia` · `tritanopia`, plus `e_grayscale` for no colour |
 | Colour-blind stripes | `e_assist_colorblind:<strength>` |
 | Colour-blind X-ray | `e_assist_colorblind:xray` |
 | Print-safe | `e_assist_colorblind:40/e_grayscale/e_contrast:30` |
 | Low-vision boost | `w_1600,c_limit/e_sharpen:80/e_auto_contrast/f_auto,q_auto` |
 | Low data | `w_480,c_limit/f_auto,q_auto:eco` |
+| Safe palette | `e_replace_color:0072b2:40:2e9e44/e_replace_color:d55e00:40:d62828` |
 | Chat-ready square | `w_1080,h_1080,c_pad,b_white/f_auto,q_auto` |
+| Story (9:16) | `ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto` |
+| Plain-words label | `l_text:Hind_80_bold:…` (font picked per script) + `fl_layer_apply,g_south` |
+| Story video | `…/e_zoompan:du_6/w_720` delivered as `.mp4` |
+| File details | `…/fl_getinfo` |
 | Flood-warning sample | `e_colorize` solid fills + `l_text` overlays + `fl_layer_apply` |
 
 **Uploads** use the [Upload API](https://cloudinary.com/documentation/image_upload_api_reference) with an **unsigned upload preset**, so no API secret ever reaches the browser.
