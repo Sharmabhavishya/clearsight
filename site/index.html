@@ -217,7 +217,7 @@
   .tool h3 { font-size: 20px; letter-spacing: -0.02em; }
   .reader-stage { position: relative; aspect-ratio: 3 / 2; border-radius: 16px; overflow: hidden; background: #fff; cursor: crosshair; touch-action: none; }
   /* The Camera section also uses .cam; keep the reader full-size when it switches to the camera. */
-  .reader-stage.cam { cursor: default; background: #000; width: 100%; max-width: none; margin: 0; padding: 0; border-radius: 16px; box-shadow: none; }
+  .reader-stage.cam { cursor: crosshair; background: #000; width: 100%; max-width: none; margin: 0; padding: 0; border-radius: 16px; box-shadow: none; }
   .reader-stage img, .reader-stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
   .reader-stage video { object-fit: cover; }
   .reticle { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(8,9,11,.55); pointer-events: none; }
@@ -989,7 +989,7 @@
               <button type="button" data-src="camera" aria-pressed="false">Camera</button>
             </div>
           </div>
-          <div class="reader-stage" id="readerStage" tabindex="0" aria-label="Move over the image, or use the arrow keys, to hear the colour name">
+          <div class="reader-stage" id="readerStage" tabindex="0" aria-label="Move or drag over the image or camera, or use the arrow keys, to hear the colour name">
             <img id="readerImg" alt="">
             <video id="readerVid" playsinline muted hidden></video>
             <span class="reticle" id="reticle" aria-hidden="true"></span>
@@ -2666,12 +2666,16 @@
       }).catch(() => {});
     };
     state.refreshReader = loadImage;
+    // Read the camera frame under the reticle (the video is object-fit: cover, so map through the crop).
     const tickCamera = () => {
       if (mode !== "camera" || !vid.videoWidth) return;
       canvas.width = vid.videoWidth; canvas.height = vid.videoHeight;
       cx.drawImage(vid, 0, 0);
-      const rgb = sampleAt(canvas.width / 2, canvas.height / 2); if (rgb) show(rgb);
+      const W = stage.clientWidth, H = stage.clientHeight, s = Math.max(W / canvas.width, H / canvas.height);
+      const px = (pt.x * W - (W - canvas.width * s) / 2) / s, py = (pt.y * H - (H - canvas.height * s) / 2) / s;
+      const rgb = sampleAt(clamp(px, 0, canvas.width - 1), clamp(py, 0, canvas.height - 1)); if (rgb) show(rgb);
     };
+    const read = () => (mode === "camera" ? tickCamera() : readImage());
     const stopCamera = () => { clearInterval(timer); if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; vid.srcObject = null; };
     const setMode = async m => {
       if (m === mode) return;
@@ -2688,17 +2692,14 @@
       setPressed(src, "src", mode);
     };
     src.addEventListener("click", e => { const b = e.target.closest("button"); if (b) setMode(b.dataset.src); });
-    stage.addEventListener("pointermove", e => {
-      if (mode !== "image") return;
-      const r = stage.getBoundingClientRect(); pt = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
-      placeReticle(); readImage();
-    });
-    stage.addEventListener("pointerdown", e => { if (mode === "image") { const r = stage.getBoundingClientRect(); pt = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }; placeReticle(); readImage(); } });
+    // Works the same on the poster and on the live camera: hover, tap or drag the reticle anywhere.
+    const moveTo = e => { const r = stage.getBoundingClientRect(); pt = { x: clamp((e.clientX - r.left) / r.width, 0, 1), y: clamp((e.clientY - r.top) / r.height, 0, 1) }; placeReticle(); read(); };
+    stage.addEventListener("pointermove", moveTo);
+    stage.addEventListener("pointerdown", moveTo);
     stage.addEventListener("keydown", e => {
-      if (mode !== "image") return;
       const s = e.shiftKey ? 0.08 : 0.02, m = { ArrowLeft: [-s, 0], ArrowRight: [s, 0], ArrowUp: [0, -s], ArrowDown: [0, s] }[e.key];
       if (!m) return;
-      e.preventDefault(); pt = { x: clamp(pt.x + m[0], 0, 1), y: clamp(pt.y + m[1], 0, 1) }; placeReticle(); readImage();
+      e.preventDefault(); pt = { x: clamp(pt.x + m[0], 0, 1), y: clamp(pt.y + m[1], 0, 1) }; placeReticle(); read();
     });
     document.addEventListener("visibilitychange", () => { if (document.hidden && mode === "camera") setMode("image"); });
     placeReticle();
