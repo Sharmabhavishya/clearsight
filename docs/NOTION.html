@@ -48,8 +48,17 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 <p>ClearSight answers the question colour-blind people get stuck on every day, <strong>“which part is red?”</strong>, and takes one image and produces a <strong>13-version accessibility pack</strong> with Cloudinary, then tells you how accessible the original is and how to publish the fixes.</p>
 <h3>Which part is red? (Colour Spotlight)</h3>
 <p>Research kept pointing at the same problem: colour used as the only label. One colour-blind writer puts it bluntly: matching a chart’s legend to the chart is “impossible”, so many skip pie charts altogether (<a href="https://wearecolorblind.com/examples/google-analytics/">We Are Colorblind</a>). Recolouring filters (“daltonisation”) are often criticised for making images look unnatural.</p>
-<p>So the Spotlight doesn’t recolour anything. Tap a colour chip, or tap any spot on the image (a legend swatch works), and only that colour stays in colour while everything else turns grey. Cloudinary does the finding: <code>e_make_transparent</code> cuts the chosen colour out, <code>e_grayscale</code> greys the rest, and the browser lays that over the original. ClearSight then counts the transparent pixels and says, for example, “Red covers 8% of the image, in 3 places.”</p>
+<p>So the Spotlight doesn’t recolour anything. Tap a colour chip, or tap any spot on the image (a legend swatch works), and only that colour stays in colour while everything else turns grey. Cloudinary does the finding: <code>e_make_transparent</code> cuts the chosen colour out, <code>e_grayscale</code> greys the rest, and the browser lays that over the original. ClearSight then counts the transparent pixels and the separate areas they form, and says, for example, “Red covers 2% of the image, in 1 place.”</p>
 <p>The demo uses an <strong>example air-quality map of India</strong>: state boundaries from DataMeet (based on Survey of India), each state coloured by an example AQI category, with city markers and India&#39;s AQI bands (Good 0–100, Moderate 101–200, Poor 201–300, Severe 301+). Switch on “See it as deuteranopia” and the severe north and the clean south turn the same olive; tap “Red” and only the northern belt from Punjab to Bihar keeps its colour. The map is an SVG we generate, stored on Cloudinary, which rasterises it at any size and format.</p>
+<h3>Everything else on the site</h3>
+<ul>
+<li><strong>Vision lens:</strong> shows the whole site as a colour-blind person sees it (deuteranopia, protanopia, tritanopia, no colour), using the Machado 2009 matrices that were checked against Cloudinary’s own simulation.</li>
+<li><strong>Live camera:</strong> point a phone at any real poster and see it through colour-blind eyes, with a split slider. Nothing leaves the phone until you press Snap, which uploads one frame and builds the whole pack.</li>
+<li><strong>Can you read this number?</strong> A dot plate drawn fresh each time, whose number melts away under deuteranopia (for fun, not a medical test).</li>
+<li><strong>What colour is this?</strong> Colour names and hex codes from any image or the camera.</li>
+<li><strong>Can everyone tell these apart?</strong> WCAG contrast, a verdict for each kind of colour blindness, and a one-click safer colour from the Okabe–Ito palette.</li>
+<li><strong>Say it in plain words and story video:</strong> a Cloudinary text layer prints one line under the poster in 11 languages, and <code>e_zoompan</code> turns it into a six-second MP4.</li>
+</ul>
 <h3>The fix, proven on a real-style notice</h3>
 <p>The demo includes a <strong>flood-warning poster built entirely from Cloudinary overlays</strong>: three colour-coded zones (red “Evacuate now”, amber “Get ready”, green “Safe”). Under Cloudinary’s deuteranopia simulation, the red and green zones <strong>turn almost the same olive colour</strong>. With Cloudinary’s <code>e_assist_colorblind</code>, red gets horizontal stripes and green gets vertical ones, so the zones are distinguishable again. They stay distinguishable even after conversion to black and white.</p>
 <h3>The pack</h3>
@@ -210,8 +219,8 @@ Spotlight     w_1200,c_limit/e_make_transparent:&lt;tolerance&gt;,co_rgb:&lt;hex
 <td>Semantic landmarks, a keyboard-operable slider, live regions, visible focus, reduced-motion support, mobile-first layout. An accessibility tool has to be accessible itself.</td>
 </tr>
 <tr>
-<td><strong>Apple-inspired design</strong></td>
-<td>Generous whitespace, large type and restrained colour keep the focus on the images.</td>
+<td><strong>Dark, calm design</strong></td>
+<td>Large type, generous space and one accent colour keep the focus on the images. The hero words cycle through how each kind of colour blindness sees red, amber and green.</td>
 </tr>
 <tr>
 <td><strong>Colour-blind-safe interface</strong></td>

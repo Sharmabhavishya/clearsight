@@ -31,9 +31,18 @@ ClearSight answers the question colour-blind people get stuck on every day, **�
 
 Research kept pointing at the same problem: colour used as the only label. One colour-blind writer puts it bluntly: matching a chart’s legend to the chart is “impossible”, so many skip pie charts altogether ([We Are Colorblind](https://wearecolorblind.com/examples/google-analytics/)). Recolouring filters (“daltonisation”) are often criticised for making images look unnatural.
 
-So the Spotlight doesn’t recolour anything. Tap a colour chip, or tap any spot on the image (a legend swatch works), and only that colour stays in colour while everything else turns grey. Cloudinary does the finding: `e_make_transparent` cuts the chosen colour out, `e_grayscale` greys the rest, and the browser lays that over the original. ClearSight then counts the transparent pixels and says, for example, “Red covers 8% of the image, in 3 places.”
+So the Spotlight doesn’t recolour anything. Tap a colour chip, or tap any spot on the image (a legend swatch works), and only that colour stays in colour while everything else turns grey. Cloudinary does the finding: `e_make_transparent` cuts the chosen colour out, `e_grayscale` greys the rest, and the browser lays that over the original. ClearSight then counts the transparent pixels and the separate areas they form, and says, for example, “Red covers 2% of the image, in 1 place.”
 
 The demo uses an **example air-quality map of India**: state boundaries from DataMeet (based on Survey of India), each state coloured by an example AQI category, with city markers and India's AQI bands (Good 0–100, Moderate 101–200, Poor 201–300, Severe 301+). Switch on “See it as deuteranopia” and the severe north and the clean south turn the same olive; tap “Red” and only the northern belt from Punjab to Bihar keeps its colour. The map is an SVG we generate, stored on Cloudinary, which rasterises it at any size and format.
+
+### Everything else on the site
+
+- **Vision lens:** shows the whole site as a colour-blind person sees it (deuteranopia, protanopia, tritanopia, no colour), using the Machado 2009 matrices that were checked against Cloudinary’s own simulation.
+- **Live camera:** point a phone at any real poster and see it through colour-blind eyes, with a split slider. Nothing leaves the phone until you press Snap, which uploads one frame and builds the whole pack.
+- **Can you read this number?** A dot plate drawn fresh each time, whose number melts away under deuteranopia (for fun, not a medical test).
+- **What colour is this?** Colour names and hex codes from any image or the camera.
+- **Can everyone tell these apart?** WCAG contrast, a verdict for each kind of colour blindness, and a one-click safer colour from the Okabe–Ito palette.
+- **Say it in plain words and story video:** a Cloudinary text layer prints one line under the poster in 11 languages, and `e_zoompan` turns it into a six-second MP4.
 
 ### The fix, proven on a real-style notice
 
@@ -129,7 +138,7 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 | **Shareable deep links (`#s=poster`)** | A pack can be shared or encoded in a QR code on a printed poster. |
 | **Strict Content Security Policy** | Scripts only from the site and cdnjs. Images only from Cloudinary. No framing. |
 | **Accessible UI** | Semantic landmarks, a keyboard-operable slider, live regions, visible focus, reduced-motion support, mobile-first layout. An accessibility tool has to be accessible itself. |
-| **Apple-inspired design** | Generous whitespace, large type and restrained colour keep the focus on the images. |
+| **Dark, calm design** | Large type, generous space and one accent colour keep the focus on the images. The hero words cycle through how each kind of colour blindness sees red, amber and green. |
 | **Colour-blind-safe interface** | ClearSight practises what it preaches. Ratings use a blue/orange/vermillion palette (based on Okabe–Ito) instead of green/red, and every rating also has a word (Good, Fair, Poor) and a pattern (solid or striped bars), so no information depends on colour alone. |
 | **Works on every phone** | Every section has a phone layout, tested at 320, 360, 375, 390, 414 and 430px wide and in landscape, with no horizontal scrolling at 320, 390, 768 and 1440px. Under 760px the nav shows only the logo and the Vision lens, and a bottom thumb dock gives Spotlight, Camera, Tools and Studio. Finger-sized tap targets on touch screens, notch-safe spacing, no zoom-on-focus on iPhone, and a swipeable view picker. |
 | **Installable** | A web app manifest (`site/manifest.webmanifest`) and icons (`icon-180.png`, `icon-192.png`, `icon-512.png`) make “Add to Home screen” work. The PNG icons were rendered by Cloudinary from an SVG (`w_512,h_512,c_fill/f_png`). The service worker cache is `clearsight-v5` and pre-caches the manifest and an icon. |
