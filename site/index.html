@@ -216,7 +216,8 @@
   .tool-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
   .tool h3 { font-size: 20px; letter-spacing: -0.02em; }
   .reader-stage { position: relative; aspect-ratio: 3 / 2; border-radius: 16px; overflow: hidden; background: #fff; cursor: crosshair; touch-action: none; }
-  .reader-stage.cam { cursor: default; background: #000; }
+  /* The Camera section also uses .cam; keep the reader full-size when it switches to the camera. */
+  .reader-stage.cam { cursor: default; background: #000; width: 100%; max-width: none; margin: 0; padding: 0; border-radius: 16px; box-shadow: none; }
   .reader-stage img, .reader-stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
   .reader-stage video { object-fit: cover; }
   .reticle { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(8,9,11,.55); pointer-events: none; }
