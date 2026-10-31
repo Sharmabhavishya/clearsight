@@ -42,7 +42,7 @@ The demo uses an **example air-quality map of India**: state boundaries from Dat
 - **Can you read this number?** A dot plate drawn fresh each time, whose number melts away under deuteranopia (for fun, not a medical test).
 - **What colour is this?** Colour names and hex codes from any image or the camera.
 - **Can everyone tell these apart?** WCAG contrast, a verdict for each kind of colour blindness, and a one-click safer colour from the Okabe–Ito palette.
-- **Say it in plain words and story video:** a Cloudinary text layer prints one line under the poster in 11 languages, and `e_zoompan` turns it into a six-second MP4.
+- **Say it in plain words and the explainer video:** a Cloudinary text layer prints one line under the poster in 11 languages, and a 15-second explainer video (9:16) shows the original, the colour-blind view, the stripes fix and that line.
 
 ### The fix, proven on a real-style notice
 
@@ -88,7 +88,7 @@ ClearSight contains **no image-processing code**. Every version is a Cloudinary 
 - **Layers as a design tool:** the flood-warning sample is made from `e_colorize` solid fills, `l_text` overlays and `fl_layer_apply`, with no uploaded asset.
 - **Readability effects:** `e_auto_contrast`, `e_sharpen`, `e_grayscale`, `e_contrast`, `c_pad`.
 - **Text in Indian scripts:** the plain-words label picks a Google font Cloudinary supports for the script it detects, for 11 languages (English plus 10 Indian scripts): Arial (English), Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu), Hind Vadodara (Gujarati), Mukta Mahee (Gurmukhi), Baloo Tamma (Kannada), Baloo Chettan (Malayalam), Baloo Bhaina (Odia) and Lateef (Urdu). Cloudinary supports only some Google fonts (the Noto Sans Indic fonts return “Unsupported font family”), so each was checked by rendering a real sentence.
-- **Image to video:** `e_zoompan` turns the poster, with its label, into a six-second MP4 for status updates. Cloudinary keeps overlays in the video but drops colour effects, so the video offers only what really survives.
+- **Explainer video:** the deuteranopia, stripes and label versions, all made by Cloudinary, are fetched once. The browser adds captions and crossfades on a canvas and records it (MediaRecorder) as a 9:16 MP4, or WebM where MP4 isn’t supported. It takes about 15 seconds because it records in real time.
 - **`e_make_transparent` for the Colour Spotlight:** keys out the chosen colour with an adjustable tolerance; `e_grayscale` greys the rest.
 - **`fl_getinfo`:** the fullscreen viewer asks Cloudinary for each version’s real width, height, format and bytes, and explains every parameter in its URL.
 - **Open CORS on delivery:** Cloudinary serves `Access-Control-Allow-Origin: *`, so the browser can measure real byte sizes, build the zip and analyse pixels for the report.
@@ -107,7 +107,7 @@ Safe palette  e_replace_color:0072b2:40:2e9e44/e_replace_color:d55e00:40:d62828/
 Chat square   w_1080,h_1080,c_pad,b_white/f_auto,q_auto
 Story         ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto
 Label         c_pad,w_1.0,h_1.2,b_white/l_text:Hind_80_bold:<line>/fl_layer_apply,g_south
-Video         <label>/e_zoompan:du_6/w_720 → .mp4
+Explainer     deuteranopia + stripes + label versions → captions and crossfades recorded in the browser (9:16)
 Details       <any version>/fl_getinfo
 Spotlight     w_1200,c_limit/e_make_transparent:<tolerance>,co_rgb:<hex>/e_grayscale/f_png (over the original)
 ```
@@ -190,7 +190,7 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
    - real uploads on the live site: an image dropped in by a visitor goes to Cloudinary through the unsigned preset and produces the full pack and report
 9. **More Cloudinary, easier to use:**
    - the plain-words label in six languages, each script rendered in a matching Hind font (later extended to 11, see item 11)
-   - a story video made with `e_zoompan`; testing showed colour effects don’t survive into video, so the options were cut to the poster and the poster with its label
+   - a story video made with `e_zoompan`; it only zoomed and said nothing, so it was replaced by the explainer video
    - a 9:16 story version with `b_auto` padding, making the pack 13 versions
    - “How Cloudinary made this” in the fullscreen viewer, from `fl_getinfo`
    - “Suggest a safer second colour” in the pair checker (Okabe–Ito palette, best worst-case ΔE across all three kinds of colour blindness, WCAG AA contrast first)
@@ -210,4 +210,4 @@ The thresholds were tuned from measured data. For the flood poster, the red/gree
 
 - **Live demo:** https://resplendent-maamoul-58cc39.netlify.app
 - **Source code:** https://github.com/Sharmabhavishya/clearsight
-- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind, Baloo, Mukta and Lateef fonts) · e_zoompan · b_auto · fl_getinfo · e_make_transparent
+- **Built with:** Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind, Baloo, Mukta and Lateef fonts) · b_auto · fl_getinfo · e_make_transparent

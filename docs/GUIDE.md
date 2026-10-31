@@ -159,7 +159,7 @@ Every version except the original and the stripes and print versions (which must
 ### 4.10 Publish it everywhere
 
 - **Say it in plain words:** type a line and Cloudinary prints it under the poster (`l_text`). 11 languages: English plus 10 Indian scripts. Six are one-tap examples: **English, हिन्दी, বাংলা, தமிழ், తెలుగు, ગુજરાતી**. The others (Marathi, Punjabi, Kannada, Malayalam, Odia, Urdu) work by typing. ClearSight detects the script and picks the matching Google font Cloudinary supports: Arial (English), Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu), Hind Vadodara (Gujarati), Mukta Mahee (Gurmukhi), Baloo Tamma (Kannada), Baloo Chettan (Malayalam), Baloo Bhaina (Odia), Lateef (Urdu). Cloudinary supports only some Google fonts (the Noto Sans Indic fonts return “Unsupported font family”), so each one was checked by rendering a real sentence. The translations are examples; you can edit them.
-- **Turn it into a story video:** Cloudinary’s `e_zoompan` turns the poster (with or without your line) into a six-second MP4. Download included.
+- **Make an explainer video:** a 15-second, phone-sized (9:16) video that tells the poster’s story in scenes with captions and crossfades: the original, what 1 in 12 men see, the stripes fix, and your plain-words line (choose **With your line** or **Without the line**). Click **Make the video**; it records in real time, so wait about 15 seconds, then **Download video** (MP4, or WebM on browsers that can’t record MP4). Works for any poster, including uploads.
 - **Describe the image:** alt text for screen readers, plus a paste-ready snippet in **HTML** (with `srcset` and links to the accessible versions), **Markdown** or plain **Links**.
 - **QR code for the printed poster:** points to **this pack**, the **colour-blind** version or the **low-data** version. Download as PNG and print it on the notice.
 - **Share:** uses the phone’s share sheet where available.
@@ -196,7 +196,7 @@ Every version except the original and the stripes and print versions (which must
 | `l_text` + `fl_layer_apply` (with Hind, Baloo, Mukta and Lateef fonts) | Posters, label | Draws posters and prints labels in Indian scripts |
 | `e_colorize` | Sample posters | Solid colour blocks, no uploaded design needed |
 | `c_pad`, `b_white`, `b_auto`, `ar_9:16` | Square and story | Reformat without cropping anything |
-| `e_zoompan` → `.mp4` | Story video | Turns an image into a video |
+| Cloudinary versions (deuteranopia, stripes, label) | Explainer video | Every picture in the video; the browser adds captions and crossfades |
 | `f_auto`, `q_auto`, `q_auto:eco` | Everywhere | Lightest file for each device and network |
 | `fl_getinfo` | Full-screen viewer | Real dimensions, format and bytes, straight from Cloudinary |
 | `fl_attachment` | Downloads | Download instead of open |
@@ -270,7 +270,7 @@ No backend, no database, no tracking.
 | **Tapping text or edges in the Spotlight** | Letters are anti-aliased. ClearSight prefers the vivid tile colour; a tap on pure white says “That spot is white, grey or black”. |
 | **Similar colours** (orange vs yellow) | The default match (12) keeps them apart. A very loose match can merge them. |
 | **First time a version is requested** | Cloudinary renders it on demand, which can take a second or two. After that it comes from the CDN. |
-| **Story video** | Cloudinary keeps text and layers in video but drops colour effects, so the video offers the poster and the poster with your line only. |
+| **Explainer video** | It records in real time (about 15 seconds) because the browser records the canvas. The line scene appears only if you choose “With your line” and type a line. |
 | **Camera** | Needs permission and a secure (https) page. Lighting changes colours. |
 | **Colour reader** | Names are everyday words, not paint-chart names. Double-check anything safety-critical. |
 | **Dot plate** | For awareness only, not a diagnosis. |

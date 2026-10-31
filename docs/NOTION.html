@@ -57,7 +57,7 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 <li><strong>Can you read this number?</strong> A dot plate drawn fresh each time, whose number melts away under deuteranopia (for fun, not a medical test).</li>
 <li><strong>What colour is this?</strong> Colour names and hex codes from any image or the camera.</li>
 <li><strong>Can everyone tell these apart?</strong> WCAG contrast, a verdict for each kind of colour blindness, and a one-click safer colour from the Okabe–Ito palette.</li>
-<li><strong>Say it in plain words and story video:</strong> a Cloudinary text layer prints one line under the poster in 11 languages, and <code>e_zoompan</code> turns it into a six-second MP4.</li>
+<li><strong>Say it in plain words and the explainer video:</strong> a Cloudinary text layer prints one line under the poster in 11 languages, and a 15-second explainer video (9:16) shows the original, the colour-blind view, the stripes fix and that line.</li>
 </ul>
 <h3>The fix, proven on a real-style notice</h3>
 <p>The demo includes a <strong>flood-warning poster built entirely from Cloudinary overlays</strong>: three colour-coded zones (red “Evacuate now”, amber “Get ready”, green “Safe”). Under Cloudinary’s deuteranopia simulation, the red and green zones <strong>turn almost the same olive colour</strong>. With Cloudinary’s <code>e_assist_colorblind</code>, red gets horizontal stripes and green gets vertical ones, so the zones are distinguishable again. They stay distinguishable even after conversion to black and white.</p>
@@ -140,7 +140,7 @@ One public notice in, a full accessibility pack out: colour-blind-safe, low-visi
 <li><strong>Layers as a design tool:</strong> the flood-warning sample is made from <code>e_colorize</code> solid fills, <code>l_text</code> overlays and <code>fl_layer_apply</code>, with no uploaded asset.</li>
 <li><strong>Readability effects:</strong> <code>e_auto_contrast</code>, <code>e_sharpen</code>, <code>e_grayscale</code>, <code>e_contrast</code>, <code>c_pad</code>.</li>
 <li><strong>Text in Indian scripts:</strong> the plain-words label picks a Google font Cloudinary supports for the script it detects, for 11 languages (English plus 10 Indian scripts): Arial (English), Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu), Hind Vadodara (Gujarati), Mukta Mahee (Gurmukhi), Baloo Tamma (Kannada), Baloo Chettan (Malayalam), Baloo Bhaina (Odia) and Lateef (Urdu). Cloudinary supports only some Google fonts (the Noto Sans Indic fonts return “Unsupported font family”), so each was checked by rendering a real sentence.</li>
-<li><strong>Image to video:</strong> <code>e_zoompan</code> turns the poster, with its label, into a six-second MP4 for status updates. Cloudinary keeps overlays in the video but drops colour effects, so the video offers only what really survives.</li>
+<li><strong>Explainer video:</strong> the deuteranopia, stripes and label versions, all made by Cloudinary, are fetched once. The browser adds captions and crossfades on a canvas and records it (MediaRecorder) as a 9:16 MP4, or WebM where MP4 isn’t supported. It takes about 15 seconds because it records in real time.</li>
 <li><strong><code>e_make_transparent</code> for the Colour Spotlight:</strong> keys out the chosen colour with an adjustable tolerance; <code>e_grayscale</code> greys the rest.</li>
 <li><strong><code>fl_getinfo</code>:</strong> the fullscreen viewer asks Cloudinary for each version’s real width, height, format and bytes, and explains every parameter in its URL.</li>
 <li><strong>Open CORS on delivery:</strong> Cloudinary serves <code>Access-Control-Allow-Origin: *</code>, so the browser can measure real byte sizes, build the zip and analyse pixels for the report.</li>
@@ -157,7 +157,7 @@ Safe palette  e_replace_color:0072b2:40:2e9e44/e_replace_color:d55e00:40:d62828/
 Chat square   w_1080,h_1080,c_pad,b_white/f_auto,q_auto
 Story         ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto
 Label         c_pad,w_1.0,h_1.2,b_white/l_text:Hind_80_bold:&lt;line&gt;/fl_layer_apply,g_south
-Video         &lt;label&gt;/e_zoompan:du_6/w_720 → .mp4
+Explainer     deuteranopia + stripes + label versions → captions and crossfades recorded in the browser (9:16)
 Details       &lt;any version&gt;/fl_getinfo
 Spotlight     w_1200,c_limit/e_make_transparent:&lt;tolerance&gt;,co_rgb:&lt;hex&gt;/e_grayscale/f_png (over the original)
 </code></pre>
@@ -285,7 +285,7 @@ Spotlight     w_1200,c_limit/e_make_transparent:&lt;tolerance&gt;,co_rgb:&lt;hex
 </li>
 <li><strong>More Cloudinary, easier to use:</strong><ul>
 <li>the plain-words label in six languages, each script rendered in a matching Hind font (later extended to 11, see item 11)</li>
-<li>a story video made with <code>e_zoompan</code>; testing showed colour effects don’t survive into video, so the options were cut to the poster and the poster with its label</li>
+<li>a story video made with <code>e_zoompan</code>; it only zoomed and said nothing, so it was replaced by the explainer video</li>
 <li>a 9:16 story version with <code>b_auto</code> padding, making the pack 13 versions</li>
 <li>“How Cloudinary made this” in the fullscreen viewer, from <code>fl_getinfo</code></li>
 <li>“Suggest a safer second colour” in the pair checker (Okabe–Ito palette, best worst-case ΔE across all three kinds of colour blindness, WCAG AA contrast first)</li>
@@ -307,7 +307,7 @@ Spotlight     w_1200,c_limit/e_make_transparent:&lt;tolerance&gt;,co_rgb:&lt;hex
 <ul>
 <li><strong>Live demo:</strong> <a href="https://resplendent-maamoul-58cc39.netlify.app">https://resplendent-maamoul-58cc39.netlify.app</a></li>
 <li><strong>Source code:</strong> <a href="https://github.com/Sharmabhavishya/clearsight">https://github.com/Sharmabhavishya/clearsight</a></li>
-<li><strong>Built with:</strong> Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind, Baloo, Mukta and Lateef fonts) · e_zoompan · b_auto · fl_getinfo · e_make_transparent</li>
+<li><strong>Built with:</strong> Cloudinary Upload API · Transformations · Overlays · f_auto/q_auto · e_simulate_colorblind · e_assist_colorblind · e_replace_color · l_text (Hind, Baloo, Mukta and Lateef fonts) · b_auto · fl_getinfo · e_make_transparent</li>
 </ul>
 
 </main>

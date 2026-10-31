@@ -283,7 +283,7 @@
 <h3>4.10 Publish it everywhere</h3>
 <ul>
 <li><strong>Say it in plain words:</strong> type a line and Cloudinary prints it under the poster (<code>l_text</code>). 11 languages: English plus 10 Indian scripts. Six are one-tap examples: <strong>English, हिन्दी, বাংলা, தமிழ், తెలుగు, ગુજરાતી</strong>. The others (Marathi, Punjabi, Kannada, Malayalam, Odia, Urdu) work by typing. ClearSight detects the script and picks the matching Google font Cloudinary supports: Arial (English), Hind (Devanagari), Hind Siliguri (Bengali), Hind Madurai (Tamil), Hind Guntur (Telugu), Hind Vadodara (Gujarati), Mukta Mahee (Gurmukhi), Baloo Tamma (Kannada), Baloo Chettan (Malayalam), Baloo Bhaina (Odia), Lateef (Urdu). Cloudinary supports only some Google fonts (the Noto Sans Indic fonts return “Unsupported font family”), so each one was checked by rendering a real sentence. The translations are examples; you can edit them.</li>
-<li><strong>Turn it into a story video:</strong> Cloudinary’s <code>e_zoompan</code> turns the poster (with or without your line) into a six-second MP4. Download included.</li>
+<li><strong>Make an explainer video:</strong> a 15-second, phone-sized (9:16) video that tells the poster’s story in scenes with captions and crossfades: the original, what 1 in 12 men see, the stripes fix, and your plain-words line (choose <strong>With your line</strong> or <strong>Without the line</strong>). Click <strong>Make the video</strong>; it records in real time, so wait about 15 seconds, then <strong>Download video</strong> (MP4, or WebM on browsers that can’t record MP4). Works for any poster, including uploads.</li>
 <li><strong>Describe the image:</strong> alt text for screen readers, plus a paste-ready snippet in <strong>HTML</strong> (with <code>srcset</code> and links to the accessible versions), <strong>Markdown</strong> or plain <strong>Links</strong>.</li>
 <li><strong>QR code for the printed poster:</strong> points to <strong>this pack</strong>, the <strong>colour-blind</strong> version or the <strong>low-data</strong> version. Download as PNG and print it on the notice.</li>
 <li><strong>Share:</strong> uses the phone’s share sheet where available.</li>
@@ -361,9 +361,9 @@
 <td>Reformat without cropping anything</td>
 </tr>
 <tr>
-<td><code>e_zoompan</code> → <code>.mp4</code></td>
-<td>Story video</td>
-<td>Turns an image into a video</td>
+<td>Cloudinary versions (deuteranopia, stripes, label)</td>
+<td>Explainer video</td>
+<td>Every picture in the video; the browser adds captions and crossfades</td>
 </tr>
 <tr>
 <td><code>f_auto</code>, <code>q_auto</code>, <code>q_auto:eco</code></td>
@@ -504,8 +504,8 @@
 <td>Cloudinary renders it on demand, which can take a second or two. After that it comes from the CDN.</td>
 </tr>
 <tr>
-<td><strong>Story video</strong></td>
-<td>Cloudinary keeps text and layers in video but drops colour effects, so the video offers the poster and the poster with your line only.</td>
+<td><strong>Explainer video</strong></td>
+<td>It records in real time (about 15 seconds) because the browser records the canvas. The line scene appears only if you choose “With your line” and type a line.</td>
 </tr>
 <tr>
 <td><strong>Camera</strong></td>

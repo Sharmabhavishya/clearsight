@@ -60,7 +60,7 @@ The flood-warning sample is built entirely with Cloudinary text and colour overl
 - **Can everyone tell these apart?** contrast ratio, WCAG AA verdict, a check under each kind of colour blindness, and a one-click safer colour from the Okabe–Ito palette
 - **Safe palette:** Cloudinary `e_replace_color` swaps red for vermillion and green for blue
 - **Say it in plain words:** a Cloudinary text layer prints your line under the poster, in 11 languages: English plus 10 Indian scripts (हिन्दी, বাংলা, தமிழ், తెలుగు, ગુજરાતી, ਪੰਜਾਬੀ, ಕನ್ನಡ, മലയാളം, ଓଡ଼ିଆ and اردو). Six are one-tap examples (English, Hindi, Bengali, Tamil, Telugu, Gujarati); the rest work by typing. Each script gets a matching font that Cloudinary supports
-- **Story video:** Cloudinary `e_zoompan` turns the poster and your line into a six-second MP4
+- **Explainer video:** a 15-second, phone-sized (9:16) video that shows the original, the colour-blind view, the stripes fix and your plain-words line, with captions and crossfades. Every picture in it comes from Cloudinary; the browser records it
 - **How Cloudinary made this:** the fullscreen viewer shows `fl_getinfo` facts and explains every URL parameter
 - **Share card:** “what you see vs. what 1 in 12 men see”, ready for WhatsApp or LinkedIn
 - **Works offline:** a service worker keeps the demo running on bad Wi-Fi
@@ -99,7 +99,7 @@ ClearSight contains **no image-processing code**. Every version is a Cloudinary 
 | Chat-ready square | `w_1080,h_1080,c_pad,b_white/f_auto,q_auto` |
 | Story (9:16) | `ar_9:16,c_pad,b_auto,w_1080/f_auto,q_auto` |
 | Plain-words label | `l_text:Hind_80_bold:…` (font picked per script) + `fl_layer_apply,g_south` |
-| Story video | `…/e_zoompan:du_6/w_720` delivered as `.mp4` |
+| Explainer video | the deuteranopia, stripes and label versions above, joined with captions and crossfades in the browser (9:16) |
 | Colour Spotlight | `e_make_transparent:<tolerance>,co_rgb:<colour>/e_grayscale`, laid over the original |
 | File details | `…/fl_getinfo` |
 | Flood-warning sample | `e_colorize` solid fills + `l_text` overlays + `fl_layer_apply` |
