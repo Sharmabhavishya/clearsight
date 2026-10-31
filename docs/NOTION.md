@@ -33,7 +33,7 @@ Research kept pointing at the same problem: colour used as the only label. One c
 
 So the Spotlight doesn’t recolour anything. Tap a colour chip, or tap any spot on the image (a legend swatch works), and only that colour stays in colour while everything else turns grey. Cloudinary does the finding: `e_make_transparent` cuts the chosen colour out, `e_grayscale` greys the rest, and the browser lays that over the original. ClearSight then counts the transparent pixels and says, for example, “Red covers 8% of the image, in 3 places.”
 
-The demo uses an **example air-quality map** with a Good / Moderate / Poor / Severe legend. Switch on “See it as deuteranopia” and the severe, poor and good tiles blur together; tap “Red” and Delhi and Noida light up. A match slider catches lighter and darker shades in photos, and the result downloads as a PNG.
+The demo uses an **example air-quality map of India**: state boundaries from DataMeet (based on Survey of India), each state coloured by an example AQI category, with city markers and India's AQI bands (Good 0–100, Moderate 101–200, Poor 201–300, Severe 301+). Switch on “See it as deuteranopia” and the severe north and the clean south turn the same olive; tap “Red” and only the northern belt from Punjab to Bihar keeps its colour. The map is an SVG we generate, stored on Cloudinary, which rasterises it at any size and format.
 
 ### The fix, proven on a real-style notice
 

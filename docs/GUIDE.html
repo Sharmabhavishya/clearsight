@@ -127,7 +127,7 @@
 <li>Read the answer: <em>“Red covers 8% of the image, in 3 places.”</em></li>
 <li>Optional: <strong>See it as deuteranopia</strong> (feel the problem first), <strong>Hold to see all colours</strong> (compare), the <strong>Match</strong> slider (catch lighter and darker shades in photos), <strong>Download</strong>, <strong>Clear</strong>.</li>
 </ol>
-<p><strong>The demo moment.</strong> On the air-quality map, switch on <em>See it as deuteranopia</em>: red, orange and green tiles turn into similar olives. Tap the <em>Severe</em> legend swatch: only Delhi and Noida light up.</p>
+<p><strong>The demo moment.</strong> The air-quality sample is a real map of India (Survey of India boundaries via DataMeet), with states coloured by example AQI. Switch on <em>See it as deuteranopia</em>: the severe north and the clean south turn the same olive. Tap the <em>Severe</em> legend swatch: only Punjab, Haryana, Delhi, Uttar Pradesh and Bihar keep their colour. The map is an SVG made by a small script, stored on Cloudinary and rasterised by Cloudinary on request. It is the image the site opens on.</p>
 <p><strong>How it works.</strong></p>
 <ul>
 <li><strong>Cloudinary</strong> <code>e_make_transparent:&lt;tolerance&gt;,co_rgb:&lt;colour&gt;</code> cuts the chosen colour out of the image, and <code>e_grayscale</code> greys the rest.</li>
